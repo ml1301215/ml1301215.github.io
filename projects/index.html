@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Datasets — Lve Meng</title>
+  <title>Projects — Lve Meng</title>
   <link rel="stylesheet" href="../styles.css" />
   <script>(function(){var l=localStorage.getItem('site-lang');if(l)document.documentElement.setAttribute('data-lang',l);})();</script>
 </head>
@@ -72,49 +72,46 @@
     <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
       <div class="page__inner-wrap">
         <header>
-          <h1 class="page__title" itemprop="headline" data-zh="数据集">Datasets</h1>
+          <h1 class="page__title" itemprop="headline" data-zh="项目">Projects</h1>
         </header>
         <section class="page__content" itemprop="text">
 
-          <p>Datasets associated with published and forthcoming work. For access or questions, contact <a href="mailto:ml130@mail.ustc.edu.cn">ml130@mail.ustc.edu.cn</a>.</p>
-
-          <h2>Math Research Benchmark</h2>
-          <p>Problem sets and AI solutions used in arXiv:2602.13695. Includes ICCM 2024/2025 competition problems, First Proof research-level problems, and model solutions from multiple LLMs.</p>
-          <table class="exp-table">
-            <tbody>
-              <tr>
-                <td class="exp-period" style="min-width:80px">Contents</td>
-                <td>ICCM problem sets (2 rounds), First Proof problem set, AI-generated solutions</td>
-              </tr>
-              <tr>
-                <td class="exp-period">Format</td>
-                <td>PDF (problems), Markdown + PDF (solutions), Lean 4 (formalized proofs)</td>
-              </tr>
-              <tr>
-                <td class="exp-period">Access</td>
-                <td><a href="https://github.com/ml1301215/question_sets-test_results" target="_blank" rel="noopener">github.com/ml1301215/question_sets-test_results</a></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h2>TEEM Event Memory Dataset</h2>
-          <p>Dataset associated with <em>TEEM: Time-Centered Event Memory for Agents</em> (under review, 2026). Contains event sequences with temporal annotations for agent memory evaluation.</p>
-          <table class="exp-table">
-            <tbody>
-              <tr>
-                <td class="exp-period" style="min-width:80px">Contents</td>
-                <td>Temporal event sequences, agent interaction traces, memory retrieval benchmarks</td>
-              </tr>
-              <tr>
-                <td class="exp-period">Format</td>
-                <td>JSON / JSONL</td>
-              </tr>
-              <tr>
-                <td class="exp-period">Access</td>
-                <td><a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">github.com/ZXXZ1000/LATRACE</a> (dataset to be released upon publication)</td>
-              </tr>
-            </tbody>
-          </table>
+          <ul class="plain-list">
+            <li>
+              <a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">Vibe Proving</a>
+              (arXiv:2602.13695) —
+              An LLM pipeline that iterates solve → verify → correct on mathematical problems, with a web UI.
+              [<a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">code</a>]
+            </li>
+            <li>
+              <a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">Latrace-AI</a> —
+              Graph-based agent memory organized around temporal structure.
+              Associated with the TEEM paper (under review, 2026).
+              [<a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">code</a>]
+            </li>
+            <li>
+              <a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">LLM Alert Analysis</a> —
+              Fine-tuned a 30B-parameter model (Qwen3-30B-A3B) with QLoRA and GRPO for security alert classification.
+              Built at Chengting Technology. &gt;90% classification accuracy, deployed to production.
+              [<a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">code</a>]
+              [<a href="../docs/llm-alert-analysis.pdf" target="_blank" rel="noopener">report</a>]
+              [<a href="../docs/%E5%9F%BA%E4%BA%8E%E6%96%87%E6%A1%A3%E7%9A%84%E5%A4%9A%E9%98%B6%E6%AE%B5%E8%AE%AD%E7%BB%83LLM%E7%94%A8%E4%BA%8E%E6%BC%8F%E6%B4%9E%E7%B1%BB%E5%9E%8B%E9%A2%84%E6%B5%8B%E4%B8%8E%E6%8E%A8%E7%90%86.pdf" target="_blank" rel="noopener">report 2</a>]
+              [<a href="../docs/%E5%85%B7%E4%BD%93%E8%AE%AD%E7%BB%83%E5%86%85%E5%AE%B9.pdf" target="_blank" rel="noopener">training details</a>]
+              [<a href="../docs/%E8%AF%84%E4%BC%B0%E7%BB%93%E6%9E%9C%E5%8F%8A%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95.pdf" target="_blank" rel="noopener">evaluation</a>]
+            </li>
+            <li>
+              <a href="https://github.com/ml1301215/multi-agent-vuln-scanner" target="_blank" rel="noopener">Multi-Agent Vulnerability Scanner</a> —
+              A Dify-based multi-agent system with NVD/CVE RAG knowledge base for automated web vulnerability discovery.
+              Built at JD.com.
+              [<a href="https://github.com/ml1301215/multi-agent-vuln-scanner" target="_blank" rel="noopener">code</a>]
+              [<a href="../docs/multi-agent-vuln-scanner.pdf" target="_blank" rel="noopener">report</a>]
+            </li>
+            <li>
+              <a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">FLight</a> —
+              Multi-agent coding framework with contract-based task delegation, human approval gates, and sandboxed execution.
+              [<a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">code</a>]
+            </li>
+          </ul>
 
         </section>
         <footer class="page__meta"></footer>

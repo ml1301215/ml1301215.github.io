@@ -1,5 +1,30 @@
+// ===== LANGUAGE TOGGLE =====
+const LANG_KEY = 'site-lang';
+let currentLang = localStorage.getItem(LANG_KEY) || 'en';
+
+function applyLang(lang) {
+  document.documentElement.setAttribute('data-lang', lang);
+  document.querySelectorAll('[data-zh]').forEach(el => {
+    if (!el._enHTML) el._enHTML = el.innerHTML;
+    el.innerHTML = lang === 'zh' ? el.getAttribute('data-zh') : el._enHTML;
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.textContent = lang === 'zh' ? 'EN' : '中文';
+  });
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentLang = currentLang === 'en' ? 'zh' : 'en';
+    localStorage.setItem(LANG_KEY, currentLang);
+    applyLang(currentLang);
+  });
+});
+
+applyLang(currentLang);
+
 // ===== HAMBURGER TOGGLE =====
-const navBtn = document.querySelector('#site-nav button');
+const navBtn = document.querySelector('#site-nav > button:not(.lang-btn)');
 const hiddenLinks = document.querySelector('.hidden-links');
 if (navBtn && hiddenLinks) {
   navBtn.addEventListener('click', function () {
@@ -23,7 +48,7 @@ if (followBtn && authorUrls) {
     authorUrls.style.display = authorUrls.style.display === 'block' ? '' : 'block';
   });
   document.addEventListener('click', function () {
-    authorUrls.style.display = '';
+    if (authorUrls) authorUrls.style.display = '';
   });
 }
 

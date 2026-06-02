@@ -457,6 +457,32 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
   font-size: .6875em;
 }
 
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-btn {
+  display: inline-block;
+  margin: 0 0.5rem;
+  padding: 0.2em 0.6em;
+  color: #7a8288;
+  background: none;
+  border: 1px solid #bdc1c4;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-family: inherit;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.lang-btn:hover { color: #494e52; border-color: #7a8288; }
+
+/* Language-specific inline content */
+.lang-zh { display: none; }
+[data-lang="zh"] .lang-zh { display: inline; }
+[data-lang="zh"] .lang-en { display: none; }
+
+/* Language-specific block content */
+.lang-zh-block { display: none; }
+[data-lang="zh"] .lang-zh-block { display: block; }
+[data-lang="zh"] .lang-en-block { display: none; }
+
 /* ===== SITE-SPECIFIC ===== */
 
 /* Scroll reveal */
@@ -499,3 +525,9 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
 
 /* Note / muted text */
 .note { color: #9ba1a6; font-size: 0.875em; }
+
+/* Photo grid and book cover (Misc personal section) */
+.photo-row { display: flex; gap: 1em; margin: 1em 0 1.5em; }
+.photo-row img { flex: 1; min-width: 0; max-height: 220px; object-fit: cover; border-radius: 4px; }
+.book-cover { margin: 1em 0 1.5em; }
+.book-cover img { max-width: 160px; border: 1px solid #f2f3f3; padding: 4px; }
