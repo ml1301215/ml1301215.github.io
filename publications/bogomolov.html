@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../styles.css" />
   <style>
     .pub-page { max-width: 760px; margin: 2.5em auto; padding: 0 1.5em 4em; }
-    .pub-page h1 { font-size: 1.35em; font-weight: bold; border-bottom: none; margin-bottom: 0.3em; line-height: 1.3; }
+    .pub-page h1 { font-size: 1.6em; font-weight: bold; border-bottom: none; margin-bottom: 0.3em; line-height: 1.3; }
     .pub-venue { color: #7a8288; font-size: 0.9375em; margin-bottom: 1.8em; }
     .pub-citation { background: #f8f9f9; border-left: 3px solid #e0e2e3; padding: 0.75em 1em; font-size: 0.875em; margin: 1.2em 0; line-height: 1.65; color: #494e52; word-break: break-all; }
     .pub-download { margin: 1.4em 0; font-size: 0.9375em; }
@@ -16,6 +16,8 @@
     .back-link { display: inline-block; font-size: 0.875em; color: #7a8288; margin-bottom: 1.8em; }
     .back-link:hover { color: #52adc8; text-decoration: none; }
   </style>
+  <script>MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
 </head>
 <body>
 
@@ -33,12 +35,11 @@
   <div class="pub-page">
     <a class="back-link" href="../index.html#publications">← Publications</a>
 
-    <h1>Bogomolov Type Inequality on Quasi-Elliptic Surfaces<br><span style="font-size:0.8em;font-weight:400;color:#7a8288">(拟椭圆曲面上的 Bogomolov 不等式)</span></h1>
+    <h1>Bogomolov Type Inequality on Quasi-Elliptic Surfaces</h1>
     <p class="pub-venue">Published in <em>Journal of Mathematics (数学杂志)</em>, 2025</p>
 
     <div class="pub-citation">
       Recommended citation: Meng Lve. Bogomolov Type Inequality on Quasi-Elliptic Surfaces (拟椭圆曲面上的 Bogomolov 不等式)[J]. Journal of Mathematics (数学杂志), ISSN 0255-7797, 2025. MSC (2010): 14J60, 14J26.
-      <a href="http://www.hust.edu.cn/sxzz">http://www.hust.edu.cn/sxzz</a>
     </div>
 
     <p class="pub-download">
@@ -51,7 +52,16 @@
 
     <p class="pub-abstract-heading">Abstract</p>
     <div class="pub-abstract">
-      <p>The Bogomolov inequality is a fundamental result in the theory of vector bundles on algebraic surfaces, bounding the discriminant of semistable bundles in terms of the first Chern class. Over fields of positive characteristic, quasi-elliptic surfaces — surfaces fibered over a curve with generic fiber a rational curve with a cusp — exhibit pathological behavior not present in characteristic zero, and the classical proof of the Bogomolov inequality breaks down. In this paper, we establish a Bogomolov type inequality for vector bundles on quasi-elliptic surfaces in characteristic two and three, using the Frobenius morphism and the theory of p-closed foliations. Our result extends the known range of surfaces for which a Bogomolov type bound holds in positive characteristic.</p>
+      <p>Quasi-elliptic surfaces, discovered by Bombieri and Mumford in 1969, are a special class of algebraic surfaces that exist only in characteristics 2 and 3. Their distinctive geometric structure provides rich material for the study of algebraic geometry over fields of positive characteristic. These surfaces are the characteristic-\(p\) analogs of the \(\kappa = 1\) case in the Enriques–Kodaira classification, and their pathological properties make them key test cases for the scope of classical theorems.</p>
+      <p>Geometrically, quasi-elliptic surfaces are characterized by their fibration structure: every quasi-elliptic surface \(S\) admits a quasi-elliptic fibration \(f \colon S \to C\), whose general fiber is a rational curve with arithmetic genus \(p_a = 1\) but geometric genus \(p_g = 0\), necessarily carrying an ordinary cusp singularity. This separation of arithmetic and geometric genus is a feature unique to fibrations in positive characteristic, absent from elliptic fibrations in characteristic zero.</p>
+      <p>From an algebraic viewpoint, quasi-elliptic surfaces exhibit several pathological properties. First, they provide counterexamples to the Kodaira vanishing theorem: there exist ample line bundles \(\mathcal{L}\) with \(H^1(S,\mathcal{L}^{-1})\neq 0\). Second, they violate the classical Bogomolov inequality \(\Delta(\mathcal{E})\geq 0\). While the proof of Fujita's conjecture over \(\mathbb{C}\) relies on the Bogomolov inequality — making Fujita's conjecture appear to be a corollary of it — recent work of Yan-An Chen shows that Fujita's conjecture continues to hold on quasi-elliptic surfaces even though the Bogomolov inequality fails there. This phenomenon of partial survival suggests that positive-characteristic geometry may require a more refined theoretical framework.</p>
+      <p>This paper studies the geometry of quasi-elliptic surfaces over algebraically closed fields of characteristic \(p > 0\) and the stability theory of vector bundles on them, focusing on a modified Bogomolov inequality for the positive-characteristic setting. In characteristic \(p = 3\), we prove: for any quasi-elliptic fibration \(f \colon S \to B\) and any \(L\)-semistable torsion-free sheaf \(E\), there exists a rational number \(a\) determined by the geometry of the fibration such that the modified inequality
+      \[
+        \Delta(E) + \left(\frac{r(r-1)}{3}\right)^{\!2} \cdot c_0 \;\geq\; 0
+      \]
+      holds, where the explicit expression for \(c_0\) splits into two cases according to \(b \geq 1\) and \(b = 0\).</p>
+      <p>The proof proceeds in three steps: reduction to a stability problem on a ruled surface \(S_1\) via Frobenius base change of the fibration \(f \colon S \to B\); application of the Cartier descent theorem to connect the modified and classical inequalities; and computation of geometric invariants of the projective bundle \(\mathbb{P}(\mathcal{E})\) to determine the optimal correction term \(c_0\). This strategy may also provide methodological guidance for stability problems on other algebraic varieties in positive characteristic.</p>
+      <p>Chapter 2 covers the theoretical background: the definition and basic properties of quasi-elliptic fibrations (singularity classification of general fibers, modified adjunction formula), and explicit constructions of Raynaud-type surfaces. Chapter 3 gives the detailed proof of the modified Bogomolov inequality, organized by the genus \(b = g(B)\) of the base curve, with explicit computation of the optimal correction term.</p>
     </div>
   </div>
 
