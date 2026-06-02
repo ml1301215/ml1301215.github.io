@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>蒙略 | Lve Meng</title>
+  <meta name="description" content="蒙略 — USTC 数学，AI 探索者。个人学术主页。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">蒙略</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#cv">CV</a></li>
+      </ul>
+      <div class="nav-end">
+        <a href="https://github.com/ml1301215" target="_blank" rel="noopener" class="nav-icon-link" title="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <a href="https://arxiv.org/search/?searchtype=author&query=meng+lve" target="_blank" rel="noopener" class="nav-icon-link" title="arXiv">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ===== PROFILE ===== -->
+    <section id="about">
+      <div class="page-container">
+        <div class="profile-grid">
+
+          <!-- Left: Avatar + Links -->
+          <aside class="profile-left">
+            <div class="avatar">
+              <span class="avatar-initials">ML</span>
+            </div>
+            <h1 class="profile-name">蒙略</h1>
+            <p class="profile-name-en">Lve Meng</p>
+            <p class="profile-affil">中国科学技术大学</p>
+            <p class="profile-affil">数学科学学院 · 硕士</p>
+            <p class="profile-affil muted">导师：张磊教授</p>
+
+            <div class="profile-links">
+              <a href="mailto:ml130@mail.ustc.edu.cn" class="plink">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                Email
+              </a>
+              <a href="https://github.com/ml1301215" target="_blank" rel="noopener" class="plink">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub
+              </a>
+              <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener" class="plink">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 12 2 2 4-4"/><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7z"/></svg>
+                arXiv
+              </a>
+            </div>
+          </aside>
+
+          <!-- Right: Bio + Interests -->
+          <div class="profile-right">
+            <p>
+              我是蒙略，中国科学技术大学数学科学学院硕士研究生，方向为计算数学与代数几何，师从张磊教授。本科就读于中国科学技术大学少年班学院。
+            </p>
+            <p>
+              我对 AI 与数学的交叉有浓厚的兴趣——一方面是用 AI 工具辅助数学研究（自动化证明、形式化验证），另一方面也探索 AI 本身的推理能力边界。目前在中关村人工智能研究院参与相关前沿研究，已发表 arXiv 论文两篇。
+            </p>
+            <p>
+              中途做过 AI 安全（长亭科技：大模型告警分析训练；京东：多智能体漏洞挖掘），也有过两次创业尝试。我喜欢在不同领域间穿梭，数学训练的严格性在这些地方一次次地帮了我大忙。
+            </p>
+
+            <div class="interests-block">
+              <h4>Research Interests</h4>
+              <ul>
+                <li>AI × 数学推理 / 自动化证明</li>
+                <li>大语言模型推理能力评估</li>
+                <li>形式化验证（Lean 4）</li>
+                <li>AI 安全与对齐</li>
+                <li>代数几何（拟椭圆曲面、向量丛稳定性）</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEWS ===== -->
+    <section id="news">
+      <div class="page-container">
+        <h2 class="sec-title">What's New</h2>
+        <div class="news-list">
+
+          <div class="news-row">
+            <span class="news-date">2026.05</span>
+            <span class="news-text">
+              技术报告
+              <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">
+                "Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?"
+              </a>
+              发布于 arXiv，开源完整代码与题目。
+            </span>
+          </div>
+
+          <div class="news-row">
+            <span class="news-date">2026.02</span>
+            <span class="news-text">
+              技术报告
+              <a href="https://arxiv.org/abs/2602.05192" target="_blank" rel="noopener">
+                "Can a Simple Automated AI Pipeline Solve Research-Level Mathematical Problems?"
+              </a>
+              发布于 arXiv，包含 ICCM 全部解答。
+            </span>
+          </div>
+
+          <div class="news-row">
+            <span class="news-date">2026.01</span>
+            <span class="news-text">加入北京中关村人工智能研究院，开始 AI × 数学方向研究。</span>
+          </div>
+
+          <div class="news-row">
+            <span class="news-date">2025.12</span>
+            <span class="news-text">
+              完成长亭科技实习：30B 大模型 QLoRA+GRPO 多阶段训练，告警分析准确率达 90%+，成功交付生产。
+            </span>
+          </div>
+
+          <div class="news-row">
+            <span class="news-date">2025.11</span>
+            <span class="news-text">
+              参与腾讯云黑客松智能渗透挑战赛，前期调研所在战队"长亭外"获
+              <strong>第一名</strong>；独立参赛队伍"埃真特"排名前 16%。
+            </span>
+          </div>
+
+          <div class="news-row">
+            <span class="news-date">2025.10</span>
+            <span class="news-text">开始京东实习，基于 Dify 框架开发多智能体漏洞挖掘系统。</span>
+          </div>
+
+          <div class="news-row">
+            <span class="news-date">2025.05</span>
+            <span class="news-text">
+              论文《拟椭圆曲面上的 Bogomolov 不等式》获《数学杂志》（中国数学会，北大博雅计划收录期刊）录用。
+            </span>
+          </div>
+
+          <div class="news-row">
+            <span class="news-date">2024</span>
+            <span class="news-text">获中国科学技术大学优秀硕士奖学金一等奖。</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EXPERIENCE ===== -->
+    <section id="experience">
+      <div class="page-container">
+        <h2 class="sec-title">Experience</h2>
+
+        <div class="exp-list">
+
+          <div class="exp-row reveal">
+            <div class="exp-left">
+              <span class="exp-period">2026.01 — 至今</span>
+            </div>
+            <div class="exp-right">
+              <div class="exp-header">
+                <h3>AI 核心与基础学部</h3>
+                <span class="exp-org">北京中关村人工智能研究院</span>
+                <span class="badge badge-current">在职</span>
+              </div>
+              <p>构建轻量自动化 pipeline，对 ICCM（丘赛难度）及 FirstProof 研究级数学问题进行自动求解与验证；同期进行数学知识库（Thestackofproject）的 Lean 4 形式化工程，提取 512 条高质量形式化代码。</p>
+              <div class="exp-tags"><span class="tech">Python</span><span class="tech">Lean 4</span><span class="tech">Gemini 3 Pro</span><span class="tech">GPT-5.2</span></div>
+            </div>
+          </div>
+
+          <div class="exp-row reveal">
+            <div class="exp-left">
+              <span class="exp-period">2025.10 — 2025.12</span>
+            </div>
+            <div class="exp-right">
+              <div class="exp-header">
+                <h3>AI 安全研究实习生</h3>
+                <span class="exp-org">长亭科技</span>
+              </div>
+              <p>对 30B 参数大模型进行 QLoRA 监督微调，再以 GRPO 强化学习优化决策能力，最终准确率超 90%，成功交付生产。同期爬取 41 个开源项目文档（200万+条）用于 RAG 增强渗透测试；参与腾讯云黑客松智能渗透挑战赛。</p>
+              <div class="exp-tags"><span class="tech">QLoRA</span><span class="tech">GRPO</span><span class="tech">PyTorch</span><span class="tech">Python</span></div>
+            </div>
+          </div>
+
+          <div class="exp-row reveal">
+            <div class="exp-left">
+              <span class="exp-period">2025.07 — 2025.09</span>
+            </div>
+            <div class="exp-right">
+              <div class="exp-header">
+                <h3>AI Agent 开发实习</h3>
+                <span class="exp-org">京东</span>
+              </div>
+              <p>基于 Dify 框架开发多智能体漏洞挖掘系统，集成 NVD/CVE 知识库，实现 RAG 检索增强生成，负责整体架构设计。</p>
+              <div class="exp-tags"><span class="tech">Dify</span><span class="tech">RAG</span><span class="tech">NVD/CVE</span><span class="tech">Python</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects">
+      <div class="page-container">
+        <h2 class="sec-title">Projects</h2>
+
+        <div class="proj-group">
+          <h3 class="proj-group-title">Math × AI</h3>
+          <div class="proj-list">
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4><a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">Vibe Proving</a></h4>
+                  <p class="proj-org">中关村人工智能研究院 · 2026</p>
+                </div>
+                <div class="proj-badges">
+                  <span class="badge badge-math">Math AI</span>
+                  <a href="https://arxiv.org/abs/2602.13695" class="badge badge-arxiv" target="_blank" rel="noopener">arXiv</a>
+                </div>
+              </div>
+              <p>轻量自动化 pipeline，集成前沿大模型 API，对研究级数学问题进行"求解 → 引文验证 → 自我修正"的迭代求解。ICCM 官方挑战题（丘成桐大学生数学竞赛难度）达到 100% 解题率；FirstProof Problem 4 已通过数学博士团队验证。提供完整 Web UI 与前后端。</p>
+              <div class="proj-tech"><span class="tech">Python</span><span class="tech">Flask</span><span class="tech">Gemini 3 Pro</span><span class="tech">GPT-5.2</span><span class="tech">LaTeX</span></div>
+            </div>
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4>自动形式化工程</h4>
+                  <p class="proj-org">中关村人工智能研究院 · 2026</p>
+                </div>
+                <div class="proj-badges">
+                  <span class="badge badge-math">Math AI</span>
+                </div>
+              </div>
+              <p>将研究生级数学知识库 Thestackofproject 转换为 Lean 4 形式化代码，经 AI + 人工验证有效率超 50%，提取 512 条高质量形式化条目，可用于模型训练。</p>
+              <div class="proj-tech"><span class="tech">Lean 4</span><span class="tech">codex-cli</span><span class="tech">Cursor</span><span class="tech">Python</span></div>
+            </div>
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4>Kimina Lean Server</h4>
+                  <p class="proj-org">开源基础设施</p>
+                </div>
+                <div class="proj-badges">
+                  <a href="https://arxiv.org/abs/2504.21230" class="badge badge-arxiv" target="_blank" rel="noopener">arXiv</a>
+                </div>
+              </div>
+              <p>大规模 Lean 4 证明检验 FastAPI 服务器，支持并行化部署，发布 PyPI 包，用于自动形式化流程中的批量验证。</p>
+              <div class="proj-tech"><span class="tech">FastAPI</span><span class="tech">Lean 4</span><span class="tech">Docker</span><span class="tech">Python</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="proj-group">
+          <h3 class="proj-group-title">AI Security</h3>
+          <div class="proj-list">
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4>多阶段训练大模型进行告警分析</h4>
+                  <p class="proj-org">长亭科技 · 2025.10 — 2025.12</p>
+                </div>
+                <div class="proj-badges">
+                  <span class="badge badge-sec">Security</span>
+                </div>
+              </div>
+              <p>对 30B 参数大模型使用 QLoRA 做监督微调，再用 GRPO 强化学习进一步优化，最终在内部告警数据集上准确率超 90%，成功交付生产。</p>
+              <div class="proj-tech"><span class="tech">QLoRA</span><span class="tech">GRPO</span><span class="tech">PyTorch</span><span class="tech">Python</span></div>
+            </div>
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4>多智能体漏洞挖掘系统</h4>
+                  <p class="proj-org">京东 · 2025.10 — 2025.11</p>
+                </div>
+                <div class="proj-badges">
+                  <span class="badge badge-sec">Security</span>
+                </div>
+              </div>
+              <p>基于 Dify 框架的多智能体系统，集成 NVD/CVE 漏洞知识库与 RAG 检索模块，用于自动化挖掘与验证网站漏洞。</p>
+              <div class="proj-tech"><span class="tech">Dify</span><span class="tech">RAG</span><span class="tech">NVD/CVE</span><span class="tech">Python</span></div>
+            </div>
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4>定制化爬虫（41 个开源项目）</h4>
+                  <p class="proj-org">长亭科技 · 2025.10 — 2025.11</p>
+                </div>
+                <div class="proj-badges">
+                  <span class="badge badge-sec">Security</span>
+                </div>
+              </div>
+              <p>多线程 AI Coding 开发，爬取 41 个开源项目官方文档，200 万+ 条文本记录，支持 RAG 增强自动化渗透测试。</p>
+              <div class="proj-tech"><span class="tech">Python</span><span class="tech">Multi-thread</span><span class="tech">RAG</span></div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="proj-group">
+          <h3 class="proj-group-title">个人探索 &amp; 创业</h3>
+          <div class="proj-list">
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4>CodeMesh</h4>
+                  <p class="proj-org">个人项目</p>
+                </div>
+                <div class="proj-badges">
+                  <span class="badge badge-personal">Tools</span>
+                </div>
+              </div>
+              <p>面向研究者与开发者的效率工具，整合代码协作、文档同步与 AI 辅助，降低复杂工程任务的认知负担。</p>
+              <div class="proj-tech"><span class="tech">Python</span><span class="tech">JavaScript</span><span class="tech">AI</span></div>
+            </div>
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4>Latrace-AI</h4>
+                  <p class="proj-org">创业尝试</p>
+                </div>
+                <div class="proj-badges">
+                  <span class="badge badge-personal">Startup</span>
+                </div>
+              </div>
+              <p>探索 AI 原生应用落地，让中小团队也能使用前沿 AI 能力。从产品定义到冷启动走了一遍完整流程。</p>
+              <div class="proj-tech"><span class="tech">AI Agent</span><span class="tech">Python</span><span class="tech">API</span></div>
+            </div>
+
+            <div class="proj-card reveal">
+              <div class="proj-card-top">
+                <div>
+                  <h4>Quant_base</h4>
+                  <p class="proj-org">创业尝试</p>
+                </div>
+                <div class="proj-badges">
+                  <span class="badge badge-personal">Quant</span>
+                </div>
+              </div>
+              <p>基于数学背景切入量化金融，构建因子挖掘、数据管道与回测系统的统一底座。</p>
+              <div class="proj-tech"><span class="tech">Python</span><span class="tech">Quantitative Finance</span><span class="tech">Data Pipeline</span></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== PUBLICATIONS ===== -->
+    <section id="publications">
+      <div class="page-container">
+        <h2 class="sec-title">Publications</h2>
+
+        <div class="pub-list">
+
+          <div class="pub-entry reveal">
+            <div class="pub-year-col">2026</div>
+            <div class="pub-body">
+              <p class="pub-title">
+                Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?
+              </p>
+              <p class="pub-authors"><strong>Lve Meng</strong>, Weilong Zhao, Yanzhi Zhang, Haoxiang Guan, Jiyan He</p>
+              <p class="pub-venue"><em>arXiv preprint</em> · arXiv:2602.13695</p>
+              <div class="pub-links">
+                <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">[arXiv]</a>
+                <a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">[code]</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-entry reveal">
+            <div class="pub-year-col">2026</div>
+            <div class="pub-body">
+              <p class="pub-title">
+                Can a Simple Automated AI Pipeline Solve Research-Level Mathematical Problems?
+              </p>
+              <p class="pub-authors">AI Mathematics Research Team</p>
+              <p class="pub-venue"><em>arXiv preprint</em> · arXiv:2602.05192</p>
+              <div class="pub-links">
+                <a href="https://arxiv.org/abs/2602.05192" target="_blank" rel="noopener">[arXiv]</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-entry reveal">
+            <div class="pub-year-col">2025</div>
+            <div class="pub-body">
+              <p class="pub-title">拟椭圆曲面上的 Bogomolov 不等式</p>
+              <p class="pub-authors"><strong>蒙略</strong></p>
+              <p class="pub-venue"><em>数学杂志</em>（中国数学会，北大博雅计划收录）· 已录用</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CV ===== -->
+    <section id="cv">
+      <div class="page-container">
+        <h2 class="sec-title">CV</h2>
+
+        <div class="cv-grid">
+
+          <!-- Education -->
+          <div class="cv-block reveal">
+            <h3 class="cv-block-title">Education</h3>
+            <div class="cv-item">
+              <div class="cv-item-left">
+                <span class="cv-period">2023 — 2026</span>
+              </div>
+              <div class="cv-item-right">
+                <strong>硕士</strong> · 数学科学学院<br />
+                中国科学技术大学 · 导师：张磊教授<br />
+                <span class="cv-note">计算数学、代数几何</span>
+              </div>
+            </div>
+            <div class="cv-item">
+              <div class="cv-item-left">
+                <span class="cv-period">2019 — 2023</span>
+              </div>
+              <div class="cv-item-right">
+                <strong>学士</strong> · 少年班学院<br />
+                中国科学技术大学<br />
+                <span class="cv-note">数学与应用数学</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Awards -->
+          <div class="cv-block reveal">
+            <h3 class="cv-block-title">Awards &amp; Honors</h3>
+            <div class="cv-item">
+              <div class="cv-item-left"><span class="cv-period">2025</span></div>
+              <div class="cv-item-right">腾讯云黑客松智能渗透挑战赛 <strong>第一名</strong>（队伍"长亭外"）</div>
+            </div>
+            <div class="cv-item">
+              <div class="cv-item-left"><span class="cv-period">2024</span></div>
+              <div class="cv-item-right">中国科学技术大学优秀硕士奖学金<strong>一等奖</strong></div>
+            </div>
+            <div class="cv-item">
+              <div class="cv-item-left"><span class="cv-period">2020</span></div>
+              <div class="cv-item-right">中国科学技术大学优秀大学生奖学金<strong>银奖</strong></div>
+            </div>
+            <div class="cv-item">
+              <div class="cv-item-left"><span class="cv-period">2018</span></div>
+              <div class="cv-item-right">全国高中数学竞赛<strong>一等奖</strong> · 全国高中物理竞赛<strong>二等奖</strong></div>
+            </div>
+          </div>
+
+          <!-- Skills -->
+          <div class="cv-block reveal">
+            <h3 class="cv-block-title">Skills</h3>
+            <div class="skills-table">
+              <div class="skill-row">
+                <span class="skill-label">AI / ML</span>
+                <span class="skill-val">LoRA/QLoRA · GRPO · 提示工程 · Agent 框架 · RAG · Dify</span>
+              </div>
+              <div class="skill-row">
+                <span class="skill-label">语言</span>
+                <span class="skill-val">Python · JavaScript · C++ · Lean 4 · LaTeX</span>
+              </div>
+              <div class="skill-row">
+                <span class="skill-label">工程</span>
+                <span class="skill-val">Linux · Docker · FastAPI · Flask · 模型训练与部署</span>
+              </div>
+              <div class="skill-row">
+                <span class="skill-label">语言能力</span>
+                <span class="skill-val">英语 CET-6，流畅阅读英文文献与技术文档</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="page-container">
+      <p>© 2026 蒙略 &nbsp;·&nbsp; <a href="https://ml1301215.github.io">ml1301215.github.io</a> &nbsp;·&nbsp; 用数学的眼光看 AI，用 AI 的工具做数学</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
