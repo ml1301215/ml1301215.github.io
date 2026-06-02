@@ -3,66 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TEEM: Time-Centered Event Memory for Agents</title>
+  <title>TEEM: Time-Centered Event Memory for Agents — Lve Meng</title>
   <link rel="stylesheet" href="../styles.css" />
-  <style>
-    .pub-page { max-width: 760px; margin: 2.5em auto; padding: 0 1.5em 4em; }
-    .pub-page h1 { font-size: 1.6em; font-weight: bold; border-bottom: none; margin-bottom: 0.3em; line-height: 1.3; }
-    .pub-venue { color: #7a8288; font-size: 0.9375em; margin-bottom: 1.8em; }
-    .pub-citation { background: #f8f9f9; border-left: 3px solid #e0e2e3; padding: 0.75em 1em; font-size: 0.875em; margin: 1.2em 0; line-height: 1.65; color: #494e52; word-break: break-all; }
-    .pub-download { margin: 1.4em 0; font-size: 0.9375em; }
-    .pub-abstract-heading { font-size: 1em; font-weight: bold; margin: 2em 0 0.6em; border-bottom: 1px solid #f2f3f3; padding-bottom: 0.4em; }
-    .pub-abstract p { font-size: 0.9375em; line-height: 1.7; color: #494e52; }
-    .back-link { display: inline-block; font-size: 0.875em; color: #7a8288; margin-bottom: 1.8em; }
-    .back-link:hover { color: #52adc8; text-decoration: none; }
-  </style>
 </head>
 <body>
 
   <div class="masthead">
     <div class="masthead__inner-wrap">
-      <nav class="greedy-nav">
-        <ul class="visible-links">
-          <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">蒙略 / Lve Meng</a></li>
-          <li class="masthead__menu-item"><a href="/news/">News</a></li>
-          <li class="masthead__menu-item"><a href="/research/">Research</a></li>
-          <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
-          <li class="masthead__menu-item"><a href="/datasets/">Datasets</a></li>
-          <li class="masthead__menu-item"><a href="/misc/">Misc</a></li>
-          <li class="masthead__menu-item"><a href="/learning/">Learning</a></li>
-        </ul>
-      </nav>
+      <div class="masthead__menu">
+        <nav id="site-nav" class="greedy-nav">
+          <button><div class="navicon"></div></button>
+          <ul class="visible-links">
+            <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">蒙略 / Lve Meng</a></li>
+            <li class="masthead__menu-item"><a href="/news/">News</a></li>
+            <li class="masthead__menu-item"><a href="/research/">Research</a></li>
+            <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
+            <li class="masthead__menu-item"><a href="/datasets/">Datasets</a></li>
+            <li class="masthead__menu-item"><a href="/misc/">Misc</a></li>
+            <li class="masthead__menu-item"><a href="/learning/">Learning</a></li>
+          </ul>
+          <ul class="hidden-links hidden"></ul>
+        </nav>
+      </div>
     </div>
   </div>
 
-  <div class="pub-page">
-    <a class="back-link" href="/publications/">← Publications</a>
+  <div id="main" role="main">
 
-    <h1>TEEM: Time-Centered Event Memory for Agents</h1>
-    <p class="pub-venue">Under review, 2026</p>
-
-    <div class="pub-citation">
-      Recommended citation: Xiang Zhao, Zhengnan Li, Meng Lve, and Jiyan He. TEEM: Time-Centered Event Memory for Agents. Under review, 2026.
-      <a href="../docs/1897_TEEM_Time_Centered_Event_(2).pdf">../docs/1897_TEEM_Time_Centered_Event_(2).pdf</a>
+    <div class="sidebar sticky">
+      <div itemscope itemtype="http://schema.org/Person">
+        <div class="author__avatar">
+          <img src="../docs/avatar.jpg" class="author__avatar" alt="Lve Meng" />
+        </div>
+        <div class="author__content">
+          <h3 class="author__name">蒙略 / Lve Meng</h3>
+          <p class="author__bio">Master's student in Mathematics<br>University of Science and Technology of China</p>
+        </div>
+        <div class="author__urls-wrapper">
+          <button class="btn btn--inverse">Follow</button>
+          <ul class="author__urls social-icons">
+            <li>
+              <a href="mailto:ml130@mail.ustc.edu.cn">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                ml130@mail.ustc.edu.cn
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/ml1301215" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                arXiv
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <p class="pub-download">
-      <a href="../docs/1897_TEEM_Time_Centered_Event_(2).pdf" target="_blank" rel="noopener">Download paper here</a>
-    </p>
+    <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+      <div class="page__inner-wrap">
+        <header>
+          <h1 class="page__title" itemprop="headline">TEEM: Time-Centered Event Memory for Agents</h1>
+        </header>
+        <section class="page__content" itemprop="text">
 
-    <div class="pub-citation">
-      Recommended citation: Xiang Zhao, Zhengnan Li, Meng Lve, and Jiyan He. TEEM: Time-Centered Event Memory for Agents. Under review, 2026.
-    </div>
+          <a class="back-link" href="/publications/">← Publications</a>
 
-    <p class="pub-abstract-heading">Abstract</p>
-    <div class="pub-abstract">
-      <p>Large language models (LLMs) have enabled increasingly capable agents, yet long-horizon conversational memory remains a major challenge. While existing approaches have made progress, they typically treat time as auxiliary metadata, limiting reasoning over evolving interaction histories. We propose TEEM (Time-CEntered Event Memory), a graph-based memory architecture that organizes interaction history around explicit temporal structure. TEEM constructs a temporally grounded memory graph in which temporal segments organize interaction events and link them to supporting evidence and evolving states. At query time, TEEM retrieves and fuses information from complementary memory layers, enabling temporal localization, event-level reasoning, evidence-grounded answering, and reasoning over state changes. Experiments on LoCoMo and LongMemEval show that TEEM consistently improves temporal reasoning and cross-session conversational memory, achieving an overall score of 95.67 on LoCoMo and 87.60 on LongMemEval.</p>
-    </div>
+          <p class="pub-venue">Under review, 2026</p>
+
+          <div class="pub-citation">
+            Recommended citation: Xiang Zhao, Zhengnan Li, Meng Lve, and Jiyan He. TEEM: Time-Centered Event Memory for Agents. Under review, 2026.
+            <a href="../docs/1897_TEEM_Time_Centered_Event_(2).pdf">../docs/1897_TEEM_Time_Centered_Event_(2).pdf</a>
+          </div>
+
+          <p class="pub-download">
+            <a href="../docs/1897_TEEM_Time_Centered_Event_(2).pdf" target="_blank" rel="noopener">Download paper here</a>
+          </p>
+
+          <div class="pub-citation">
+            Recommended citation: Xiang Zhao, Zhengnan Li, Meng Lve, and Jiyan He. TEEM: Time-Centered Event Memory for Agents. Under review, 2026.
+          </div>
+
+          <p class="pub-abstract-heading">Abstract</p>
+          <div class="pub-abstract">
+            <p>Large language models (LLMs) have enabled increasingly capable agents, yet long-horizon conversational memory remains a major challenge. While existing approaches have made progress, they typically treat time as auxiliary metadata, limiting reasoning over evolving interaction histories. We propose TEEM (Time-CEntered Event Memory), a graph-based memory architecture that organizes interaction history around explicit temporal structure. TEEM constructs a temporally grounded memory graph in which temporal segments organize interaction events and link them to supporting evidence and evolving states. At query time, TEEM retrieves and fuses information from complementary memory layers, enabling temporal localization, event-level reasoning, evidence-grounded answering, and reasoning over state changes. Experiments on LoCoMo and LongMemEval show that TEEM consistently improves temporal reasoning and cross-session conversational memory, achieving an overall score of 95.67 on LoCoMo and 87.60 on LongMemEval.</p>
+          </div>
+
+        </section>
+        <footer class="page__meta"></footer>
+      </div>
+    </article>
   </div>
 
   <div class="page__footer">
-    <p>&copy; 2026 Lve Meng &nbsp;&middot;&nbsp; <a href="../index.html">ml1301215.github.io</a></p>
+    <footer>
+      <div class="page__footer-copyright">&copy; 2026 Lve Meng &nbsp;&middot;&nbsp; <a href="https://ml1301215.github.io">ml1301215.github.io</a></div>
+    </footer>
   </div>
 
+  <script src="../script.js"></script>
 </body>
 </html>
