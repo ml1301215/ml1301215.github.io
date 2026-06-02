@@ -9,337 +9,158 @@
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav id="nav">
-    <div class="nav-inner">
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#news">News</a></li>
-        <li><a href="#research">Research</a></li>
-        <li><a href="#publications">Publications</a></li>
-        <li><a href="#datasets">Datasets</a></li>
-        <li><a href="#misc">Misc</a></li>
-      </ul>
+  <div class="masthead">
+    <div class="masthead__inner-wrap">
+      <div class="masthead__menu">
+        <nav id="site-nav" class="greedy-nav">
+          <button><div class="navicon"></div></button>
+          <ul class="visible-links">
+            <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">蒙略 / Lve Meng</a></li>
+            <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
+            <li class="masthead__menu-item"><a href="/datasets/">Datasets</a></li>
+            <li class="masthead__menu-item"><a href="/projects/">Projects</a></li>
+            <li class="masthead__menu-item"><a href="/talks/">Talks</a></li>
+            <li class="masthead__menu-item"><a href="/misc/">Misc</a></li>
+            <li class="masthead__menu-item"><a href="/learning/">Learning</a></li>
+          </ul>
+          <ul class="hidden-links hidden"></ul>
+        </nav>
+      </div>
     </div>
-  </nav>
-
-  <div class="page-wrap">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="avatar-wrap">
-        <div class="avatar">ML</div>
-      </div>
-      <div class="author-info">
-        <h1 class="author-name">蒙略<br><span>Lve Meng</span></h1>
-        <p class="author-role">Master's student</p>
-        <p class="author-affil">School of Mathematical Sciences<br>University of Science and Technology of China</p>
-        <p class="author-affil muted">Advisor: Prof. Zhang Lei</p>
-      </div>
-      <div class="author-links">
-        <a href="mailto:ml130@mail.ustc.edu.cn">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-          ml130@mail.ustc.edu.cn
-        </a>
-        <a href="https://github.com/ml1301215" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-          GitHub
-        </a>
-        <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          arXiv
-        </a>
-      </div>
-    </aside>
-
-    <!-- MAIN -->
-    <main>
-
-      <!-- ABOUT -->
-      <section id="about">
-        <h2>About Me</h2>
-        <p>
-          I am a master's student in Mathematics at the University of Science and Technology of China (USTC),
-          advised by <a href="#">Prof. Zhang Lei</a>. My research background spans algebraic geometry,
-          AI for mathematics (AI4Math), and AI memory systems.
-          I received my bachelor's degree from the Gifted Young Programme at USTC in 2023.
-        </p>
-        <p>
-          My interest is in understanding and extending the boundaries of what AI systems can do.
-          This includes making language models reason about and verify formal mathematical proofs,
-          building agents that maintain coherent memory across long interactions,
-          and applying AI to security analysis. I care about finding the edges of current AI capability
-          and pushing them further.
-        </p>
-        <p>
-          I have worked on automated mathematical problem-solving and Lean 4 formalization at Beijing Zhongguancun AI Research Institute,
-          on LLM fine-tuning for security alert classification at Chengting Technology,
-          and on a multi-agent vulnerability discovery system at JD.com.
-        </p>
-      </section>
-
-      <!-- NEWS -->
-      <section id="news">
-        <h2>News</h2>
-        <ul class="news-list">
-          <li>
-            <span class="date">2026</span>
-            Paper <em>"TEEM: Time-Centered Event Memory for Agents"</em> accepted at
-            <em>NeurIPS 2026</em>.
-          </li>
-          <li>
-            <span class="date">May 2026</span>
-            Paper <em>"Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?"</em>
-            posted on arXiv (<a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv:2602.13695</a>).
-          </li>
-          <li>
-            <span class="date">Jan 2026</span>
-            Started a research internship at Beijing Zhongguancun AI Research Institute.
-          </li>
-          <li>
-            <span class="date">Dec 2025</span>
-            Finished internship at Chengting Technology. Worked on fine-tuning a large language model for security alert classification.
-          </li>
-          <li>
-            <span class="date">Oct 2025</span>
-            Started internship at JD.com, building a multi-agent vulnerability discovery system.
-          </li>
-          <li>
-            <span class="date">May 2025</span>
-            Paper <em>"Bogomolov Inequality on Quasi-Elliptic Surfaces"</em> accepted by
-            <em>Journal of Mathematics</em> (数学杂志, Chinese Mathematical Society).
-          </li>
-          <li>
-            <span class="date">2024</span>
-            Received First-Class Master's Scholarship at USTC.
-          </li>
-        </ul>
-      </section>
-
-      <!-- RESEARCH -->
-      <section id="research">
-        <h2>Research Interests</h2>
-        <ul class="plain-list">
-          <li>AI for mathematics — automated proof search, LLM reasoning evaluation, formal verification (Lean 4)</li>
-          <li>AI memory — persistent agent context, event-based memory architectures</li>
-          <li>AI applied to security — alert classification, vulnerability discovery</li>
-          <li>Algebraic geometry — vector bundles, quasi-elliptic surfaces</li>
-        </ul>
-
-        <h3>Experience</h3>
-        <table class="exp-table">
-          <tbody>
-            <tr>
-              <td class="exp-period">2026.01–present</td>
-              <td>
-                <strong>Research Intern</strong>, AI Core Group<br>
-                Beijing Zhongguancun AI Research Institute<br>
-                <span class="note">Automated pipeline for mathematical problem solving; Lean 4 formalization of mathematical knowledge bases.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="exp-period">2025.10–2025.12</td>
-              <td>
-                <strong>Research Intern</strong>, Security AI<br>
-                Chengting Technology (长亭科技)<br>
-                <span class="note">LLM fine-tuning (QLoRA + GRPO) for security alert classification; web documentation crawling for RAG.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="exp-period">2025.07–2025.09</td>
-              <td>
-                <strong>Engineering Intern</strong>, AI Agent<br>
-                JD.com (京东)<br>
-                <span class="note">Multi-agent vulnerability discovery system using the Dify framework with NVD/CVE knowledge base integration.</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h3>Education</h3>
-        <table class="exp-table">
-          <tbody>
-            <tr>
-              <td class="exp-period">2023–2026</td>
-              <td>
-                <strong>M.S.</strong> in Mathematics<br>
-                University of Science and Technology of China<br>
-                <span class="note">Algebraic geometry, AI4Math. Advisor: Prof. Zhang Lei.</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="exp-period">2019–2023</td>
-              <td>
-                <strong>B.S.</strong> in Mathematics and Applied Mathematics<br>
-                University of Science and Technology of China (Gifted Young Programme)
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <!-- PUBLICATIONS -->
-      <section id="publications">
-        <h2>Publications</h2>
-        <p class="note">* indicates equal contribution.</p>
-
-        <h3 class="pub-year-heading">2026</h3>
-        <ol class="pub-list">
-          <li>
-            Xiang Zhao, Zhengnan Li, <strong>Meng Lve</strong>, and Jiyan He.<br>
-            <a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">
-              TEEM: Time-Centered Event Memory for Agents.
-            </a><br>
-            <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 2026. (to appear)<br>
-            [<a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">code</a>]
-          </li>
-          <li>
-            <strong>Meng Lve</strong>, Weilong Zhao, Yanzhi Zhang, Haoxiang Guan, and Jiyan He.<br>
-            <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">
-              Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?
-            </a><br>
-            <em>arXiv preprint</em>, arXiv:2602.13695, 2026.<br>
-            [<a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv</a>]
-            [<a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">code</a>]
-          </li>
-        </ol>
-
-        <h3 class="pub-year-heading">2025</h3>
-        <ol class="pub-list">
-          <li>
-            <strong>Meng Lve</strong>.<br>
-            Bogomolov Type Inequality on Quasi-Elliptic Surfaces
-            (拟椭圆曲面上的 Bogomolov 不等式).<br>
-            <em>Journal of Mathematics (数学杂志)</em>, ISSN 0255-7797, 2025.
-            MSC (2010): 14J60, 14J26.
-          </li>
-        </ol>
-      </section>
-
-      <!-- DATASETS -->
-      <section id="datasets">
-        <h2>Datasets</h2>
-        <p class="note">
-          Datasets associated with published and forthcoming work.
-          For access or questions, contact <a href="mailto:ml130@mail.ustc.edu.cn">ml130@mail.ustc.edu.cn</a>.
-        </p>
-
-        <h3>Math Research Benchmark</h3>
-        <p>
-          Problem sets and AI solutions used in
-          <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv:2602.13695</a>.
-          Includes ICCM 2024/2025 competition problems, First Proof research-level problems,
-          and model solutions from multiple LLMs.
-        </p>
-        <table class="exp-table">
-          <tbody>
-            <tr>
-              <td class="exp-period" style="min-width:90px">Contents</td>
-              <td>ICCM problem sets (2 rounds), First Proof problem set, AI-generated solutions</td>
-            </tr>
-            <tr>
-              <td class="exp-period">Format</td>
-              <td>PDF (problems), Markdown + PDF (solutions), Lean 4 (formalized proofs)</td>
-            </tr>
-            <tr>
-              <td class="exp-period">Access</td>
-              <td><a href="https://github.com/ml1301215/question_sets-test_results" target="_blank" rel="noopener">github.com/ml1301215/question_sets-test_results</a></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h3>TEEM Event Memory Dataset</h3>
-        <p>
-          Dataset for evaluating time-centered event memory in AI agents, associated with
-          <em>TEEM: Time-Centered Event Memory for Agents</em> (NeurIPS 2026).
-          Contains structured event sequences with temporal annotations for agent memory benchmarking.
-        </p>
-        <table class="exp-table">
-          <tbody>
-            <tr>
-              <td class="exp-period" style="min-width:90px">Contents</td>
-              <td>Temporal event sequences, agent interaction traces, memory retrieval benchmarks</td>
-            </tr>
-            <tr>
-              <td class="exp-period">Format</td>
-              <td>JSON / JSONL</td>
-            </tr>
-            <tr>
-              <td class="exp-period">Access</td>
-              <td><a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">github.com/ZXXZ1000/LATRACE</a>
-              (dataset to be released upon NeurIPS publication)</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <!-- MISC -->
-      <section id="misc">
-        <h2>Misc</h2>
-
-        <h3>Awards</h3>
-        <ul class="plain-list">
-          <li>First-Class Master's Scholarship, USTC, 2024</li>
-          <li>1st place, Tencent Cloud Hackathon (AI Penetration Testing Track), team "长亭外", 2025</li>
-          <li>Silver Award, Undergraduate Scholarship, USTC, 2020</li>
-          <li>First Prize, Chinese Mathematical Olympiad (CMO Preliminary), 2018</li>
-          <li>Second Prize, Chinese Physics Olympiad, 2018</li>
-        </ul>
-
-        <h3>Projects</h3>
-        <ul class="plain-list">
-          <li>
-            <a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">Vibe Proving</a>
-            (<a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv:2602.13695</a>) —
-            An LLM pipeline that iterates solve → verify → correct on mathematical problems, with a web UI.
-            Explores the boundary of what AI can do in formal mathematical reasoning.
-            [<a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">code</a>]
-          </li>
-          <li>
-            <a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">Latrace-AI</a> —
-            An agent OS with time-centered event memory, enabling persistent context across long interactions.
-            Associated with the TEEM paper (NeurIPS 2026).
-            [<a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">code</a>]
-          </li>
-          <li>
-            <a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">LLM Alert Analysis</a> —
-            Fine-tuned a 30B-parameter model (Qwen3-30B-A3B) with QLoRA and GRPO for security alert classification.
-            Built at Chengting Technology. &gt;90% classification accuracy, deployed to production.
-            [<a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">code</a>]
-            [<a href="docs/llm-alert-analysis.pdf" target="_blank" rel="noopener">report</a>]
-          </li>
-          <li>
-            <a href="https://github.com/ml1301215/multi-agent-vuln-scanner" target="_blank" rel="noopener">Multi-Agent Vulnerability Scanner</a> —
-            A Dify-based multi-agent system with NVD/CVE RAG knowledge base for automated web vulnerability discovery.
-            Built at JD.com.
-            [<a href="https://github.com/ml1301215/multi-agent-vuln-scanner" target="_blank" rel="noopener">code</a>]
-            [<a href="docs/multi-agent-vuln-scanner.pdf" target="_blank" rel="noopener">report</a>]
-          </li>
-          <li>
-            <a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">FLight</a> —
-            A contract-driven multi-agent coding orchestration system with human approval gates and isolated execution.
-            [<a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">code</a>]
-          </li>
-        </ul>
-
-        <h3>Skills</h3>
-        <ul class="plain-list">
-          <li>Languages: Python, JavaScript, C++, Lean 4, LaTeX</li>
-          <li>ML/AI: LLM fine-tuning (LoRA/QLoRA), GRPO, RAG, agent frameworks (Dify)</li>
-          <li>Tools: Linux, Docker, FastAPI, Flask</li>
-          <li>English: CET-6; comfortable reading technical papers</li>
-        </ul>
-      </section>
-
-    </main>
   </div>
 
-  <footer>
-    <p>
-      © 2026 Lve Meng &nbsp;·&nbsp;
-      <a href="https://ml1301215.github.io">ml1301215.github.io</a>
-    </p>
-  </footer>
+  <div id="main" role="main">
+
+    <div class="sidebar sticky">
+      <div itemscope itemtype="http://schema.org/Person">
+        <div class="author__avatar">
+          <img src="docs/人物头像1.jpg" class="author__avatar" alt="Lve Meng" />
+        </div>
+        <div class="author__content">
+          <h3 class="author__name">蒙略 / Lve Meng</h3>
+          <p class="author__bio">
+            Master's student in Mathematics<br>USTC
+          </p>
+        </div>
+        <div class="author__urls-wrapper">
+          <button class="btn btn--inverse">Follow</button>
+          <ul class="author__urls social-icons">
+            <li>
+              <a href="mailto:ml130@mail.ustc.edu.cn">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                ml130@mail.ustc.edu.cn
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/ml1301215" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                arXiv
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+      <div class="page__inner-wrap">
+        <header>
+          <h1 class="page__title" itemprop="headline">About me</h1>
+        </header>
+        <section class="page__content" itemprop="text">
+
+            <p>Hi! I am a master's student in Mathematics at the University of Science and Technology of China (USTC).</p>
+            <p>My goal is to understand the true boundary of what AI can do in mathematics.</p>
+          </div>
+
+          <hr />
+
+          <h2 id="whats-news">What's News</h2>
+          <ul class="news-list">
+            <li>
+              Started research internship at Beijing Zhongguancun AI Research Institute, Jan 2026.
+            </li>
+            <li>
+              Started AI Security Research Internship at Chengting Technology, Oct 2025.
+            </li>
+            <li>
+              Started Engineering Internship at JD.com, Jul 2025.
+            </li>
+          </ul>
+
+          <h2 id="research">Research Interests</h2>
+          <ul class="plain-list">
+            <li>
+              AI for mathematics
+            </li>
+            <li>
+              AI memory
+            </li>
+            <li>
+              AI applied to security
+            </li>
+            <li>
+              Algebraic geometry
+            </li>
+          </ul>
+
+          <h2 id="publications">Selected Publications</h2>
+
+          <h3 class="pub-year-heading">2026</h3>
+          <ol class="pub-list">
+            <li>
+              <strong>Meng Lve</strong>, Weilong Zhao, Yanzhi Zhang, Haoxiang Guan, and Jiyan He.
+              <strong><a href="publications/lightweight-pipeline.html">Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?</a></strong>
+              arXiv preprint, arXiv:2602.13695, 2026.
+              [<a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">code</a>]
+            </li>
+          </ol>
+
+          <h3 class="pub-year-heading">2025</h3>
+          <ol class="pub-list">
+            <li>
+              <strong>Meng Lve</strong>.
+              <strong><a href="publications/bogomolov.html">Bogomolov Type Inequality on Quasi-Elliptic Surfaces.</a></strong>
+              <em>Journal of Mathematics</em>, ISSN 0255-7797, 2025.
+            </li>
+          </ol>
+
+          <h2 id="misc">Competition and Achievements</h2>
+          <ul class="plain-list">
+            <li>
+              First-Class Master's Scholarship, USTC, June 2025.
+            </li>
+            <li>
+              1st place, Tencent Cloud Hackathon (AI Penetration Testing Track), team "Changtingwai", 2025.
+            </li>
+            <li>
+              Silver Award, Undergraduate Scholarship, USTC, 2020.
+            </li>
+            <li>
+              First Prize, Chinese Mathematical Olympiad (CMO Preliminary), 2018.
+            </li>
+            <li>
+              Second Prize, Chinese Physics Olympiad, 2018.
+            </li>
+          </ul>
+
+        </section>
+        <footer class="page__meta"></footer>
+      </div>
+    </article>
+  </div>
+
+  <div class="page__footer">
+    <footer>
+      <div class="page__footer-copyright">&copy; 2026 Lve Meng &nbsp;&middot;&nbsp; <a href="https://ml1301215.github.io">ml1301215.github.io</a></div>
+    </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>

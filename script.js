@@ -1,3 +1,32 @@
+// ===== HAMBURGER TOGGLE =====
+const navBtn = document.querySelector('#site-nav > button');
+const hiddenLinks = document.querySelector('.hidden-links');
+if (navBtn && hiddenLinks) {
+  navBtn.addEventListener('click', function () {
+    navBtn.classList.toggle('close');
+    hiddenLinks.classList.toggle('show');
+  });
+  document.addEventListener('click', function (e) {
+    if (!navBtn.contains(e.target) && !hiddenLinks.contains(e.target)) {
+      navBtn.classList.remove('close');
+      hiddenLinks.classList.remove('show');
+    }
+  });
+}
+
+// ===== FOLLOW BUTTON (mobile sidebar) =====
+const followBtn = document.querySelector('.author__urls-wrapper button');
+const authorUrls = document.querySelector('.author__urls');
+if (followBtn && authorUrls) {
+  followBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    authorUrls.style.display = authorUrls.style.display === 'block' ? '' : 'block';
+  });
+  document.addEventListener('click', function () {
+    if (authorUrls) authorUrls.style.display = '';
+  });
+}
+
 // ===== SCROLL REVEAL =====
 const revealObserver = new IntersectionObserver(
   entries => {
@@ -13,31 +42,27 @@ const revealObserver = new IntersectionObserver(
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 // ===== SMOOTH SCROLL =====
-const nav = document.getElementById('nav');
+const masthead = document.querySelector('.masthead');
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
+    const href = a.getAttribute('href');
+    if (href === '#') return;
+    const target = document.querySelector(href);
     if (!target) return;
     e.preventDefault();
-    const offset = nav ? nav.offsetHeight + 8 : 8;
+    const offset = masthead ? masthead.offsetHeight + 8 : 8;
     window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
   });
 });
 
 // ===== ACTIVE NAV =====
-const navLinks = document.querySelectorAll('#nav ul li a');
-const sections = document.querySelectorAll('section[id]');
-
-const sectionObserver = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(a => {
-          a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`);
-        });
-      }
-    });
-  },
-  { threshold: 0.3 }
-);
-sections.forEach(s => sectionObserver.observe(s));
+const pathname = window.location.pathname.replace(/\/index\.html$/, '/');
+document.querySelectorAll('.masthead__menu-item a').forEach(a => {
+  const href = a.getAttribute('href');
+  if (!href || href === '#') return;
+  if (href === '/' && (pathname === '/' || pathname === '')) {
+    a.classList.add('active');
+  } else if (href !== '/' && pathname.startsWith(href)) {
+    a.classList.add('active');
+  }
+});
