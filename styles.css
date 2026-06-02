@@ -94,14 +94,8 @@ p { margin-bottom: 0.75rem; }
   width: 96px;
   height: 96px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4a6fa5 0%, #22b5c4 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.04em;
+  object-fit: cover;
+  display: block;
 }
 
 .author-name {
@@ -300,7 +294,7 @@ footer a:hover { color: #1a6eb5; text-decoration: none; }
     align-items: flex-start;
   }
 
-  .avatar { width: 72px; height: 72px; font-size: 1.1rem; }
+  .avatar { width: 72px; height: 72px; }
 
   .author-links { flex-direction: row; flex-wrap: wrap; }
 
