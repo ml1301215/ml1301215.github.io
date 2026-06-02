@@ -27,19 +27,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 // ===== ACTIVE NAV =====
-const navLinks = document.querySelectorAll('.masthead__menu-item a');
-const sections = document.querySelectorAll('section[id]');
-
-const sectionObserver = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(a => {
-          a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`);
-        });
-      }
-    });
-  },
-  { threshold: 0.3 }
-);
-sections.forEach(s => sectionObserver.observe(s));
+const pathname = window.location.pathname.replace(/\/index\.html$/, '/');
+document.querySelectorAll('.masthead__menu-item a').forEach(a => {
+  const href = a.getAttribute('href');
+  if (!href || href === '#') return;
+  if (href === '/' && (pathname === '/' || pathname === '')) {
+    a.classList.add('active');
+  } else if (href !== '/' && pathname.startsWith(href)) {
+    a.classList.add('active');
+  }
+});

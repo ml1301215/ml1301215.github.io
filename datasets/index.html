@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lve Meng (蒙略)</title>
-  <meta name="description" content="Lve Meng — Master's student in Mathematics at USTC. Personal academic homepage." />
-  <link rel="stylesheet" href="styles.css" />
+  <title>Datasets — Lve Meng</title>
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
 
@@ -29,7 +28,7 @@
 
     <aside class="sidebar">
       <div class="author__avatar-wrap">
-        <img class="author__avatar" src="docs/avatar.jpg" alt="Lve Meng" />
+        <img class="author__avatar" src="../docs/avatar.jpg" alt="Lve Meng" />
       </div>
       <div class="author__content">
         <h3 class="author__name">蒙略<span class="author__name-en">Lve Meng</span></h3>
@@ -59,36 +58,67 @@
 
     <article class="page">
 
-      <section id="about" class="reveal">
-        <h2>About Me</h2>
-        <p>
-          I am a master's student in Mathematics at the University of Science and Technology of China (USTC),
-          advised by Prof. Zhang Lei. My research background spans algebraic geometry,
-          AI for mathematics (AI4Math), and AI memory systems.
-          I received my bachelor's degree from the Gifted Young Programme at USTC in 2023.
+      <section id="datasets" class="reveal">
+        <h2>Datasets</h2>
+        <p class="note">
+          Datasets associated with published and forthcoming work.
+          For access or questions, contact <a href="mailto:ml130@mail.ustc.edu.cn">ml130@mail.ustc.edu.cn</a>.
         </p>
+
+        <h3>Math Research Benchmark</h3>
         <p>
-          My interest is in getting language models to produce and verify formal mathematical proofs,
-          building agents with persistent memory across long conversations,
-          and applying LLMs to security problems.
+          Problem sets and AI solutions used in arXiv:2602.13695.
+          Includes ICCM 2024/2025 competition problems, First Proof research-level problems,
+          and model solutions from multiple LLMs.
         </p>
+        <table class="exp-table">
+          <tbody>
+            <tr>
+              <td class="exp-period" style="min-width:80px">Contents</td>
+              <td>ICCM problem sets (2 rounds), First Proof problem set, AI-generated solutions</td>
+            </tr>
+            <tr>
+              <td class="exp-period">Format</td>
+              <td>PDF (problems), Markdown + PDF (solutions), Lean 4 (formalized proofs)</td>
+            </tr>
+            <tr>
+              <td class="exp-period">Access</td>
+              <td><a href="https://github.com/ml1301215/question_sets-test_results" target="_blank" rel="noopener">github.com/ml1301215/question_sets-test_results</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>TEEM Event Memory Dataset</h3>
         <p>
-          I have worked on automated mathematical problem-solving and Lean 4 formalization at Beijing Zhongguancun AI Research Institute,
-          on LLM fine-tuning for security alert classification at Chengting Technology,
-          and on a multi-agent vulnerability discovery system at JD.com.
+          Dataset associated with <em>TEEM: Time-Centered Event Memory for Agents</em> (under review, 2026).
+          Contains event sequences with temporal annotations for agent memory evaluation.
         </p>
+        <table class="exp-table">
+          <tbody>
+            <tr>
+              <td class="exp-period" style="min-width:80px">Contents</td>
+              <td>Temporal event sequences, agent interaction traces, memory retrieval benchmarks</td>
+            </tr>
+            <tr>
+              <td class="exp-period">Format</td>
+              <td>JSON / JSONL</td>
+            </tr>
+            <tr>
+              <td class="exp-period">Access</td>
+              <td><a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">github.com/ZXXZ1000/LATRACE</a>
+              (dataset to be released upon publication)</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
     </article>
   </div>
 
   <div class="page__footer">
-    <p>
-      &copy; 2026 Lve Meng &nbsp;&middot;&nbsp;
-      <a href="https://ml1301215.github.io">ml1301215.github.io</a>
-    </p>
+    <p>&copy; 2026 Lve Meng &nbsp;&middot;&nbsp; <a href="https://ml1301215.github.io">ml1301215.github.io</a></p>
   </div>
 
-  <script src="script.js"></script>
+  <script src="../script.js"></script>
 </body>
 </html>
