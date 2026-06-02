@@ -24,7 +24,7 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 applyLang(currentLang);
 
 // ===== HAMBURGER TOGGLE =====
-const navBtn = document.querySelector('#site-nav > button:not(.lang-btn)');
+const navBtn = document.querySelector('#site-nav > button');
 const hiddenLinks = document.querySelector('.hidden-links');
 if (navBtn && hiddenLinks) {
   navBtn.addEventListener('click', function () {

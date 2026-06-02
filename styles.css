@@ -113,7 +113,8 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
   z-index: 20;
 }
 .masthead__inner-wrap {
-  max-width: 925px;
+  position: relative;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
   clear: both;
@@ -233,9 +234,18 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
   transform: rotate3d(0, 0, 1, -45deg);
 }
 
+/* Hide hamburger on desktop */
+@media (min-width: 57.8125em) {
+  .greedy-nav > button { display: none; }
+}
+/* Mobile: keep space in nav for lang-btn */
+@media (max-width: 57.8124em) {
+  .masthead__menu { margin-right: 3.5em; }
+}
+
 /* ===== #MAIN LAYOUT ===== */
 #main {
-  max-width: 925px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
   clear: both;
@@ -377,8 +387,8 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
     width: 83.0508474576%;
     float: right;
     margin-right: 0;
-    padding-left: 4.2372881356%;
-    padding-right: 16.9491525424%;
+    padding-left: 3%;
+    padding-right: 4%;
   }
 }
 .page .page__inner-wrap {
@@ -446,7 +456,7 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
   margin-left: auto;
   margin-right: auto;
   margin-top: 2em;
-  max-width: 925px;
+  max-width: 1100px;
   padding: 0 1em 2em;
 }
 .page__footer footer::after { clear: both; content: ""; display: table; }
@@ -459,9 +469,7 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
 
 /* ===== LANGUAGE TOGGLE ===== */
 .lang-btn {
-  display: inline-block;
-  margin: 0 0.5rem;
-  padding: 0.2em 0.6em;
+  padding: 0.25em 0.7em;
   color: #7a8288;
   background: none;
   border: 1px solid #bdc1c4;
@@ -469,9 +477,20 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
   font-size: 0.8em;
   font-family: inherit;
   cursor: pointer;
-  vertical-align: middle;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 .lang-btn:hover { color: #494e52; border-color: #7a8288; }
+
+/* Masthead lang-btn: absolute top-right */
+.masthead__inner-wrap > .lang-btn {
+  position: absolute;
+  right: 1em;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 25;
+  margin: 0;
+}
 
 /* Language-specific inline content */
 .lang-zh { display: none; }

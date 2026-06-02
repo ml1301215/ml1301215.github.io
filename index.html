@@ -20,13 +20,14 @@
             <li class="masthead__menu-item"><a href="/publications/" data-zh="论文">Publications</a></li>
             <li class="masthead__menu-item"><a href="/datasets/" data-zh="数据集">Datasets</a></li>
             <li class="masthead__menu-item"><a href="/projects/" data-zh="项目">Projects</a></li>
+            <li class="masthead__menu-item"><a href="/talks/" data-zh="报告">Talks</a></li>
             <li class="masthead__menu-item"><a href="/misc/" data-zh="其他">Misc</a></li>
             <li class="masthead__menu-item"><a href="/learning/" data-zh="学习">Learning</a></li>
-            <li class="masthead__menu-item"><button class="lang-btn" id="langToggle">中文</button></li>
           </ul>
           <ul class="hidden-links hidden"></ul>
         </nav>
       </div>
+      <button class="lang-btn" id="langToggle">中文</button>
     </div>
   </div>
 
@@ -35,7 +36,7 @@
     <div class="sidebar sticky">
       <div itemscope itemtype="http://schema.org/Person">
         <div class="author__avatar">
-          <img src="docs/人物头像.jpg" class="author__avatar" alt="Lve Meng" />
+          <img src="docs/人物头像1.jpg" class="author__avatar" alt="Lve Meng" />
         </div>
         <div class="author__content">
           <h3 class="author__name">蒙略 / Lve Meng</h3>
@@ -78,44 +79,56 @@
         <section class="page__content" itemprop="text">
 
           <div class="lang-en-block">
-            <p>Hi! I am a master's student in Mathematics at the University of Science and Technology of China (USTC), advised by Prof. Zhang Lei.</p>
-            <p>I work on getting language models to produce and verify formal mathematical proofs, building agents with persistent memory across long conversations, and applying LLMs to security problems.</p>
+            <p>Hi! I am a master's student in Mathematics at the University of Science and Technology of China (USTC).</p>
+            <p>My goal is to understand the true boundary of what AI can do in mathematics.</p>
           </div>
           <div class="lang-zh-block">
-            <p>你好！我是中国科学技术大学数学专业研究生，导师为张磊教授。</p>
-            <p>研究方向包括：语言模型形式化数学推理、具有持久记忆的智能体，以及大语言模型在安全领域的应用。</p>
+            <p>你好！我是中国科学技术大学数学专业研究生。</p>
+            <p>我致力于理解人工智能在数学中能力的真实边界。</p>
           </div>
 
           <hr />
 
           <h2 id="whats-news" data-zh="最新动态">What's News</h2>
           <ul class="news-list">
-            <li>Paper <em>"TEEM: Time-Centered Event Memory for Agents"</em> submitted to NeurIPS 2026, 2026.</li>
-            <li>Paper <em>"Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?"</em> posted on arXiv (arXiv:2602.13695), May 2026.</li>
-            <li>Started research internship at Beijing Zhongguancun AI Research Institute, Jan 2026.</li>
-            <li>Paper <em>"Bogomolov Inequality on Quasi-Elliptic Surfaces"</em> accepted by <em>Journal of Mathematics</em>, May 2025.</li>
-            <li>Received First-Class Master's Scholarship at USTC, Apr 2025.</li>
+            <li>
+              <span class="lang-en">Started research internship at Beijing Zhongguancun AI Research Institute, Jan 2026.</span>
+              <span class="lang-zh">2026年1月，入职北京中关村人工智能研究院，担任研究实习生。</span>
+            </li>
+            <li>
+              <span class="lang-en">Started AI Security Research Internship at Chengting Technology, Oct 2025.</span>
+              <span class="lang-zh">2025年10月，于长亭科技担任AI安全研究实习生。</span>
+            </li>
+            <li>
+              <span class="lang-en">Started Engineering Internship at JD.com, Jul 2025.</span>
+              <span class="lang-zh">2025年7月，于京东担任工程实习生。</span>
+            </li>
           </ul>
 
           <h2 id="research" data-zh="研究兴趣">Research Interests</h2>
           <ul class="plain-list">
-            <li>AI for mathematics — automated proof search, LLM reasoning evaluation, formal verification (Lean 4)</li>
-            <li>AI memory — persistent agent context, event-based memory architectures</li>
-            <li>AI applied to security — alert classification, vulnerability discovery</li>
-            <li>Algebraic geometry — vector bundles, quasi-elliptic surfaces</li>
+            <li>
+              <span class="lang-en">AI for mathematics</span>
+              <span class="lang-zh">数学AI</span>
+            </li>
+            <li>
+              <span class="lang-en">AI memory</span>
+              <span class="lang-zh">AI记忆</span>
+            </li>
+            <li>
+              <span class="lang-en">AI applied to security</span>
+              <span class="lang-zh">AI安全应用</span>
+            </li>
+            <li>
+              <span class="lang-en">Algebraic geometry</span>
+              <span class="lang-zh">代数几何</span>
+            </li>
           </ul>
 
           <h2 id="publications" data-zh="代表性论文">Selected Publications</h2>
 
           <h3 class="pub-year-heading">2026</h3>
           <ol class="pub-list">
-            <li>
-              Xiang Zhao, Zhengnan Li, <strong>Meng Lve</strong>, and Jiyan He.
-              <strong><a href="publications/teem.html">TEEM: Time-Centered Event Memory for Agents.</a></strong>
-              Under review, 2026.
-              [<a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">code</a>]
-              [<a href="docs/1897_TEEM_Time_Centered_Event_(2).pdf" target="_blank" rel="noopener">paper</a>]
-            </li>
             <li>
               <strong>Meng Lve</strong>, Weilong Zhao, Yanzhi Zhang, Haoxiang Guan, and Jiyan He.
               <strong><a href="publications/lightweight-pipeline.html">Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?</a></strong>
@@ -133,13 +146,28 @@
             </li>
           </ol>
 
-          <h2 id="misc" data-zh="获奖情况">Competition and Achievements</h2>
+          <h2 id="misc" data-zh="竞赛与荣誉">Competition and Achievements</h2>
           <ul class="plain-list">
-            <li>First-Class Master's Scholarship, USTC, 2025.</li>
-            <li>1st place, Tencent Cloud Hackathon (AI Penetration Testing Track), team "长亭外", 2025.</li>
-            <li>Silver Award, Undergraduate Scholarship, USTC, 2020.</li>
-            <li>First Prize, Chinese Mathematical Olympiad (CMO Preliminary), 2018.</li>
-            <li>Second Prize, Chinese Physics Olympiad, 2018.</li>
+            <li>
+              <span class="lang-en">First-Class Master's Scholarship, USTC, June 2025.</span>
+              <span class="lang-zh">一等学业奖学金，中科大，2025年6月。</span>
+            </li>
+            <li>
+              <span class="lang-en">1st place, Tencent Cloud Hackathon (AI Penetration Testing Track), team "长亭外", 2025.</span>
+              <span class="lang-zh">第一名，腾讯云黑客松（AI渗透测试赛道），团队"长亭外"，2025年。</span>
+            </li>
+            <li>
+              <span class="lang-en">Silver Award, Undergraduate Scholarship, USTC, 2020.</span>
+              <span class="lang-zh">银奖，本科生奖学金，中科大，2020年。</span>
+            </li>
+            <li>
+              <span class="lang-en">First Prize, Chinese Mathematical Olympiad (CMO Preliminary), 2018.</span>
+              <span class="lang-zh">全国联赛一等奖，中国数学奥林匹克（初赛），2018年。</span>
+            </li>
+            <li>
+              <span class="lang-en">Second Prize, Chinese Physics Olympiad, 2018.</span>
+              <span class="lang-zh">全国联赛二等奖，中国物理奥林匹克，2018年。</span>
+            </li>
           </ul>
 
         </section>

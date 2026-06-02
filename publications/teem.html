@@ -19,13 +19,14 @@
             <li class="masthead__menu-item"><a href="/publications/" data-zh="论文">Publications</a></li>
             <li class="masthead__menu-item"><a href="/datasets/" data-zh="数据集">Datasets</a></li>
             <li class="masthead__menu-item"><a href="/projects/" data-zh="项目">Projects</a></li>
+            <li class="masthead__menu-item"><a href="/talks/" data-zh="报告">Talks</a></li>
             <li class="masthead__menu-item"><a href="/misc/" data-zh="其他">Misc</a></li>
             <li class="masthead__menu-item"><a href="/learning/" data-zh="学习">Learning</a></li>
-            <li class="masthead__menu-item"><button class="lang-btn" id="langToggle">中文</button></li>
           </ul>
           <ul class="hidden-links hidden"></ul>
         </nav>
       </div>
+      <button class="lang-btn" id="langToggle">中文</button>
     </div>
   </div>
 
@@ -34,7 +35,7 @@
     <div class="sidebar sticky">
       <div itemscope itemtype="http://schema.org/Person">
         <div class="author__avatar">
-          <img src="../docs/人物头像.jpg" class="author__avatar" alt="Lve Meng" />
+          <img src="../docs/人物头像1.jpg" class="author__avatar" alt="Lve Meng" />
         </div>
         <div class="author__content">
           <h3 class="author__name">蒙略 / Lve Meng</h3>
@@ -78,19 +79,30 @@
 
           <a class="back-link" href="/publications/">← Publications</a>
 
-          <p class="pub-venue">Under review, 2026</p>
+          <p class="pub-venue">
+            <span class="lang-en">Under review, 2026</span>
+            <span class="lang-zh">审稿中，2026</span>
+          </p>
 
           <p class="pub-download">
-            <a href="../docs/1897_TEEM_Time_Centered_Event_(2).pdf" target="_blank" rel="noopener">Download paper here</a>
+            <a href="../docs/1897_TEEM_Time_Centered_Event_(2).pdf" target="_blank" rel="noopener">
+              <span class="lang-en">Download paper here</span>
+              <span class="lang-zh">在此下载论文</span>
+            </a>
           </p>
 
           <div class="pub-citation">
             Recommended citation: Xiang Zhao, Zhengnan Li, Meng Lve, and Jiyan He. TEEM: Time-Centered Event Memory for Agents. Under review, 2026.
           </div>
 
-          <p class="pub-abstract-heading">Abstract</p>
+          <p class="pub-abstract-heading" data-zh="摘要">Abstract</p>
           <div class="pub-abstract">
-            <p>Large language models (LLMs) have enabled increasingly capable agents, yet long-horizon conversational memory remains a major challenge. While existing approaches have made progress, they typically treat time as auxiliary metadata, limiting reasoning over evolving interaction histories. We propose TEEM (Time-CEntered Event Memory), a graph-based memory architecture that organizes interaction history around explicit temporal structure. TEEM constructs a temporally grounded memory graph in which temporal segments organize interaction events and link them to supporting evidence and evolving states. At query time, TEEM retrieves and fuses information from complementary memory layers, enabling temporal localization, event-level reasoning, evidence-grounded answering, and reasoning over state changes. Experiments on LoCoMo and LongMemEval show that TEEM consistently improves temporal reasoning and cross-session conversational memory, achieving an overall score of 95.67 on LoCoMo and 87.60 on LongMemEval.</p>
+            <div class="lang-en-block">
+              <p>Large language models (LLMs) have enabled increasingly capable agents, yet long-horizon conversational memory remains a major challenge. While existing approaches have made progress, they typically treat time as auxiliary metadata, limiting reasoning over evolving interaction histories. We propose TEEM (Time-CEntered Event Memory), a graph-based memory architecture that organizes interaction history around explicit temporal structure. TEEM constructs a temporally grounded memory graph in which temporal segments organize interaction events and link them to supporting evidence and evolving states. At query time, TEEM retrieves and fuses information from complementary memory layers, enabling temporal localization, event-level reasoning, evidence-grounded answering, and reasoning over state changes. Experiments on LoCoMo and LongMemEval show that TEEM consistently improves temporal reasoning and cross-session conversational memory, achieving an overall score of 95.67 on LoCoMo and 87.60 on LongMemEval.</p>
+            </div>
+            <div class="lang-zh-block">
+              <p>大型语言模型（LLM）使智能体能力不断增强，但长期对话记忆仍是主要挑战。现有方法虽有所进展，但通常将时间视为辅助元数据，限制了对持续演化的交互历史的推理能力。我们提出TEEM（以时间为中心的事件记忆），一种以显式时间结构组织交互历史的图式记忆架构。TEEM构建一个以时间为基础的记忆图，其中时间片段组织交互事件，并将其与支撑证据和变化状态相连接。在查询时，TEEM从互补的记忆层检索并融合信息，实现时间定位、事件级推理、基于证据的回答及状态变化推理。在LoCoMo和LongMemEval上的实验表明，TEEM持续提升了时间推理和跨会话对话记忆能力，在LoCoMo上获得95.67的综合分，在LongMemEval上获得87.60分。</p>
+            </div>
           </div>
 
         </section>
