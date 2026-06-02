@@ -17,6 +17,7 @@
         <li><a href="#news">News</a></li>
         <li><a href="#research">Research</a></li>
         <li><a href="#publications">Publications</a></li>
+        <li><a href="#datasets">Datasets</a></li>
         <li><a href="#misc">Misc</a></li>
       </ul>
     </div>
@@ -59,14 +60,16 @@
         <h2>About Me</h2>
         <p>
           I am a master's student in Mathematics at the University of Science and Technology of China (USTC),
-          advised by <a href="#">Prof. Zhang Lei</a>. My research background is in computational mathematics and algebraic geometry.
+          advised by <a href="#">Prof. Zhang Lei</a>. My research background spans algebraic geometry,
+          AI for mathematics (AI4Math), and AI memory systems.
           I received my bachelor's degree from the Gifted Young Programme at USTC in 2023.
         </p>
         <p>
-          My broader interest is in understanding and extending what AI systems can do — across mathematics,
-          formal reasoning, security, and tool-building. I care about finding problems where AI is currently limited,
-          and trying to push those limits, whether that means making a language model solve a research-level proof,
-          classify adversarial security alerts, or remember context across long interactions.
+          My interest is in understanding and extending the boundaries of what AI systems can do.
+          This includes making language models reason about and verify formal mathematical proofs,
+          building agents that maintain coherent memory across long interactions,
+          and applying AI to security analysis. I care about finding the edges of current AI capability
+          and pushing them further.
         </p>
         <p>
           I have worked on automated mathematical problem-solving and Lean 4 formalization at Beijing Zhongguancun AI Research Institute,
@@ -80,6 +83,11 @@
         <h2>News</h2>
         <ul class="news-list">
           <li>
+            <span class="date">2026</span>
+            Paper <em>"TEEM: Time-Centered Event Memory for Agents"</em> accepted at
+            <em>NeurIPS 2026</em>.
+          </li>
+          <li>
             <span class="date">May 2026</span>
             Paper <em>"Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?"</em>
             posted on arXiv (<a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv:2602.13695</a>).
@@ -90,7 +98,7 @@
           </li>
           <li>
             <span class="date">Dec 2025</span>
-            Finished internship at Chengting (Vulfocus). Worked on fine-tuning a large language model for security alert classification.
+            Finished internship at Chengting Technology. Worked on fine-tuning a large language model for security alert classification.
           </li>
           <li>
             <span class="date">Oct 2025</span>
@@ -112,11 +120,10 @@
       <section id="research">
         <h2>Research Interests</h2>
         <ul class="plain-list">
-          <li>Pushing the boundaries of AI reasoning — formal mathematics, proof search, LLM evaluation</li>
-          <li>AI applied to security — alert classification, vulnerability discovery, adversarial robustness</li>
-          <li>Long-context memory and agent reliability</li>
-          <li>Formal verification and Lean 4</li>
-          <li>Algebraic geometry (vector bundles, quasi-elliptic surfaces)</li>
+          <li>AI for mathematics — automated proof search, LLM reasoning evaluation, formal verification (Lean 4)</li>
+          <li>AI memory — persistent agent context, event-based memory architectures</li>
+          <li>AI applied to security — alert classification, vulnerability discovery</li>
+          <li>Algebraic geometry — vector bundles, quasi-elliptic surfaces</li>
         </ul>
 
         <h3>Experience</h3>
@@ -157,7 +164,7 @@
               <td>
                 <strong>M.S.</strong> in Mathematics<br>
                 University of Science and Technology of China<br>
-                <span class="note">Computational mathematics, algebraic geometry. Advisor: Prof. Zhang Lei.</span>
+                <span class="note">Algebraic geometry, AI4Math. Advisor: Prof. Zhang Lei.</span>
               </td>
             </tr>
             <tr>
@@ -174,25 +181,96 @@
       <!-- PUBLICATIONS -->
       <section id="publications">
         <h2>Publications</h2>
-        <p class="note">(* = equal contribution or alphabetical order)</p>
+        <p class="note">* indicates equal contribution.</p>
 
+        <h3 class="pub-year-heading">2026</h3>
         <ol class="pub-list">
           <li>
-            <strong>Lve Meng</strong>, Weilong Zhao, Yanzhi Zhang, Haoxiang Guan, Jiyan He.<br>
+            Xiang Zhao, Zhengnan Li, <strong>Meng Lve</strong>, and Jiyan He.<br>
+            <a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">
+              TEEM: Time-Centered Event Memory for Agents.
+            </a><br>
+            <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 2026. (to appear)<br>
+            [<a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">code</a>]
+          </li>
+          <li>
+            <strong>Meng Lve</strong>, Weilong Zhao, Yanzhi Zhang, Haoxiang Guan, and Jiyan He.<br>
             <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">
               Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?
             </a><br>
             <em>arXiv preprint</em>, arXiv:2602.13695, 2026.<br>
             [<a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv</a>]
-            [<a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">code</a>]
-          </li>
-          <li>
-            <strong>蒙略 (Lve Meng)</strong>.<br>
-            拟椭圆曲面上的 Bogomolov 不等式
-            (Bogomolov Inequality on Quasi-Elliptic Surfaces).<br>
-            <em>数学杂志 (Journal of Mathematics)</em>, Chinese Mathematical Society, accepted 2025.
+            [<a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">code</a>]
           </li>
         </ol>
+
+        <h3 class="pub-year-heading">2025</h3>
+        <ol class="pub-list">
+          <li>
+            <strong>Meng Lve</strong>.<br>
+            Bogomolov Type Inequality on Quasi-Elliptic Surfaces
+            (拟椭圆曲面上的 Bogomolov 不等式).<br>
+            <em>Journal of Mathematics (数学杂志)</em>, ISSN 0255-7797, 2025.
+            MSC (2010): 14J60, 14J26.
+          </li>
+        </ol>
+      </section>
+
+      <!-- DATASETS -->
+      <section id="datasets">
+        <h2>Datasets</h2>
+        <p class="note">
+          Datasets associated with published and forthcoming work.
+          For access or questions, contact <a href="mailto:ml130@mail.ustc.edu.cn">ml130@mail.ustc.edu.cn</a>.
+        </p>
+
+        <h3>Math Research Benchmark</h3>
+        <p>
+          Problem sets and AI solutions used in
+          <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv:2602.13695</a>.
+          Includes ICCM 2024/2025 competition problems, First Proof research-level problems,
+          and model solutions from multiple LLMs.
+        </p>
+        <table class="exp-table">
+          <tbody>
+            <tr>
+              <td class="exp-period" style="min-width:90px">Contents</td>
+              <td>ICCM problem sets (2 rounds), First Proof problem set, AI-generated solutions</td>
+            </tr>
+            <tr>
+              <td class="exp-period">Format</td>
+              <td>PDF (problems), Markdown + PDF (solutions), Lean 4 (formalized proofs)</td>
+            </tr>
+            <tr>
+              <td class="exp-period">Access</td>
+              <td><a href="https://github.com/ml1301215/question_sets-test_results" target="_blank" rel="noopener">github.com/ml1301215/question_sets-test_results</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>TEEM Event Memory Dataset</h3>
+        <p>
+          Dataset for evaluating time-centered event memory in AI agents, associated with
+          <em>TEEM: Time-Centered Event Memory for Agents</em> (NeurIPS 2026).
+          Contains structured event sequences with temporal annotations for agent memory benchmarking.
+        </p>
+        <table class="exp-table">
+          <tbody>
+            <tr>
+              <td class="exp-period" style="min-width:90px">Contents</td>
+              <td>Temporal event sequences, agent interaction traces, memory retrieval benchmarks</td>
+            </tr>
+            <tr>
+              <td class="exp-period">Format</td>
+              <td>JSON / JSONL</td>
+            </tr>
+            <tr>
+              <td class="exp-period">Access</td>
+              <td><a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">github.com/ZXXZ1000/LATRACE</a>
+              (dataset to be released upon NeurIPS publication)</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
       <!-- MISC -->
@@ -211,11 +289,17 @@
         <h3>Projects</h3>
         <ul class="plain-list">
           <li>
-            <a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">Vibe Proving</a>
+            <a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">Vibe Proving</a>
             (<a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv:2602.13695</a>) —
             An LLM pipeline that iterates solve → verify → correct on mathematical problems, with a web UI.
             Explores the boundary of what AI can do in formal mathematical reasoning.
-            [<a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">code</a>]
+            [<a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">code</a>]
+          </li>
+          <li>
+            <a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">Latrace-AI</a> —
+            An agent OS with time-centered event memory, enabling persistent context across long interactions.
+            Associated with the TEEM paper (NeurIPS 2026).
+            [<a href="https://github.com/ZXXZ1000/LATRACE" target="_blank" rel="noopener">code</a>]
           </li>
           <li>
             <a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">LLM Alert Analysis</a> —
@@ -233,15 +317,8 @@
           </li>
           <li>
             <a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">FLight</a> —
-            A workspace tool combining code browsing, documentation, and AI assistance in a unified interface.
-            Explores whether AI can reduce the overhead of context-switching in development.
+            A contract-driven multi-agent coding orchestration system with human approval gates and isolated execution.
             [<a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">code</a>]
-          </li>
-          <li>
-            <a href="https://github.com/ml1301215/latrace-ai" target="_blank" rel="noopener">Latrace-AI</a> —
-            Experiments in extending the effective memory of AI agents across long interactions.
-            Explores the boundary of persistent, retrievable context in language model interactions.
-            [<a href="https://github.com/ml1301215/latrace-ai" target="_blank" rel="noopener">code</a>]
           </li>
         </ul>
 

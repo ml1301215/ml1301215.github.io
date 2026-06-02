@@ -240,6 +240,15 @@ section:last-child { margin-bottom: 0; }
 }
 
 /* ===== PUBLICATIONS ===== */
+.pub-year-heading {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #999;
+  margin: 1.2rem 0 0.5rem;
+}
+
 .pub-list {
   list-style-position: outside;
   padding-left: 1.4rem;
