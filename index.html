@@ -59,18 +59,19 @@
         <h2>About Me</h2>
         <p>
           I am a master's student in Mathematics at the University of Science and Technology of China (USTC),
-          advised by <a href="#">Prof. Zhang Lei</a>. My research is in computational mathematics and algebraic geometry.
+          advised by <a href="#">Prof. Zhang Lei</a>. My research background is in computational mathematics and algebraic geometry.
           I received my bachelor's degree from the Gifted Young Programme at USTC in 2023.
         </p>
         <p>
-          I am interested in the intersection of AI and mathematics — specifically, whether large language models
-          can assist in mathematical research, and what it means to formally verify a proof.
-          I have worked on automated problem-solving pipelines and Lean 4 formalization during an internship at
-          Beijing Zhongguancun AI Research Institute.
+          My broader interest is in understanding and extending what AI systems can do — across mathematics,
+          formal reasoning, security, and tool-building. I care about finding problems where AI is currently limited,
+          and trying to push those limits, whether that means making a language model solve a research-level proof,
+          classify adversarial security alerts, or remember context across long interactions.
         </p>
         <p>
-          I have also interned at Chengting (Vulfocus) on LLM fine-tuning for security alert analysis,
-          and at JD.com on a multi-agent vulnerability discovery system.
+          I have worked on automated mathematical problem-solving and Lean 4 formalization at Beijing Zhongguancun AI Research Institute,
+          on LLM fine-tuning for security alert classification at Chengting Technology,
+          and on a multi-agent vulnerability discovery system at JD.com.
         </p>
       </section>
 
@@ -82,11 +83,6 @@
             <span class="date">May 2026</span>
             Paper <em>"Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?"</em>
             posted on arXiv (<a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv:2602.13695</a>).
-          </li>
-          <li>
-            <span class="date">Feb 2026</span>
-            Paper <em>"Can a Simple Automated AI Pipeline Solve Research-Level Mathematical Problems?"</em>
-            posted on arXiv (<a href="https://arxiv.org/abs/2602.05192" target="_blank" rel="noopener">arXiv:2602.05192</a>).
           </li>
           <li>
             <span class="date">Jan 2026</span>
@@ -116,10 +112,10 @@
       <section id="research">
         <h2>Research Interests</h2>
         <ul class="plain-list">
-          <li>AI-assisted mathematical research; automated proof search</li>
+          <li>Pushing the boundaries of AI reasoning — formal mathematics, proof search, LLM evaluation</li>
+          <li>AI applied to security — alert classification, vulnerability discovery, adversarial robustness</li>
+          <li>Long-context memory and agent reliability</li>
           <li>Formal verification and Lean 4</li>
-          <li>Evaluation of reasoning capabilities in large language models</li>
-          <li>AI safety and alignment</li>
           <li>Algebraic geometry (vector bundles, quasi-elliptic surfaces)</li>
         </ul>
 
@@ -191,14 +187,6 @@
             [<a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">code</a>]
           </li>
           <li>
-            AI Mathematics Research Team.<br>
-            <a href="https://arxiv.org/abs/2602.05192" target="_blank" rel="noopener">
-              Can a Simple Automated AI Pipeline Solve Research-Level Mathematical Problems?
-            </a><br>
-            <em>arXiv preprint</em>, arXiv:2602.05192, 2026.<br>
-            [<a href="https://arxiv.org/abs/2602.05192" target="_blank" rel="noopener">arXiv</a>]
-          </li>
-          <li>
             <strong>蒙略 (Lve Meng)</strong>.<br>
             拟椭圆曲面上的 Bogomolov 不等式
             (Bogomolov Inequality on Quasi-Elliptic Surfaces).<br>
@@ -220,27 +208,40 @@
           <li>Second Prize, Chinese Physics Olympiad, 2018</li>
         </ul>
 
-        <h3>Selected Projects</h3>
+        <h3>Projects</h3>
         <ul class="plain-list">
           <li>
-            <a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">Vibe Proving</a> —
-            An LLM-based pipeline for solving mathematical problems with a solve–verify–correct loop. Web UI included.
+            <a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">Vibe Proving</a>
+            (<a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv:2602.13695</a>) —
+            An LLM pipeline that iterates solve → verify → correct on mathematical problems, with a web UI.
+            Explores the boundary of what AI can do in formal mathematical reasoning.
+            [<a href="https://github.com/ml1301215/research-math-assistant" target="_blank" rel="noopener">code</a>]
           </li>
           <li>
-            Lean 4 Formalization — Converted entries from the graduate-level math knowledge base
-            <em>Thestackofproject</em> into Lean 4 proofs. About 512 entries passed AI + human verification.
+            <a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">LLM Alert Analysis</a> —
+            Fine-tuned a 30B-parameter model (Qwen3-30B-A3B) with QLoRA and GRPO for security alert classification.
+            Built at Chengting Technology. &gt;90% classification accuracy, deployed to production.
+            [<a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">code</a>]
+            [<a href="docs/llm-alert-analysis.pdf" target="_blank" rel="noopener">report</a>]
           </li>
           <li>
-            <a href="#" target="_blank" rel="noopener">CodeMesh</a> —
-            A small tool for integrating code, documentation, and AI assistance in a single workspace.
+            <a href="https://github.com/ml1301215/multi-agent-vuln-scanner" target="_blank" rel="noopener">Multi-Agent Vulnerability Scanner</a> —
+            A Dify-based multi-agent system with NVD/CVE RAG knowledge base for automated web vulnerability discovery.
+            Built at JD.com.
+            [<a href="https://github.com/ml1301215/multi-agent-vuln-scanner" target="_blank" rel="noopener">code</a>]
+            [<a href="docs/multi-agent-vuln-scanner.pdf" target="_blank" rel="noopener">report</a>]
           </li>
           <li>
-            Security alert LLM — Fine-tuned a 30B-parameter model using QLoRA and GRPO
-            for classifying security alerts.
+            <a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">FLight</a> —
+            A workspace tool combining code browsing, documentation, and AI assistance in a unified interface.
+            Explores whether AI can reduce the overhead of context-switching in development.
+            [<a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">code</a>]
           </li>
           <li>
-            Multi-agent vulnerability scanner — A Dify-based multi-agent system with
-            NVD/CVE knowledge base integration for automated web vulnerability discovery.
+            <a href="https://github.com/ml1301215/latrace-ai" target="_blank" rel="noopener">Latrace-AI</a> —
+            Experiments in extending the effective memory of AI agents across long interactions.
+            Explores the boundary of persistent, retrievable context in language model interactions.
+            [<a href="https://github.com/ml1301215/latrace-ai" target="_blank" rel="noopener">code</a>]
           </li>
         </ul>
 
