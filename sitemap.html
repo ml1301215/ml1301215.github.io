@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TEEM: Time-Centered Event Memory for Agents — Lve Meng</title>
-  <link rel="stylesheet" href="../styles.css" />
+  <title>Sitemap — Lve Meng</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -34,7 +34,7 @@
     <div class="sidebar sticky">
       <div itemscope itemtype="http://schema.org/Person">
         <div class="author__avatar">
-          <img src="../docs/人物头像1.jpg" class="author__avatar" alt="Lve Meng" />
+          <img src="docs/人物头像1.jpg" class="author__avatar" alt="Lve Meng" />
         </div>
         <div class="author__content">
           <h3 class="author__name">蒙略 / Lve Meng</h3>
@@ -70,31 +70,32 @@
     <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
       <div class="page__inner-wrap">
         <header>
-          <h1 class="page__title" itemprop="headline">TEEM: Time-Centered Event Memory for Agents</h1>
+          <h1 class="page__title" itemprop="headline">Sitemap</h1>
         </header>
         <section class="page__content" itemprop="text">
 
-          <a class="back-link" href="/publications/">← Publications</a>
-
-          <p class="pub-venue">
-            Under review, 2026
-          </p>
-
-          <p class="pub-download">
-            <a href="../docs/1897_TEEM_Time_Centered_Event_(2).pdf" target="_blank" rel="noopener">
-              Download paper here
-            </a>
-          </p>
-
-          <div class="pub-citation">
-            Recommended citation: Xiang Zhao, Zhengnan Li, Meng Lve, and Jiyan He. TEEM: Time-Centered Event Memory for Agents. Under review, 2026.
-          </div>
-
-          <p class="pub-abstract-heading">Abstract</p>
-          <div class="pub-abstract">
-              <p>Large language models (LLMs) have enabled increasingly capable agents, yet long-horizon conversational memory remains a major challenge. While existing approaches have made progress, they typically treat time as auxiliary metadata, limiting reasoning over evolving interaction histories. We propose TEEM (Time-CEntered Event Memory), a graph-based memory architecture that organizes interaction history around explicit temporal structure. TEEM constructs a temporally grounded memory graph in which temporal segments organize interaction events and link them to supporting evidence and evolving states. At query time, TEEM retrieves and fuses information from complementary memory layers, enabling temporal localization, event-level reasoning, evidence-grounded answering, and reasoning over state changes. Experiments on LoCoMo and LongMemEval show that TEEM consistently improves temporal reasoning and cross-session conversational memory, achieving an overall score of 95.67 on LoCoMo and 87.60 on LongMemEval.</p>
-            </div>
-          </div>
+          <ul class="plain-list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/publications/">Publications</a>
+              <ul>
+                <li><a href="/publications/bogomolov.html">Bogomolov Type Inequality on Quasi-Elliptic Surfaces</a></li>
+                <li><a href="/publications/lightweight-pipeline.html">Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?</a></li>
+                <li><a href="/publications/teem.html">TEEM: Time-Centered Event Memory for Agents</a></li>
+              </ul>
+            </li>
+            <li><a href="/talks/">Talks</a></li>
+            <li><a href="/datasets/">Datasets</a></li>
+            <li><a href="/blogs/">Blogs</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/learning/">Learning</a>
+              <ul>
+                <li><a href="/learning/lean4.html">Lean 4 入门路径：从竞赛数学到 Mathlib 形式化</a></li>
+                <li><a href="/learning/finetune.html">大模型微调笔记：QLoRA + GRPO 实战</a></li>
+                <li><a href="/learning/algebraic-geometry.html">正特征代数几何笔记</a></li>
+              </ul>
+            </li>
+            <li><a href="/misc/">Misc</a></li>
+          </ul>
 
         </section>
         <footer class="page__meta"></footer>
@@ -108,6 +109,6 @@
     </footer>
   </div>
 
-  <script src="../script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
