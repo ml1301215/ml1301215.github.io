@@ -57,12 +57,7 @@
                 GitHub
               </a>
             </li>
-            <li>
-              <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                arXiv
-              </a>
-            </li>
+
           </ul>
         </div>
       </div>
@@ -75,24 +70,58 @@
         </header>
         <section class="page__content" itemprop="text">
 
+          <h2 class="blog-year">2026</h2>
+
+          <div class="blog-post">
+            <h3 class="blog-post__title">形式化数学：进度与边界</h3>
+            <p class="blog-post__meta">February 2026</p>
+            <p class="blog-post__excerpt">过去几个月用 Lean 4 形式化了 18 道 ICCM 竞赛题，积累了一些关于"什么能形式化、什么很难形式化"的感性认识。顺利的情形是有明确代数结构的题目：归纳、整除性、不等式链，这类题目的证明步骤和 Lean 的战术语言基本是一一对应的。困难在于几何直觉：一个"显然的"配方或辅助线，在 Lean 里需要拆解成十几步引理，而 Mathlib 不一定有你需要的那个引理。更深的障碍是类型：数学家习惯在 ℕ、ℤ、ℚ 之间随意转换，Lean 要求你每次都明确。形式化的过程暴露了哪些步骤在数学上是隐含的，这本身就有认识价值——不只是验证证明，而是理解证明的结构。</p>
+          </div>
+
+          <div class="blog-post">
+            <h3 class="blog-post__title">MoE 中的专家分配问题</h3>
+            <p class="blog-post__meta">January 2026</p>
+            <p class="blog-post__excerpt">读 Mixtral 和 DeepSeek-MoE 的时候，一直觉得专家路由（routing）的设计比模型架构本身更值得关注。hard top-k 路由的问题在于不可微——梯度无法流过离散的"选哪个专家"决策，所以必须用辅助损失（auxiliary loss）来强制负载均衡，而这个辅助损失和主训练目标之间存在张力：均衡负载未必是最优的专家分配。soft routing 绕过了这个问题，但引入了另一个：每个 token 对所有专家都有非零权重，计算量没有实质减少。这个矛盾在现有工作里还没有被干净地解决，只是被不同方式缓解了。</p>
+          </div>
+
           <h2 class="blog-year">2025</h2>
 
           <div class="blog-post">
-            <h3 class="blog-post__title">用 AI 做渗透测试：腾讯云黑客松复盘</h3>
-            <p class="blog-post__meta">December 2025 &nbsp;&middot;&nbsp; 4 min read</p>
-            <p class="blog-post__excerpt">在腾讯云黑客松（AI 渗透测试赛道），我们团队"长亭外"构建了一个将侦察到利用全流程自动化的多智能体系统。核心技术问题是状态管理：渗透测试不是一系列独立的 LLM 调用，而是一个有状态的过程，每一个发现都约束着下一步行动。我们用显式的攻击图来解决这个问题——以发现的服务为节点、潜在利用路径为边的有向结构——让 LLM 在图上进行推理，而不是生成自由文本。完全自由格式的生成会产生难以验证的幻觉；图结构把 LLM 的输出约束在可审计的行动空间里。团队最终获得第一名。</p>
+            <h3 class="blog-post__title">p-curvature 是一种度量什么的不变量</h3>
+            <p class="blog-post__meta">October 2025</p>
+            <p class="blog-post__excerpt">代数几何里的 p-curvature 出现频率很高，但大多数地方只给出定义，不说它"度量什么"。直觉是这样的：在特征 0 中，一个向量丛上的联络是平坦的，当且仅当水平截面构成局部常数层（Riemann-Hilbert 对应）。在特征 p 中，这个对应失效——平坦联络不再等价于局部常数层，差距恰好由 p-curvature 衡量：p-curvature 为零，才是正特征版本的"平坦"（Frobenius 意义下的平坦）。Grothendieck 猜想说：在数域上定义的代数方程，如果它在几乎所有素数 p 处的 p-curvature 都为零，那么它有代数解。这个猜想在一般情形下还是开放的，但它把 p-curvature 和算术几何连接起来的方式非常干净。</p>
           </div>
 
           <div class="blog-post">
-            <h3 class="blog-post__title">给 30B 模型做安全告警分类微调</h3>
-            <p class="blog-post__meta">November 2025 &nbsp;&middot;&nbsp; 6 min read</p>
-            <p class="blog-post__excerpt">安全告警分类是通用 LLM 表现很差的一个领域——不是因为缺乏知识，而是因为奖励信号不对称：漏报一条严重告警的代价远高于误报。在成亭科技，我用 QLoRA 压缩 Qwen3-30B-A3B 的显存占用，再用 GRPO 对齐模型的分类行为，reward 函数对漏报的惩罚权重远高于误报。实验的核心发现是：用对称 reward（最大化精度）训练的模型，在严重告警的召回率上比非对称 reward 训练的模型低约 15 个百分点。这个差距比基座模型的选择更重要。</p>
+            <h3 class="blog-post__title">GRPO 的核心想法</h3>
+            <p class="blog-post__meta">September 2025</p>
+            <p class="blog-post__excerpt">PPO 做 RL 对齐需要一个单独的 critic 网络来估计基线（baseline），训练和维护这个 critic 本身就是一笔开销。GRPO 的核心想法是：用同一个 prompt 采样一组输出，把组内平均奖励当作基线。这样不需要 critic，只需要一个奖励函数——可以是人工设计的规则，不必是另一个神经网络。这个改动在数学推理任务上效果很好，原因可能是：数学题有明确的对错，组内输出的奖励方差足够大，平均值作为基线是合理的估计。如果任务的奖励信号很稠密（输出之间差异小），这个基线就会退化，GRPO 的优势也随之消失。</p>
           </div>
 
           <div class="blog-post">
-            <h3 class="blog-post__title">用多智能体 RAG 构建漏洞扫描器</h3>
-            <p class="blog-post__meta">August 2025 &nbsp;&middot;&nbsp; 5 min read</p>
-            <p class="blog-post__excerpt">在京东实习期间，我基于 Dify 搭建了一个以 NVD/CVE 为知识库的多智能体漏洞扫描系统。关键洞察是：漏洞评估不是检索问题，而是推理问题——智能体不只需要知道某个 CVE 存在，更需要判断目标端点在其具体配置下是否真的可利用。将侦察智能体与评估智能体分离、让评估智能体获取完整 CVE 上下文后，与单智能体基线相比误报率大幅下降。这个架构决策背后的原理：不同的认知任务需要不同的上下文窗口，合并它们会导致信息稀释。</p>
+            <h3 class="blog-post__title">两种证明</h3>
+            <p class="blog-post__meta">June 2025</p>
+            <p class="blog-post__excerpt">同一个数学结论可以有性格完全不同的证明。一种是计算型的：从定义出发，展开所有符号，逐步化简，最后得到等式。另一种是结构型的：找到一个对象，说明它满足某个泛性质，然后由唯一性直接得出结论，中间没有任何计算。计算型证明容易验证，但难以推广——条件变一变，整个计算就要重来。结构型证明更难找，但一旦找到，它揭示的是"为什么"，而不只是"是什么"。在研究 quasi-elliptic 曲面上的 Bogomolov 不等式时，我花了很长时间试图用计算方法绕过 Frobenius 的不可分性，最后发现这条路走不通；转而从纤维化结构入手，反而快得多。这个经历让我相信：如果一个证明写起来异常繁琐，多半是选错了视角。</p>
+          </div>
+
+          <div class="blog-post">
+            <h3 class="blog-post__title">告警疲劳是一个设计问题</h3>
+            <p class="blog-post__meta">March 2025</p>
+            <p class="blog-post__excerpt">安全运营中心（SOC）的告警误报率在行业内普遍在 90% 以上，分析师每天处理几百条告警，其中真实威胁可能只有个位数。通常的应对方式是提高阈值——但这会漏掉真实威胁；或者扩充人手——但人手永远跟不上告警量。我认为这个问题的本质是校准（calibration）问题：告警系统没有输出置信度，分析师无法区分"模型很确定这是威胁"和"模型拿不准，给你看一眼"。如果告警附带校准后的置信度，分析师可以把精力集中在高置信度告警上，同时对低置信度告警批量处理。这不需要更好的检测模型，只需要让模型输出的不确定性变得可读。</p>
+          </div>
+
+          <h2 class="blog-year">2024</h2>
+
+          <div class="blog-post">
+            <h3 class="blog-post__title">Bogomolov 不等式的来源</h3>
+            <p class="blog-post__meta">December 2024</p>
+            <p class="blog-post__excerpt">Bogomolov 不等式（Δ(E) ≥ 0，对半稳定向量丛）最初的证明来自微分几何：稳定向量丛上存在 Hermitian-Einstein 联络（Kobayashi-Hitchin 对应），这个联络的曲率满足 Yang-Mills 方程，而 Yang-Mills 泛函的非负性直接给出 Δ(E) ≥ 0。这个证明依赖分析方法，不是纯代数的。后来 Mehta 和 Ramanathan 给出了代数证明：关键一步是限制定理——半稳定丛限制到一般超平面截面后仍然半稳定，然后在曲线上用 Riemann-Roch 控制 c₂。这两条路都用到了"稳定性在限制下保持"这一事实，只是实现方式不同。理解这两条路的差异，对后来处理 quasi-elliptic 情形下的证明策略有直接帮助。</p>
+          </div>
+
+          <div class="blog-post">
+            <h3 class="blog-post__title">算法竞赛是一种数学训练</h3>
+            <p class="blog-post__meta">August 2024</p>
+            <p class="blog-post__excerpt">花了大约八个月、2000 道题系统刷完了算法竞赛题库。现在回头看，收获不是"学会了动态规划"或"掌握了图论"，而是一种更底层的东西：对问题结构的感知——能快速判断这道题属于哪类、适合什么分解方式。这和数学竞赛的训练是相通的，不同的只是符号系统：数学竞赛用归纳、构造、反证，算法竞赛用双指针、滑窗、记忆化搜索，但"把问题归类、找到对应工具"的过程是一样的。这种训练的代价是：刷题本身的边际收益递减得很快，前 500 题学到的比后 1000 题多。如果重来，我会更早停下来，把时间放在更有难度梯度的题目上。</p>
           </div>
 
         </section>
