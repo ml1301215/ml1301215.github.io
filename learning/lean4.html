@@ -65,7 +65,7 @@
           <div class="note-section">
           <h2>1. 为什么选 Lean 4</h2>
 
-          <p>在现有的定理证明器（proof assistant）生态中，数学形式化领域最活跃的系统有四个：Coq（法国 INRIA，OCaml 实现）、Isabelle/HOL（剑桥/慕尼黑，ML 系）、Agda（瑞典 Chalmers，依赖类型）和 Lean 4（微软研究院/Leanprover 社区，C++/Lean 自举）。对于竞赛数学形式化，Lean 4 的综合优势最为明显。</p>
+          <p>常用的定理证明器有四个：Coq（法国 INRIA，OCaml 实现）、Isabelle/HOL（剑桥/慕尼黑，ML 系）、Agda（瑞典 Chalmers，依赖类型）和 Lean 4（微软研究院/Leanprover 社区，C++/Lean 自举）。本文基于形式化 ICCM 竞赛题的实际需要，以下比较各系统的差异，说明选用 Lean 4 的理由。</p>
 
           <p><strong>与 Coq 的比较。</strong>Coq 拥有数十年积累，但语法相对繁琐，策略（tactic）语言 Ltac 与主语言割裂，学习曲线陡峭。数学库 MathComp 虽然成熟，但命名风格晦涩，对竞赛题涉及的实数分析、组合数学覆盖并不全面。Lean 4 的 Mathlib4 在覆盖广度上已经超越 MathComp，且策略语法与主语言统一，更接近数学家的习惯。</p>
 
@@ -75,11 +75,9 @@
 
           <p><strong>Mathlib4 的覆盖范围。</strong>截至 2025 年，Mathlib4 已包含超过 18 万条引理，覆盖初等数论、线性代数、多项式理论、实分析、复分析、组合数学、代数拓扑、范畴论等领域。对于 ICCM 竞赛题这一层次的数学，所需的绝大多数工具都已有现成引理可用，不需要从头证明。</p>
 
-          <p><strong>VS Code 实时交互。</strong>Lean 4 的 VS Code 扩展提供实时 Infoview 面板，光标移动到哪一行，右侧就实时显示当前证明状态（目标 goal、假设 hypotheses）。这种即时反馈让证明调试从"盲目猜测"变为"精确导航"，极大降低了初学者的心理负担。对比之下，Coq 需要逐步执行、Agda 只在保存时检查，交互体验差距显著。</p>
+          <p><strong>活跃社区与持续开发。</strong>Lean 4 由 Leonardo de Moura 主导开发，Mathlib4 贡献者超过 500 人，每周持续有新引理合并。社区讨论在 Zulip（leanprover.zulipchat.com）上进行。</p>
 
-          <p><strong>活跃社区与持续开发。</strong>Lean 4 由 Leonardo de Moura（SAT/SMT 领域顶尖研究者）主导开发，微软研究院提供资金支持，Mathlib4 贡献者超过 500 人，每周都有大量新引理合并。Zulip 聊天室（leanprover.zulipchat.com）极为活跃，提问通常在几小时内得到解答。</p>
-
-          <p><strong>为何适合形式化 ICCM 题目。</strong>ICCM 竞赛题以代数、数论、组合为主，Lean 4 在这些领域的 Mathlib4 覆盖非常充分。更重要的是，Lean 4 的策略语言设计接近数学家书写证明的直觉：用 <code>have</code> 引入中间步骤，用 <code>ring</code> 处理代数恒等式，用 <code>linarith</code> 处理不等式，整体结构与手写证明一一对应。18 道 ICCM 题的形式化经验表明，一道中等难度的竞赛题，从纸面证明到完整 Lean 4 代码，熟练后通常需要 2–4 小时。</p>
+          <p><strong>为何适合形式化 ICCM 题目。</strong>ICCM 竞赛题以代数、数论、组合为主，Mathlib4 在这些领域的覆盖较为充分。Lean 4 的策略语言结构接近手写证明：用 <code>have</code> 引入中间步骤，用 <code>ring</code> 处理代数恒等式，用 <code>linarith</code> 处理不等式，整体结构与纸面证明对应关系清晰。</p>
           </div>
 
           <!-- ===== SECTION 2 ===== -->
