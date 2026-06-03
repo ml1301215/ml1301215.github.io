@@ -517,3 +517,18 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
 .dataset-table th { padding: 0.5em 0.75em; font-weight: bold; border-bottom: 2px solid #dee0e1; text-align: left; border-right: none; }
 .dataset-table td { padding: 0.5em 0.75em; border-bottom: 1px solid #f2f3f3; vertical-align: top; border-right: none; }
 .dataset-table td:first-child { color: #7a8288; width: 7em; white-space: nowrap; }
+
+/* Dataset download line */
+.dataset-download { margin: 0.4em 0 1.8em; font-size: 0.9375em; }
+.dataset-label { color: #7a8288; font-weight: bold; margin-right: 0.6em; }
+.url-plain { color: #494e52; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.9em; }
+
+/* Blog year/post (year-archive style) */
+.blog-year { margin-top: 1.8em; margin-bottom: 0.2em; color: #494e52; }
+.blog-post { margin: 1.4em 0 2em; padding-bottom: 1.4em; border-bottom: 1px solid #f2f3f3; }
+.blog-post:last-child { border-bottom: none; }
+.blog-post__title { margin: 0 0 0.25em; font-size: 1em; font-weight: bold; }
+.blog-post__title a { color: #494e52; text-decoration: none; }
+.blog-post__title a:hover { color: #52adc8; text-decoration: underline; }
+.blog-post__meta { margin: 0 0 0.5em; font-size: 0.8125em; color: #9ba1a6; }
+.blog-post__excerpt { margin: 0; font-size: 0.9375em; color: #494e52; }
