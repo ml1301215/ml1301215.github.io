@@ -508,8 +508,8 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
 /* Photo grid and book cover (Misc personal section) */
 .photo-row { display: flex; gap: 1em; margin: 1em 0 1.5em; }
 .photo-row img { flex: 1; min-width: 0; max-height: 220px; object-fit: cover; border-radius: 4px; }
-.book-cover { margin: 1em 0 1.5em; }
-.book-cover img { max-width: 160px; border: 1px solid #f2f3f3; padding: 4px; }
+.book-cover { margin: 1em 0 1.5em; overflow: hidden; }
+.book-cover img { max-width: 160px; border: 1px solid #f2f3f3; padding: 4px; display: block; }
 
 /* Dataset tables */
 .dataset-table { border-collapse: collapse; width: 100%; font-size: 0.9375em; margin: 0.75em 0 2em; }
