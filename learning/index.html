@@ -75,30 +75,184 @@
         </header>
         <section class="page__content" itemprop="text">
 
-          <p>
-            <a href="https://github.com/ml1301215" target="_blank" rel="noopener">GitHub</a> &nbsp;&middot;&nbsp;
-            <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv</a> &nbsp;&middot;&nbsp;
-            ml130@mail.ustc.edu.cn
-          </p>
+          <h2>作品集</h2>
 
-          <h2>Research</h2>
-          <ul class="plain-list">
-            <li><a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">Can a Lightweight Automated AI Pipeline Solve Research-Level Mathematical Problems?</a> — arXiv preprint, 2026. Evaluates LLMs on ICCM and unpublished research-level problems; builds an automated solve-verify-correct pipeline with Lean 4 formalization.</li>
-            <li><a href="/publications/bogomolov.html">Bogomolov Type Inequality on Quasi-Elliptic Surfaces</a> — <em>Journal of Mathematics</em>, 2025. Extends the classical Bogomolov inequality to the quasi-elliptic setting in positive characteristic.</li>
-          </ul>
+          <div class="project-grid">
 
-          <h2>Code</h2>
-          <ul class="plain-list">
-            <li><a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">vibe-proving-math</a> — The pipeline and web UI from arXiv:2602.13695. LLM + Lean 4 integration for iterative mathematical problem solving.</li>
-            <li><a href="https://github.com/ml1301215/lean4-math-formalization" target="_blank" rel="noopener">lean4-math-formalization</a> — Lean 4 formalized proofs of ICCM competition problems, verified by <code>lake build</code>.</li>
-            <li><a href="https://github.com/ml1301215/question_sets-test_results" target="_blank" rel="noopener">question_sets-test_results</a> — Math Research Database: problem sets and AI-generated solutions.</li>
-          </ul>
+            <div class="project-card">
+              <h3><a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">Vibe Proving</a></h3>
+              <p class="project-year">2024–2026 &nbsp;<span class="tag">AI</span><span class="tag">Math</span><span class="tag">Lean4</span><span class="tag">Python</span></p>
+              <p>LLM + Lean 4 的迭代数学证明平台。输入题目，LLM 生成证明，Lean 4 验证器给出编译错误，错误信息反馈回 LLM 修正，循环至证明通过。在 ICCM 竞赛级题目上取得有意义进展；对真正的研究级问题，失败模式本身也有信息量。</p>
+              <div class="project-links">
+                <a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">arXiv</a>
+                <a href="https://github.com/ml1301215/vibe-proving-math" target="_blank" rel="noopener">code</a>
+              </div>
+            </div>
 
-          <h2>Notes</h2>
-          <ul class="plain-list">
-            <li>Lean 4 is a surprisingly good language for mathematical formalization. The combination of dependent types and <code>mathlib</code> makes it possible to state and prove competition-level problems in a few hundred lines. The hardest part is not the logic — it is finding the right lemma names.</li>
-            <li>On the relation between algebraic geometry and AI: both fields deal fundamentally with structure. In algebraic geometry, structure is encoded in sheaves and cohomology; in neural networks, in weight matrices and activations. Whether these structures will ever genuinely meet is an open question I find worth thinking about.</li>
-          </ul>
+            <div class="project-card">
+              <h3><a href="https://github.com/ml1301215/lean4-math-formalization" target="_blank" rel="noopener">ICCM 形式化数据库</a></h3>
+              <p class="project-year">2025–2026 &nbsp;<span class="tag">Lean4</span><span class="tag">Math</span><span class="tag">Mathlib</span></p>
+              <p>18 道 ICCM 竞赛题的 Lean 4 机器验证完整证明，作为 pipeline 论文的评估基础设施。证明均通过 <code>lake build</code> 验证，无 <code>sorry</code>。最难的不是逻辑——是在 Mathlib 里找到正确的引理名。</p>
+              <div class="project-links">
+                <a href="https://github.com/ml1301215/lean4-math-formalization" target="_blank" rel="noopener">code</a>
+              </div>
+            </div>
+
+            <div class="project-card">
+              <h3><a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">LLM 安全告警分类</a></h3>
+              <p class="project-year">2025 &nbsp;<span class="tag">AI</span><span class="tag">Security</span><span class="tag">GRPO</span><span class="tag">QLoRA</span></p>
+              <p>对 Qwen3-30B-A3B 用 QLoRA 压缩显存、GRPO 对齐分类行为，用于企业 SOC 安全告警自动分类。Reward 函数针对漏报代价远高于误报的不对称特点定制设计，实验结果表明非对称 reward 显著提升严重告警召回率。</p>
+              <div class="project-links">
+                <a href="https://github.com/ml1301215/llm-alert-analysis" target="_blank" rel="noopener">code</a>
+              </div>
+            </div>
+
+            <div class="project-card">
+              <h3><a href="https://github.com/ml1301215/multi-agent-vuln-scanner" target="_blank" rel="noopener">多智能体漏洞扫描器</a></h3>
+              <p class="project-year">2025 &nbsp;<span class="tag">AI</span><span class="tag">Security</span><span class="tag">RAG</span><span class="tag">Dify</span></p>
+              <p>基于 Dify 的多智能体系统，集成 NVD/CVE RAG 知识库，自动化 Web 漏洞发现与评估。侦察智能体与评估智能体分离；评估智能体获取完整 CVE 上下文以推理可利用性，而非简单关键词匹配。</p>
+              <div class="project-links">
+                <a href="https://github.com/ml1301215/multi-agent-vuln-scanner" target="_blank" rel="noopener">code</a>
+              </div>
+            </div>
+
+            <div class="project-card">
+              <h3><a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">FLight</a></h3>
+              <p class="project-year">2026 &nbsp;<span class="tag">Agents</span><span class="tag">Coding</span><span class="tag">Python</span></p>
+              <p>基于合约的多智能体编程框架，支持任务委托、人工审批门控和沙箱执行。设计目标是需要中间验证的长链路编程任务，通过强制中间检查点抑制 LLM 在长上下文下的幻觉积累。</p>
+              <div class="project-links">
+                <a href="https://github.com/ml1301215/flight" target="_blank" rel="noopener">code</a>
+              </div>
+            </div>
+
+          </div>
+
+          <h2>学习历程</h2>
+
+          <h3>算法 &amp; 竞赛</h3>
+          <div class="learning-ref">
+            <p>系统化刷题的核心是框架建立而非题量堆砌：对每道新题型写 100–400 字的分类笔记，建立可复用的解题模式（双指针、滑窗、前缀和、动态规划、回溯等）；每约 3 天周期性回顾，通过间隔重复巩固已有框架；在此基础上持续练习。8 个月 2000 题的可行性来自方法论，而非蛮力。对我而言，从 CMO 数学竞赛向算法竞赛迁移时，这套框架尤其有用：题型归纳的思维是相通的，不同的只是具体的工具集。</p>
+            <p>参考：<a href="https://github.com/lvy010/Algo-Atlas" target="_blank" rel="noopener">Algo-Atlas — 如何科学的 8 个月写 2000 题</a>（377 stars，93.9% C++）</p>
+          </div>
+
+          <h3>系统编程</h3>
+          <div class="learning-ref">
+            <p>从 C 语言基础出发，系统覆盖数据结构与算法 → C++ → Linux 系统编程 → MySQL → Redis → Docker 云原生 → Git → Qt，将每个技术栈的学习过程文档化，形成可检索的知识库。这种"文档即笔记"的习惯在我后续的 Lean 4 形式化和微调实验记录中也沿用了下来——写下来不只是为了备忘，而是为了在写的过程中发现理解的漏洞。</p>
+            <p>参考：<a href="https://lvynote.blog.csdn.net/article/details/145308270" target="_blank" rel="noopener">2024 C++ 自学分享</a></p>
+          </div>
+
+          <h3>综合技术学习</h3>
+          <div class="learning-ref">
+            <p>2000+ 篇技术文章、262 个代码库的整合索引，按 LLM、强化学习、计算机视觉、系统、编程语言、基础设施等 40+ 大类组织。对于需要在多个技术方向快速建立认知的研究者，这类结构化知识库的价值在于：它不只收录资源，还通过分类本身提供了一张技术地图——知道"有什么可以学"和"各个方向如何关联"，比单篇文章的内容更有价值。</p>
+            <p>参考：<a href="https://github.com/lvy010/X-Plore" target="_blank" rel="noopener">X-Plore — 2000+ 篇文章整合</a></p>
+          </div>
+
+          <div class="learning-attribution">
+            以上学习资源来自 <a href="https://github.com/lvy010" target="_blank" rel="noopener">lvy010</a> 的开源分享，感谢作者。
+          </div>
+
+          <h2>学习笔记</h2>
+
+          <div class="note-section">
+            <h3>Lean 4 入门路径：从竞赛数学到 Mathlib 形式化</h3>
+            <p>以下是我在形式化 18 道 ICCM 竞赛题过程中总结的路径，面向有数学背景但没有类型论经验的读者。参考了 <a href="https://blog.sikesibian.tech/2024/12/07/Lean4-1/" target="_blank" rel="noopener">Lean 4 入门教程</a>（依赖类型论基础）及 Mathlib4 文档。</p>
+
+            <p><strong>环境搭建</strong>：安装 <code>elan</code>（Lean 版本管理器），用 <code>lake new myproject math</code> 创建带 Mathlib 依赖的项目，首次 <code>lake update</code> 会拉取预编译缓存（约 1–2 GB）。推荐 VS Code + lean4 插件，右侧面板实时显示证明目标状态（Infoview）。</p>
+
+            <p><strong>核心概念</strong>：Lean 4 中的定理证明是构造一个具有给定类型的项（Curry-Howard 同构）。<code>theorem</code> 关键字声明命题类型，<code>by</code> 进入 tactic 模式，每条 tactic 缩减证明目标，直至所有目标被关闭。</p>
+
+            <p><strong>常用 tactics 速查</strong>（竞赛数学场景）：</p>
+<pre class="code-block">-- 自动化算术
+ring          -- 环等式，处理多项式恒等式（最常用）
+norm_num      -- 具体数值计算（验证 2^10 = 1024 之类）
+omega         -- 整数 / 自然数线性算术，竞赛题必备
+linarith      -- 线性不等式推导（支持假设的线性组合）
+nlinarith     -- 非线性不等式（可加平方项作 hint：nlinarith [sq_nonneg x]）
+
+-- Mathlib 搜索
+exact?        -- 搜索能直接 close 当前目标的引理
+apply?        -- 搜索能 apply 到当前目标的引理
+simp?         -- 列出 simp 调用了哪些引理（调试用）
+
+-- 逻辑变换
+push_neg      -- 将否定推入量词（¬∀ x, P x → ∃ x, ¬P x）
+contrapose    -- 转换为逆否命题
+by_contra h   -- 引入反证假设 h : ¬Goal
+
+-- 结构拆解
+intro h       -- 引入全称量词 / 蕴含前件
+obtain ⟨a, b⟩ := h  -- 析构存在量词或合取
+cases h       -- 按构造子分情况讨论
+rcases h with ⟨a, b, hb⟩  -- 嵌套析构</pre>
+
+            <p><strong>Mathlib 命名惯例</strong>：引理名按"结论结构"命名，下划线分隔。<code>Nat.add_comm</code> 是自然数加法交换律，<code>Int.mul_comm</code> 是整数乘法交换律，<code>Nat.lt_of_add_lt_add_left</code> 表示"去掉左边加数后保持严格小于"。不等式引理常以 <code>_le_</code>、<code>_lt_</code> 为中缀；存在性引理常以 <code>_exists_</code> 或 <code>Exists.</code> 开头。不确定时，用 <code>exact?</code> 或 Mathlib 在线文档搜索。</p>
+
+            <p><strong>竞赛题形式化的标准工作流</strong>：</p>
+            <ol class="plain-list">
+              <li>写 <strong>statement</strong>：把题目翻译成 Lean 的 <code>theorem</code> 类型签名，用 <code>sorry</code> 占位通过编译，确认类型正确。</li>
+              <li>在纸上把证明写清楚，找到每一步对应的 Lean 概念（等式 / 不等式 / 存在性 / 归纳 / 构造性）。</li>
+              <li>用 <code>have h1 : ... := by ...</code> 逐步替换 <code>sorry</code>，用 <code>exact?</code>/<code>apply?</code> 找到 Mathlib 引理名。</li>
+              <li><code>lake build</code> 验证整个文件无 <code>sorry</code> 且编译通过。</li>
+            </ol>
+
+            <p><strong>常见坑</strong>：</p>
+            <ul class="plain-list">
+              <li>ℕ 和 ℤ 之间的转换（<code>Int.ofNat</code>、<code>Nat.cast</code>）：纸面上的"正整数"在 Lean 里必须想清楚用哪个类型，跨类型运算需要显式转换。</li>
+              <li><code>omega</code> 只处理线性整数算术，含乘法的目标需要 <code>nlinarith</code> 或手动分解。</li>
+              <li>Mathlib 版本更新可能改变引理名；用 <code>exact?</code> 动态查找而不是硬编码引理名，避免升级后编译失败。</li>
+              <li>证明目标中的 <code>⊢</code> 符号表示"待证明"；<code>case</code> 关键字处理多目标分支时需要显式命名。</li>
+            </ul>
+          </div>
+
+          <div class="note-section">
+            <h3>大模型微调笔记：QLoRA + GRPO 实战</h3>
+            <p>以下是在成亭科技实习时，对 Qwen3-30B-A3B 进行安全告警分类微调的经验整理。参考了 <a href="https://huggingface.co/docs/trl/main/en/grpo_trainer" target="_blank" rel="noopener">TRL GRPOTrainer 文档</a>、<a href="https://github.com/unslothai/unsloth" target="_blank" rel="noopener">unsloth</a> 以及实际 A100 双卡环境下的 OOM 调试经历。</p>
+
+            <p><strong>为什么选 QLoRA</strong>：30B 参数模型全量微调需要数十张 A100。QLoRA 通过 4-bit 量化冻结基座模型，仅训练低秩适配器（LoRA），将单卡显存需求压缩到可接受范围。核心代价是训练速度略慢，以及量化引入的轻微精度损失——对领域适配任务通常可接受。</p>
+
+            <p><strong>LoRA 配置要点</strong>：</p>
+<pre class="code-block">from peft import LoraConfig
+
+lora_config = LoraConfig(
+    r=8,               # 秩：越大表达能力越强，显存也越大；8 是常用起点
+    lora_alpha=16,     # 缩放因子，通常设为 2*r
+    target_modules=[   # 注入 LoRA 的目标层（注意力 + FFN）
+        "q_proj", "k_proj", "v_proj", "o_proj",
+        "gate_proj", "up_proj", "down_proj",
+    ],
+    lora_dropout=0.05,
+    bias="none",
+    task_type="CAUSAL_LM",
+)</pre>
+
+            <p><strong>为什么选 GRPO 而不是 SFT</strong>：SFT 只优化"复现正确答案的格式"，但安全告警分类的核心困难是非对称损失——漏报严重告警的代价远高于误报。GRPO（Group Relative Policy Optimization）通过 reward 函数直接编码这种不对称性，让模型在训练过程中真正优化业务目标，而不是拟合标注分布。相比 PPO，GRPO 去掉了 critic 网络，内存开销更小，收敛也更稳定。</p>
+
+            <p><strong>Reward 函数设计</strong>（非对称惩罚）：</p>
+<pre class="code-block">def security_reward(completions: list, labels: list) -> list:
+    rewards = []
+    for pred, label in zip(completions, labels):
+        pred_class = parse_class(pred)   # 从生成文本中提取分类结果
+        if pred_class == label:
+            rewards.append(1.0)          # 正确分类
+        elif label == "critical" and pred_class != "critical":
+            rewards.append(-3.0)         # 漏报严重告警：重罚
+        elif label != "critical" and pred_class == "critical":
+            rewards.append(-0.5)         # 误报严重告警：轻罚
+        else:
+            rewards.append(-0.3)         # 其他错误
+    return rewards</pre>
+
+            <p><strong>训练加速</strong>：使用 <a href="https://github.com/unslothai/unsloth" target="_blank" rel="noopener">unsloth</a> 对 QLoRA 训练加速（利用手写 CUDA kernel 和 Flash Attention 2，官方称约 2× 速度提升）。显存进一步优化：调低 <code>gpu_memory_utilization</code>（推荐 0.2–0.4），启用梯度检查点（<code>gradient_checkpointing=True</code>），<code>per_device_train_batch_size</code> 从 4 降到 2 可显著降低 OOM 风险。</p>
+
+            <p><strong>核心结论</strong>：用对称 reward（最大化整体精度）训练的模型，在严重告警的召回率上比非对称 reward 训练的模型低约 15 个百分点。基座模型选择（同量级）对这个指标的影响远小于 reward 设计。对于任何奖励信号不对称的分类任务，reward 函数的设计是最值得投入时间的地方。</p>
+          </div>
+
+          <div class="note-section">
+            <h3>正特征代数几何笔记（手稿）</h3>
+            <p>特征 <em>p</em> 下的代数几何在细节处与特征 0 有根本不同。Frobenius 态射的存在改变了向量丛的稳定性理论；quasi-elliptic fibration 的出现（仅在特征 2 和 3 中）使得标准的 Bogomolov 不等式证明失效——经典证明依赖 Frobenius 下半稳定性的保持，而这一性质在准椭圆情形中不成立。</p>
+            <p>以下是我在研究 Bogomolov 不等式向准椭圆曲面推广过程中整理的手稿笔记，涵盖 quasi-elliptic surface 的基本性质、Frobenius 拉回下的斜率不等式、以及绕过经典障碍的证明路径。</p>
+            <p><a href="https://space.bilibili.com/482291258/upload/opus" target="_blank" rel="noopener">手稿（B 站）</a> &nbsp;&middot;&nbsp; <a href="/publications/bogomolov.html">相关论文</a></p>
+          </div>
 
         </section>
         <footer class="page__meta"></footer>

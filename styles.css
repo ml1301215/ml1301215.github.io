@@ -532,3 +532,31 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
 .blog-post__title a:hover { color: #52adc8; text-decoration: underline; }
 .blog-post__meta { margin: 0 0 0.5em; font-size: 0.8125em; color: #9ba1a6; }
 .blog-post__excerpt { margin: 0; font-size: 0.9375em; color: #494e52; }
+
+/* Project cards grid */
+.project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1em; margin: 1em 0 2.5em; }
+@media (max-width: 57.8125em) { .project-grid { grid-template-columns: 1fr; } }
+.project-card { border: 1px solid #e8eaeb; border-radius: 5px; padding: 1em 1.1em 0.9em; }
+.project-card h3 { margin: 0 0 0.25em; font-size: 1em; border-bottom: none; padding-bottom: 0; }
+.project-card h3 a { color: #494e52; text-decoration: none; }
+.project-card h3 a:hover { color: #52adc8; }
+.project-card .project-year { font-size: 0.8125em; color: #9ba1a6; margin-bottom: 0.4em; }
+.project-card p { font-size: 0.9375em; margin: 0.35em 0 0.5em; color: #494e52; line-height: 1.55; }
+.project-card .project-links { font-size: 0.8125em; margin-top: 0.3em; }
+.project-card .project-links a { margin-right: 0.75em; color: #52adc8; }
+
+/* Tag chips */
+.tag { display: inline-block; padding: 0.1em 0.45em; border-radius: 3px; font-size: 0.72em; background: #f2f3f3; color: #7a8288; margin-right: 0.25em; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+
+/* Learning journey */
+.learning-ref { margin: 0.25em 0 1.4em; font-size: 0.9375em; line-height: 1.6; }
+.learning-ref p { margin: 0 0 0.6em; }
+.learning-attribution { margin-top: 1.8em; padding: 0.65em 1em; background: #f8f9f9; border-left: 3px solid #e0e2e3; font-size: 0.875em; color: #7a8288; }
+.learning-attribution a { color: #52adc8; }
+
+/* Code blocks in notes */
+pre.code-block { background: #f8f9f9; border: 1px solid #e8eaeb; border-radius: 4px; padding: 0.8em 1em; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.8125em; overflow-x: auto; margin: 0.8em 0 1em; line-height: 1.5; color: #494e52; white-space: pre; }
+
+/* Note subsections */
+.note-section { margin-bottom: 2.5em; }
+.note-section h3 { border-bottom: none; }

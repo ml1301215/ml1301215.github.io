@@ -75,32 +75,24 @@
         </header>
         <section class="page__content" itemprop="text">
 
-          <h2 class="blog-year">2026</h2>
-
-          <div class="blog-post">
-            <h3 class="blog-post__title"><a href="https://arxiv.org/abs/2602.13695" target="_blank" rel="noopener">Can a Lightweight AI Pipeline Solve Research-Level Math?</a></h3>
-            <p class="blog-post__meta">February 2026 &nbsp;&middot;&nbsp; 5 min read</p>
-            <p class="blog-post__excerpt">We tested whether a small automated pipeline — LLM solve, Lean 4 verify, LLM correct — could make meaningful progress on problems that have no published solutions. The short answer: on competition-level problems, yes. On true research-level problems, not yet — but the failures are informative.</p>
-          </div>
-
-          <div class="blog-post">
-            <h3 class="blog-post__title">Formalizing Competition Problems in Lean 4</h3>
-            <p class="blog-post__meta">March 2026 &nbsp;&middot;&nbsp; 4 min read</p>
-            <p class="blog-post__excerpt">Notes on what I learned formalizing 18 ICCM problems in Lean 4. The hardest part is not the mathematics — it is navigating Mathlib. A guide to the library's naming conventions, the <code>apply?</code> and <code>exact?</code> tactics, and how to think about proof states when the goal looks nothing like the paper statement.</p>
-          </div>
-
           <h2 class="blog-year">2025</h2>
 
           <div class="blog-post">
-            <h3 class="blog-post__title"><a href="/publications/bogomolov.html">Bogomolov on Quasi-Elliptic Surfaces</a></h3>
-            <p class="blog-post__meta">October 2025 &nbsp;&middot;&nbsp; 6 min read</p>
-            <p class="blog-post__excerpt">The Bogomolov inequality bounds the second Chern class of a semistable vector bundle in terms of the first. In characteristic zero, the proof is classical. In characteristic 2 and 3, where quasi-elliptic fibrations appear, the standard arguments break down. Here I explain what goes wrong and how to fix it.</p>
+            <h3 class="blog-post__title">用 AI 做渗透测试：腾讯云黑客松复盘</h3>
+            <p class="blog-post__meta">December 2025 &nbsp;&middot;&nbsp; 4 min read</p>
+            <p class="blog-post__excerpt">在腾讯云黑客松（AI 渗透测试赛道），我们团队"长亭外"构建了一个将侦察到利用全流程自动化的多智能体系统。核心技术问题是状态管理：渗透测试不是一系列独立的 LLM 调用，而是一个有状态的过程，每一个发现都约束着下一步行动。我们用显式的攻击图来解决这个问题——以发现的服务为节点、潜在利用路径为边的有向结构——让 LLM 在图上进行推理，而不是生成自由文本。完全自由格式的生成会产生难以验证的幻觉；图结构把 LLM 的输出约束在可审计的行动空间里。团队最终获得第一名。</p>
           </div>
 
           <div class="blog-post">
-            <h3 class="blog-post__title">Finite Games and Infinite Games</h3>
-            <p class="blog-post__meta">June 2025 &nbsp;&middot;&nbsp; 3 min read</p>
-            <p class="blog-post__excerpt">James Carse distinguishes two kinds of games. A finite game is played to win; an infinite game is played to continue playing. Most AI benchmarks are finite games — there is a score, a ranking, a winner. Mathematics, I think, is an infinite game. The point is not to solve all problems but to keep the conversation going. I wonder what it would mean for AI to play the infinite game.</p>
+            <h3 class="blog-post__title">给 30B 模型做安全告警分类微调</h3>
+            <p class="blog-post__meta">November 2025 &nbsp;&middot;&nbsp; 6 min read</p>
+            <p class="blog-post__excerpt">安全告警分类是通用 LLM 表现很差的一个领域——不是因为缺乏知识，而是因为奖励信号不对称：漏报一条严重告警的代价远高于误报。在成亭科技，我用 QLoRA 压缩 Qwen3-30B-A3B 的显存占用，再用 GRPO 对齐模型的分类行为，reward 函数对漏报的惩罚权重远高于误报。实验的核心发现是：用对称 reward（最大化精度）训练的模型，在严重告警的召回率上比非对称 reward 训练的模型低约 15 个百分点。这个差距比基座模型的选择更重要。</p>
+          </div>
+
+          <div class="blog-post">
+            <h3 class="blog-post__title">用多智能体 RAG 构建漏洞扫描器</h3>
+            <p class="blog-post__meta">August 2025 &nbsp;&middot;&nbsp; 5 min read</p>
+            <p class="blog-post__excerpt">在京东实习期间，我基于 Dify 搭建了一个以 NVD/CVE 为知识库的多智能体漏洞扫描系统。关键洞察是：漏洞评估不是检索问题，而是推理问题——智能体不只需要知道某个 CVE 存在，更需要判断目标端点在其具体配置下是否真的可利用。将侦察智能体与评估智能体分离、让评估智能体获取完整 CVE 上下文后，与单智能体基线相比误报率大幅下降。这个架构决策背后的原理：不同的认知任务需要不同的上下文窗口，合并它们会导致信息稀释。</p>
           </div>
 
         </section>
