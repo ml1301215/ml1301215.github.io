@@ -510,3 +510,10 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
 .photo-row img { flex: 1; min-width: 0; max-height: 220px; object-fit: cover; border-radius: 4px; }
 .book-cover { margin: 1em 0 1.5em; }
 .book-cover img { max-width: 160px; border: 1px solid #f2f3f3; padding: 4px; }
+
+/* Dataset tables */
+.dataset-table { border-collapse: collapse; width: 100%; font-size: 0.9375em; margin: 0.75em 0 2em; }
+.dataset-table thead tr { background-color: #f8f9fa; }
+.dataset-table th { padding: 0.5em 0.75em; font-weight: bold; border-bottom: 2px solid #dee0e1; text-align: left; border-right: none; }
+.dataset-table td { padding: 0.5em 0.75em; border-bottom: 1px solid #f2f3f3; vertical-align: top; border-right: none; }
+.dataset-table td:first-child { color: #7a8288; width: 7em; white-space: nowrap; }
