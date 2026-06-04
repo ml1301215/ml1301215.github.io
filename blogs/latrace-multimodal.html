@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>全模态链路的搭建：LATRACE 的多模态记忆设计 — Lve Meng</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <div class="masthead">
+    <div class="masthead__inner-wrap">
+      <div class="masthead__menu">
+        <nav id="site-nav" class="greedy-nav">
+          <button><div class="navicon"></div></button>
+          <ul class="visible-links">
+            <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">蒙略 / Lve Meng</a></li>
+            <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
+            <li class="masthead__menu-item"><a href="/talks/">Talks</a></li>
+            <li class="masthead__menu-item"><a href="/datasets/">Datasets</a></li>
+            <li class="masthead__menu-item"><a href="/blogs/">Blogs</a></li>
+            <li class="masthead__menu-item"><a href="/projects/">Projects</a></li>
+            <li class="masthead__menu-item"><a href="/learning/">Learning</a></li>
+            <li class="masthead__menu-item"><a href="/misc/">Misc</a></li>
+          </ul>
+          <ul class="hidden-links hidden"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div id="main" role="main">
+
+    <div class="sidebar sticky">
+      <div itemscope itemtype="http://schema.org/Person">
+        <div class="author__avatar">
+          <img src="../docs/人物头像1.jpg" class="author__avatar" alt="Lve Meng" />
+        </div>
+        <div class="author__content">
+          <h3 class="author__name">蒙略 / Lve Meng</h3>
+          <p class="author__bio">
+            Master's student in Mathematics<br>USTC
+          </p>
+        </div>
+        <div class="author__urls-wrapper">
+          <button class="btn btn--inverse">Follow</button>
+          <ul class="author__urls social-icons">
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:1em;height:1em;vertical-align:middle;margin-right:0.4em;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              Beijing, China
+            </li>
+            <li>
+              <a href="mailto:ml130@mail.ustc.edu.cn">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                ml130@mail.ustc.edu.cn
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/ml1301215" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+      <div class="page__inner-wrap">
+        <header>
+          <h1 class="page__title" itemprop="headline">全模态链路的搭建：LATRACE 的多模态记忆设计</h1>
+        </header>
+        <section class="page__content" itemprop="text">
+
+          <p><a href="/blogs/" class="back-link">← Blogs</a></p>
+          <p class="blog-post__meta">April 2026 &nbsp;&middot;&nbsp; <a href="https://github.com/ZXXZ1000/LATRACE-AI" target="_blank" rel="noopener">LATRACE-AI on GitHub</a></p>
+
+          <p>这篇文章记录了我参与 OmniMemory（现已开源为 LATRACE）全模态记忆链路搭建的技术过程。LATRACE 是一个面向 AI 产品的多模态记忆服务，把文本、音频、图像和视频统一接入同一张带时间语义的知识图谱。</p>
+
+          <h2>背景：AI 记忆的"失忆症"</h2>
+
+          <p>大多数 AI 应用的记忆方案是：把最近几轮对话塞进上下文窗口，超出窗口就丢掉。这在短对话里够用，但一旦产品需要跨会话的长期记忆，问题就出现了：用户昨天说过的偏好、上周提到的计划、两个月前建立的人物关系，全部消失。</p>
+
+          <p>更深的问题在于：现代产品里，信息不只来自文本。用户会发语音消息、分享图片、发视频。如果把这些模态的记忆分散在不同系统里管理，检索时就很难把"昨天那段语音里提到的事"和"今天文字对话里的上下文"关联起来。</p>
+
+          <p>全模态记忆要解决的核心问题是：让文本、音频、视频的记忆进入同一张图，用同一套检索接口访问，而不是形成彼此割裂的孤岛。</p>
+
+          <h2>设计核心：为什么用图谱而不是向量库</h2>
+
+          <p>最常见的长期记忆方案是向量检索（RAG）：把历史对话切成块，向量化后存起来，查询时按相似度召回 top-k 片段。这个方案有效，但有明显的局限：</p>
+
+          <ul class="plain-list">
+            <li>无法追踪状态变化：用户今天说"最近很忙"，下周说"终于闲下来了"，RAG 会把这两段都召回，但不知道哪个是更新的状态。</li>
+            <li>无法回答关系型问题："Alice 和 Bob 之间的关系怎么变化的？"这类问题需要图结构，不是相似度检索。</li>
+            <li>无法做时间推理："她上次提到这件事是多久前？"RAG 没有时间语义。</li>
+          </ul>
+
+          <p>LATRACE 的底层是 TKG（Temporal Knowledge Graph，带时间语义的知识图谱）。对话、音频、视频进来之后，不是直接存成文本块，而是被编译成图节点（实体、事件、状态）和带时间标注的边（关系、变化）。</p>
+
+          <p>这样，同一个 API 可以同时支持：</p>
+          <ul class="plain-list">
+            <li>语义检索（向量相似度，用 Qdrant）</li>
+            <li>结构化查询（实体档案、状态变化、时间线，用 Neo4j）</li>
+            <li>证据链追溯（某个结论基于哪条对话/哪段视频）</li>
+          </ul>
+
+          <h2>全模态链路：三种模态如何进入同一张图</h2>
+
+          <p>LATRACE 有三条 ingest 入口，分别对应三种模态：</p>
+
+          <pre><code>POST /ingest/dialog/v1   # 文本对话
+POST /ingest/media/audio/v1  # 音频
+POST /ingest/media/video/v1  # 视频</code></pre>
+
+          <p>三条入口的 <strong>出口是统一的</strong>：都会落到同一张 TKG 里，共享 <code>tenant_id</code>、<code>user_id</code>、<code>memory_domain</code> 和时间语义。这是全模态链路设计的关键点——不同模态不形成独立的记忆系统，而是在同一套图结构和同一套检索契约下工作。</p>
+
+          <h3>文本链路</h3>
+
+          <p>文本对话是最基础的入口。输入是对话的 turns（轮次），系统会：</p>
+          <ol class="plain-list">
+            <li>把对话内容做实体识别（人物、地点、事件）</li>
+            <li>提取实体间的关系和状态</li>
+            <li>写入 TKG，附带 session_id 和时间戳</li>
+            <li>同时写入向量库（支持后续的语义检索）</li>
+          </ol>
+
+          <h3>音频链路</h3>
+
+          <p>音频入口接收音频文件或 URL，处理流程是：</p>
+          <ol class="plain-list">
+            <li>转录（ASR）得到文本</li>
+            <li>以 source-based 方式进入和文本相同的处理流程</li>
+            <li>写入 TKG 时保留 source 来源（<code>source_type: audio</code>）和时间偏移量</li>
+          </ol>
+
+          <p>这个设计意味着：一段语音里说的"我下周要去上海出差"，和文字对话里后来提到的"上海出差"，会在图谱里被连接起来，并且都可以用同一套检索 API 访问。</p>
+
+          <h3>视频链路</h3>
+
+          <p>视频是三者中处理成本最高的。链路是：</p>
+          <ol class="plain-list">
+            <li>视频分帧（关键帧提取）</li>
+            <li>多模态处理：帧图像做视觉理解，音轨做 ASR</li>
+            <li>两路结果合并，提取时间对齐的事件和实体</li>
+            <li>写入 TKG，带帧时间戳</li>
+          </ol>
+
+          <p>我参与的工作主要集中在这条链路：设计音频和视频的 ingest 接口契约（和文本入口保持一致的隔离键、时间语义和异步作业模式），以及多模态结果进入 TKG 时的节点类型和边类型的扩展。</p>
+
+          <h2>异步作业模式</h2>
+
+          <p>三条 ingest 入口都返回一个 <code>job_id</code>，不是立即返回写入结果。客户端需要轮询 <code>GET /ingest/jobs/{job_id}</code> 来确认处理状态（<code>PENDING</code> → <code>PROCESSING</code> → <code>COMPLETED</code> / <code>FAILED</code>）。</p>
+
+          <p>这个设计是合理的：音频和视频的处理（转录、分帧、实体提取）耗时不可控，同步等待会阻塞调用方。异步作业还支持断点重试——如果某个步骤失败，可以从失败点重新触发，而不是重跑整条链路。</p>
+
+          <h2>两种接入模式的选择</h2>
+
+          <p>LATRACE 的检索接口有两种用法：</p>
+
+          <p><strong>模式 A（Retrieval API）</strong>：直接调用 <code>POST /retrieval/dialog/v2</code>，传入查询，得到记忆片段和证据摘要，再手动拼进 prompt。这是最快的接入方式，2 个 HTTP 调用即可。</p>
+
+          <p><strong>模式 B（ADK Tools）</strong>：把记忆暴露成 Agent 可调用的工具集：<code>entity_profile</code>（查实体档案）、<code>entity_status</code>（查当前状态）、<code>status_changes</code>（查状态变化历史）、<code>topic_timeline</code>（查时间线）、<code>relations</code>（查关系图）等。Agent 按需主动发起记忆查询，而不是把所有可能相关的上下文都塞进 prompt。</p>
+
+          <p>两种模式跑在同一套记忆服务之上，差别在于谁来决定"查什么记忆"：模式 A 是开发者手动写查询，模式 B 是 Agent 在运行时自主发起工具调用。</p>
+
+          <h2>多租户隔离</h2>
+
+          <p>所有 ingest 和 retrieval 请求都带 <code>X-Tenant-ID</code> header，加上 payload 里的 <code>user_id</code> 和 <code>memory_domain</code>，构成三级隔离键。这三个键在 TKG 里是第一公民——图谱里的每个节点和边都携带这些键，查询时在存储层就做过滤，不是在应用层事后剔除。</p>
+
+          <p>这在 SaaS 产品里很重要：多个租户共用一套记忆服务，但彼此的记忆数据在存储层就严格隔离，不依赖应用代码的正确性来保证安全性。</p>
+
+          <h2>一个设计细节：schema 一致性</h2>
+
+          <p>全模态链路最难处理的部分不是转录或分帧，而是<strong>不同模态写入 TKG 时的 schema 一致性</strong>。文本对话里说"Alice 的压力最近在上升"，和视频里识别出 Alice 表情紧张、语音语调变化，这两件事在图谱里应该用同一套节点类型（Person、EmotionalState）和边类型（hasStatus、changedAt），而不是因为来源不同就用不同的 schema。</p>
+
+          <p>一旦 schema 不一致，"把三种模态的记忆统一查询"就变成空话——你无法跨越不同的节点类型做图遍历。LATRACE 在设计上强制要求所有模态共享核心 schema，差异只存在于 source 字段里，而不影响图结构本身。</p>
+
+          <p>这是我在参与全模态链路设计时认为最关键的一个判断：<strong>模态的差异在 ingest 阶段消化，不带入存储层</strong>。</p>
+
+        </section>
+        <footer class="page__meta"></footer>
+      </div>
+    </article>
+  </div>
+
+  <div class="page__footer">
+    <footer>
+      <div class="page__footer-copyright">&copy; 2026 Lve Meng &nbsp;&middot;&nbsp; <a href="/sitemap.html">Sitemap</a> &nbsp;&middot;&nbsp; Powered by <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></div>
+    </footer>
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>

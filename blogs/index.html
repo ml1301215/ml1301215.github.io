@@ -77,6 +77,12 @@
           <h2 class="blog-year">2026</h2>
 
           <div class="blog-post">
+            <h3 class="blog-post__title"><a href="/blogs/latrace-multimodal.html">全模态链路的搭建：LATRACE 的多模态记忆设计</a></h3>
+            <p class="blog-post__meta">April 2026</p>
+            <p class="blog-post__excerpt">记录了参与 OmniMemory（现已开源为 LATRACE）全模态记忆链路搭建的技术过程。LATRACE 的核心问题是：如何让文本、音频、视频的记忆进入同一张图，用同一套检索接口访问，而不是形成彼此割裂的孤岛。底层用的是 TKG（带时间语义的知识图谱），三种模态各有 ingest 入口，但最终都落到统一的 schema 上。全模态链路最难的部分不是转录或分帧，而是不同模态写入图谱时的 schema 一致性——模态的差异在 ingest 阶段消化，不带入存储层。</p>
+          </div>
+
+          <div class="blog-post">
             <h3 class="blog-post__title">形式化数学：进度与边界</h3>
             <p class="blog-post__meta">February 2026</p>
             <p class="blog-post__excerpt">过去几个月用 Lean 4 形式化了 18 道 ICCM 竞赛题，积累了一些关于"什么能形式化、什么很难形式化"的感性认识。顺利的情形是有明确代数结构的题目：归纳、整除性、不等式链，这类题目的证明步骤和 Lean 的战术语言基本是一一对应的。困难在于几何直觉：一个"显然的"配方或辅助线，在 Lean 里需要拆解成十几步引理，而 Mathlib 不一定有你需要的那个引理。更深的障碍是类型：数学家习惯在 ℕ、ℤ、ℚ 之间随意转换，Lean 要求你每次都明确。形式化的过程暴露了哪些步骤在数学上是隐含的，这本身就有认识价值——不只是验证证明，而是理解证明的结构。</p>
