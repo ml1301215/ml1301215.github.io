@@ -234,9 +234,28 @@ tr, td, form button { -webkit-transition: all 0.2s ease-in-out; transition: all 
   transform: rotate3d(0, 0, 1, -45deg);
 }
 
-/* Hide hamburger on desktop */
-@media (min-width: 57.8125em) {
-  .greedy-nav > button { display: none; }
+/* Hide hamburger on all screen sizes */
+.greedy-nav > button { display: none; }
+
+/* ===== MOBILE NAV ===== */
+@media (max-width: 57.8125em) {
+  .masthead__inner-wrap { padding: 0.4em 0.8em; }
+  .greedy-nav .visible-links {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .greedy-nav .visible-links::-webkit-scrollbar { display: none; }
+  .greedy-nav .visible-links li {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .greedy-nav a { margin: 0 0.4rem; font-size: 0.82em; }
+  .masthead__menu-item--lg { padding-right: 0.8em; }
 }
 /* ===== #MAIN LAYOUT ===== */
 #main {

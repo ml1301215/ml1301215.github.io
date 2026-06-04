@@ -74,64 +74,48 @@
         </header>
         <section class="page__content" itemprop="text">
 
-          <h2 class="blog-year">2026</h2>
+          <p>整理自具体项目中积累的技术细节的独立文档。</p>
 
-          <div class="blog-post">
-            <h3 class="blog-post__title"><a href="/blogs/latrace-multimodal.html">全模态链路的搭建：LATRACE 的多模态记忆设计</a></h3>
-            <p class="blog-post__meta">April 2026</p>
-            <p class="blog-post__excerpt">记录了参与 OmniMemory（现已开源为 LATRACE）全模态记忆链路搭建的技术过程。LATRACE 的核心问题是：如何让文本、音频、视频的记忆进入同一张图，用同一套检索接口访问，而不是形成彼此割裂的孤岛。底层用的是 TKG（带时间语义的知识图谱），三种模态各有 ingest 入口，但最终都落到统一的 schema 上。全模态链路最难的部分不是转录或分帧，而是不同模态写入图谱时的 schema 一致性——模态的差异在 ingest 阶段消化，不带入存储层。</p>
+          <div class="note-section">
+            <h3><a href="/learning/lean4.html">Lean 4 入门路径：从竞赛数学到 Mathlib 形式化</a></h3>
+            <p>面向有数学背景但没有类型论经验的读者。涵盖环境搭建（elan + lake + Mathlib）、Curry-Howard 同构、战术速查（ring / omega / linarith / nlinarith / exact? / apply?）、Mathlib 命名惯例、竞赛题形式化工作流，以及 ℕ/ℤ 类型转换、跨版本引理名变化等常见坑。整理自形式化 18 道 ICCM 竞赛题的实际经验。</p>
+            <p><a href="/learning/lean4.html">阅读完整笔记 →</a></p>
           </div>
 
-          <div class="blog-post">
-            <h3 class="blog-post__title">形式化数学：进度与边界</h3>
-            <p class="blog-post__meta">February 2026</p>
-            <p class="blog-post__excerpt">过去几个月用 Lean 4 形式化了 18 道 ICCM 竞赛题，积累了一些关于"什么能形式化、什么很难形式化"的感性认识。顺利的情形是有明确代数结构的题目：归纳、整除性、不等式链，这类题目的证明步骤和 Lean 的战术语言基本是一一对应的。困难在于几何直觉：一个"显然的"配方或辅助线，在 Lean 里需要拆解成十几步引理，而 Mathlib 不一定有你需要的那个引理。更深的障碍是类型：数学家习惯在 ℕ、ℤ、ℚ 之间随意转换，Lean 要求你每次都明确。形式化的过程暴露了哪些步骤在数学上是隐含的，这本身就有认识价值——不只是验证证明，而是理解证明的结构。</p>
+          <div class="note-section">
+            <h3><a href="/learning/finetune.html">大模型微调笔记：QLoRA + GRPO 实战</a></h3>
+            <p>以 Qwen3-30B-A3B 安全告警分类微调为主线。涵盖 LoRA 理论（低秩分解、秩选择）、QLoRA 量化原理（NF4 / double quantization）、SFT vs PPO vs GRPO 的对比与选型逻辑、GRPO 数学推导、非对称 reward 函数设计、unsloth 加速配置、OOM 调试经验，以及核心实验结论：非对称 reward 在严重告警召回率上比对称 reward 高约 15 个百分点。</p>
+            <p><a href="/learning/finetune.html">阅读完整笔记 →</a></p>
           </div>
 
-          <div class="blog-post">
-            <h3 class="blog-post__title">MoE 中的专家分配问题</h3>
-            <p class="blog-post__meta">January 2026</p>
-            <p class="blog-post__excerpt">读 Mixtral 和 DeepSeek-MoE 的时候，一直觉得专家路由（routing）的设计比模型架构本身更值得关注。hard top-k 路由的问题在于不可微——梯度无法流过离散的"选哪个专家"决策，所以必须用辅助损失（auxiliary loss）来强制负载均衡，而这个辅助损失和主训练目标之间存在张力：均衡负载未必是最优的专家分配。soft routing 绕过了这个问题，但引入了另一个：每个 token 对所有专家都有非零权重，计算量没有实质减少。这个矛盾在现有工作里还没有被干净地解决，只是被不同方式缓解了。</p>
+          <div class="note-section">
+            <h3><a href="/learning/algebraic-geometry.html">正特征代数几何笔记</a></h3>
+            <p>整理自研究 quasi-elliptic surface 上的 Bogomolov 型不等式过程中积累的背景知识与证明技术。涵盖向量丛稳定性（Mumford-Takemoto 斜率稳定性）、Bogomolov 不等式的特征 0 证明思路、Frobenius 态射对稳定性的影响、quasi-elliptic fibration 的定义与存在性（仅在特征 2 和 3 中）、经典证明在 quasi-elliptic 情形中失效的三个具体障碍，以及绕过这些障碍的证明路径。</p>
+            <p><a href="/learning/algebraic-geometry.html">阅读完整笔记 →</a></p>
           </div>
 
-          <h2 class="blog-year">2025</h2>
-
-          <div class="blog-post">
-            <h3 class="blog-post__title">p-curvature 是一种度量什么的不变量</h3>
-            <p class="blog-post__meta">October 2025</p>
-            <p class="blog-post__excerpt">代数几何里的 p-curvature 出现频率很高，但大多数地方只给出定义，不说它"度量什么"。直觉是这样的：在特征 0 中，一个向量丛上的联络是平坦的，当且仅当水平截面构成局部常数层（Riemann-Hilbert 对应）。在特征 p 中，这个对应失效——平坦联络不再等价于局部常数层，差距恰好由 p-curvature 衡量：p-curvature 为零，才是正特征版本的"平坦"（Frobenius 意义下的平坦）。Grothendieck 猜想说：在数域上定义的代数方程，如果它在几乎所有素数 p 处的 p-curvature 都为零，那么它有代数解。这个猜想在一般情形下还是开放的，但它把 p-curvature 和算术几何连接起来的方式非常干净。</p>
+          <div class="note-section">
+            <h3><a href="/learning/server-setup.html">在服务器上搭建训练环境</a></h3>
+            <p>整理自在长亭科技做模型训练时积累的环境配置经验。涵盖 Miniconda 安装与 conda 环境管理、CUDA 与 PyTorch 版本对应关系、tmux 会话管理、GPU 监控（nvidia-smi）、OOM 错误的常见原因与处理方式，以及实验追踪工具（Wandb）的基本配置。</p>
+            <p><a href="/learning/server-setup.html">阅读完整笔记 →</a></p>
           </div>
 
-          <div class="blog-post">
-            <h3 class="blog-post__title">GRPO 的核心想法</h3>
-            <p class="blog-post__meta">September 2025</p>
-            <p class="blog-post__excerpt">PPO 做 RL 对齐需要一个单独的 critic 网络来估计基线（baseline），训练和维护这个 critic 本身就是一笔开销。GRPO 的核心想法是：用同一个 prompt 采样一组输出，把组内平均奖励当作基线。这样不需要 critic，只需要一个奖励函数——可以是人工设计的规则，不必是另一个神经网络。这个改动在数学推理任务上效果很好，原因可能是：数学题有明确的对错，组内输出的奖励方差足够大，平均值作为基线是合理的估计。如果任务的奖励信号很稠密（输出之间差异小），这个基线就会退化，GRPO 的优势也随之消失。</p>
+          <div class="note-section">
+            <h3><a href="/learning/docker-tips.html">Docker 使用注意事项</a></h3>
+            <p>整理自实际使用 Docker 部署训练任务和服务时积累的经验教训。涵盖镜像分层与构建缓存、Dockerfile 编写规范、数据持久化（volumes vs bind mounts）、安全问题（不以 root 运行、secrets 不写入镜像层）、镜像过大的处理，以及与训练任务结合的常见场景。</p>
+            <p><a href="/learning/docker-tips.html">阅读完整笔记 →</a></p>
           </div>
 
-          <div class="blog-post">
-            <h3 class="blog-post__title">两种证明</h3>
-            <p class="blog-post__meta">June 2025</p>
-            <p class="blog-post__excerpt">同一个数学结论可以有性格完全不同的证明。一种是计算型的：从定义出发，展开所有符号，逐步化简，最后得到等式。另一种是结构型的：找到一个对象，说明它满足某个泛性质，然后由唯一性直接得出结论，中间没有任何计算。计算型证明容易验证，但难以推广——条件变一变，整个计算就要重来。结构型证明更难找，但一旦找到，它揭示的是"为什么"，而不只是"是什么"。在研究 quasi-elliptic 曲面上的 Bogomolov 不等式时，我花了很长时间试图用计算方法绕过 Frobenius 的不可分性，最后发现这条路走不通；转而从纤维化结构入手，反而快得多。这个经历让我相信：如果一个证明写起来异常繁琐，多半是选错了视角。</p>
+          <div class="note-section">
+            <h3><a href="/learning/linux-tools.html">Linux 服务器实用工具</a></h3>
+            <p>整理自日常在 Linux 服务器上工作时发现的实用工具。涵盖 tmux（持久会话，防止连接断开丢失进度）、htop（进程与资源监控）、nvidia-smi（GPU 监控）、nohup / screen（后台运行）、rsync / scp（文件传输）、以及日志查看和文本处理的常用命令组合。</p>
+            <p><a href="/learning/linux-tools.html">阅读完整笔记 →</a></p>
           </div>
 
-          <div class="blog-post">
-            <h3 class="blog-post__title">告警疲劳是一个设计问题</h3>
-            <p class="blog-post__meta">March 2025</p>
-            <p class="blog-post__excerpt">安全运营中心（SOC）的告警误报率在行业内普遍在 90% 以上，分析师每天处理几百条告警，其中真实威胁可能只有个位数。通常的应对方式是提高阈值——但这会漏掉真实威胁；或者扩充人手——但人手永远跟不上告警量。我认为这个问题的本质是校准（calibration）问题：告警系统没有输出置信度，分析师无法区分"模型很确定这是威胁"和"模型拿不准，给你看一眼"。如果告警附带校准后的置信度，分析师可以把精力集中在高置信度告警上，同时对低置信度告警批量处理。这不需要更好的检测模型，只需要让模型输出的不确定性变得可读。</p>
-          </div>
-
-          <h2 class="blog-year">2024</h2>
-
-          <div class="blog-post">
-            <h3 class="blog-post__title">Bogomolov 不等式的来源</h3>
-            <p class="blog-post__meta">December 2024</p>
-            <p class="blog-post__excerpt">Bogomolov 不等式（Δ(E) ≥ 0，对半稳定向量丛）最初的证明来自微分几何：稳定向量丛上存在 Hermitian-Einstein 联络（Kobayashi-Hitchin 对应），这个联络的曲率满足 Yang-Mills 方程，而 Yang-Mills 泛函的非负性直接给出 Δ(E) ≥ 0。这个证明依赖分析方法，不是纯代数的。后来 Mehta 和 Ramanathan 给出了代数证明：关键一步是限制定理——半稳定丛限制到一般超平面截面后仍然半稳定，然后在曲线上用 Riemann-Roch 控制 c₂。这两条路都用到了"稳定性在限制下保持"这一事实，只是实现方式不同。理解这两条路的差异，对后来处理 quasi-elliptic 情形下的证明策略有直接帮助。</p>
-          </div>
-
-          <div class="blog-post">
-            <h3 class="blog-post__title">算法竞赛是一种数学训练</h3>
-            <p class="blog-post__meta">August 2024</p>
-            <p class="blog-post__excerpt">花了大约八个月、2000 道题系统刷完了算法竞赛题库。现在回头看，收获不是"学会了动态规划"或"掌握了图论"，而是一种更底层的东西：对问题结构的感知——能快速判断这道题属于哪类、适合什么分解方式。这和数学竞赛的训练是相通的，不同的只是符号系统：数学竞赛用归纳、构造、反证，算法竞赛用双指针、滑窗、记忆化搜索，但"把问题归类、找到对应工具"的过程是一样的。这种训练的代价是：刷题本身的边际收益递减得很快，前 500 题学到的比后 1000 题多。如果重来，我会更早停下来，把时间放在更有难度梯度的题目上。</p>
+          <div class="note-section">
+            <h3><a href="/blogs/latrace-multimodal.html">全模态链路的搭建：LATRACE 的多模态记忆设计</a></h3>
+            <p>记录了参与 OmniMemory（现已开源为 LATRACE）全模态记忆链路搭建的技术过程。底层用的是 TKG（带时间语义的知识图谱），三种模态各有 ingest 入口，但最终都落到统一的 schema 上。涵盖图谱 vs 向量库的设计取舍、音频/视频链路的异步作业模式、多租户隔离键设计，以及全模态链路最关键的判断：模态的差异在 ingest 阶段消化，不带入存储层。</p>
+            <p><a href="/blogs/latrace-multimodal.html">阅读完整笔记 →</a></p>
           </div>
 
         </section>
