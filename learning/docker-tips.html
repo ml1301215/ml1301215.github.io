@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker 使用注意事项 — Lve Meng</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <div class="masthead">
+    <div class="masthead__inner-wrap">
+      <div class="masthead__menu">
+        <nav id="site-nav" class="greedy-nav">
+          <button><div class="navicon"></div></button>
+          <ul class="visible-links">
+            <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">蒙略 / Lve Meng</a></li>
+            <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
+            <li class="masthead__menu-item"><a href="/talks/">Talks</a></li>
+            <li class="masthead__menu-item"><a href="/datasets/">Datasets</a></li>
+            <li class="masthead__menu-item"><a href="/blogs/">Blogs</a></li>
+            <li class="masthead__menu-item"><a href="/projects/">Projects</a></li>
+            <li class="masthead__menu-item"><a href="/learning/">Learning</a></li>
+            <li class="masthead__menu-item"><a href="/misc/">Misc</a></li>
+          </ul>
+          <ul class="hidden-links hidden"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div id="main" role="main">
+
+    <div class="sidebar sticky">
+      <div itemscope itemtype="http://schema.org/Person">
+        <div class="author__avatar">
+          <img src="../docs/人物头像1.jpg" class="author__avatar" alt="Lve Meng" />
+        </div>
+        <div class="author__content">
+          <h3 class="author__name">蒙略 / Lve Meng</h3>
+          <p class="author__bio">
+            Master's student in Mathematics<br>USTC
+          </p>
+        </div>
+        <div class="author__urls-wrapper">
+          <button class="btn btn--inverse">Follow</button>
+          <ul class="author__urls social-icons">
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:1em;height:1em;vertical-align:middle;margin-right:0.4em;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              Beijing, China
+            </li>
+            <li>
+              <a href="mailto:ml130@mail.ustc.edu.cn">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                ml130@mail.ustc.edu.cn
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/ml1301215" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+      <div class="page__inner-wrap">
+        <header>
+          <h1 class="page__title" itemprop="headline">Docker 使用注意事项</h1>
+        </header>
+        <section class="page__content" itemprop="text">
+
+          <p><a href="/learning/" class="back-link">← Learning</a></p>
+          <p>整理自在京东和成亭两段实习中使用 Docker 部署服务和训练任务时积累的经验教训。Docker 的概念本身不复杂，难的是使用过程中的细节。</p>
+
+          <h2>一、镜像与容器的区别（常见误解）</h2>
+
+          <p>镜像（image）是静态的模板，容器（container）是运行中的实例。一个镜像可以启动多个容器。</p>
+
+          <p>最常见的误解：在容器里改了文件，以为下次启动时还在。实际上，容器的文件系统是独立于镜像的可写层，容器被删除后这层就消失了。如果需要持久化数据，必须用 volume 或 bind mount。</p>
+
+          <h2>二、镜像分层与构建缓存</h2>
+
+          <p>Dockerfile 里的每条指令（<code>RUN</code>、<code>COPY</code>、<code>ADD</code>）都会生成一个新的镜像层。构建时，如果某一层的内容没有变化，Docker 会复用缓存，跳过该层及之后所有层的重新执行——前提是该层之前的所有层都命中了缓存。</p>
+
+          <p>这意味着指令顺序很重要。变化频率低的指令放前面，变化频率高的放后面，这样才能最大化缓存利用率。</p>
+
+          <pre><code># 低效：每次改代码都要重新安装依赖
+FROM python:3.10
+COPY . /app
+RUN pip install -r /app/requirements.txt
+
+# 高效：先复制依赖文件，再复制代码
+FROM python:3.10
+COPY requirements.txt /app/requirements.txt
+RUN pip install -r /app/requirements.txt
+COPY . /app</code></pre>
+
+          <p>第二种写法，只要 <code>requirements.txt</code> 没变，<code>pip install</code> 那层就会命中缓存，节省大量时间。</p>
+
+          <h2>三、数据持久化：volumes vs bind mounts</h2>
+
+          <p>两种方式都可以把宿主机的数据挂载到容器里，区别在于管理方式：</p>
+
+          <ul class="plain-list">
+            <li><strong>bind mount</strong>：把宿主机的某个具体路径挂载到容器里。直观，适合开发阶段（代码改动实时同步）。<br><code>docker run -v /host/path:/container/path ...</code></li>
+            <li><strong>volume</strong>：由 Docker 管理的独立存储区域，不依赖宿主机的目录结构。适合生产环境和数据持久化。<br><code>docker run -v my-volume:/container/path ...</code></li>
+          </ul>
+
+          <p>训练任务中，模型权重和数据集建议用 bind mount 挂进去，这样容器跑完删掉，数据还在宿主机上。</p>
+
+          <h2>四、不以 root 运行</h2>
+
+          <p>默认情况下容器内的进程以 root 身份运行。如果容器被攻击，root 权限可能被利用来逃逸到宿主机。即使是内部使用的服务，也建议在 Dockerfile 里创建非 root 用户：</p>
+
+          <pre><code>RUN useradd -m appuser
+USER appuser</code></pre>
+
+          <p>这在有对外暴露接口的服务中尤其重要。</p>
+
+          <h2>五、secrets 不要写入镜像层</h2>
+
+          <p>Dockerfile 里的每一层都是永久存储的，即使后面用 <code>RUN rm</code> 删掉了文件，那个文件在之前的层里依然存在，<code>docker history</code> 可以看到。</p>
+
+          <pre><code># 错误：API key 被写入镜像层
+ENV API_KEY=my-secret-key
+
+# 正确：运行时通过环境变量传入
+docker run -e API_KEY=my-secret-key ...</code></pre>
+
+          <p>对于需要在构建阶段使用 secret 的情况（比如 <code>pip install</code> 私有包），用 Docker Buildkit 的 <code>--secret</code> 参数，secret 不会进入镜像层。</p>
+
+          <h2>六、镜像过大的处理</h2>
+
+          <p>镜像过大（常见原因：<code>apt-get install</code> 没清缓存、<code>pip</code> 缓存、临时文件）会导致拉取慢、存储占用多。</p>
+
+          <pre><code># 清理 apt 缓存（放在同一个 RUN 指令里，才不会保留在中间层）
+RUN apt-get update && apt-get install -y git curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# 清理 pip 缓存
+RUN pip install --no-cache-dir -r requirements.txt</code></pre>
+
+          <p>另一个方案是多阶段构建（multi-stage build）：用一个大镜像做编译，只把编译结果复制到最终的小镜像里。对纯 Python 项目不常用，但对有 C 扩展或二进制编译的项目效果显著。</p>
+
+          <h2>七、GPU 训练时的额外配置</h2>
+
+          <p>容器默认看不到 GPU，需要安装 <code>nvidia-container-toolkit</code> 并在运行时加参数：</p>
+
+          <pre><code># 安装 nvidia-container-toolkit（宿主机一次性操作）
+# 参考：https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+
+# 运行时挂载所有 GPU
+docker run --gpus all ...
+
+# 只挂载第 0 块 GPU
+docker run --gpus '"device=0"' ...</code></pre>
+
+          <p>在容器内用 <code>nvidia-smi</code> 验证 GPU 是否可见。</p>
+
+          <h2>八、常用命令速查</h2>
+
+          <pre><code>docker ps -a                    # 列出所有容器（包括停止的）
+docker images                   # 列出本地镜像
+docker rm $(docker ps -aq)      # 删除所有停止的容器
+docker rmi $(docker images -q)  # 删除所有镜像（谨慎）
+docker logs -f container_id     # 实时查看容器日志
+docker exec -it container_id bash  # 进入运行中的容器
+docker build -t my-image:v1 .   # 构建镜像
+docker system prune             # 清理未使用的镜像、容器、网络</code></pre>
+
+        </section>
+        <footer class="page__meta"></footer>
+      </div>
+    </article>
+  </div>
+
+  <div class="page__footer">
+    <footer>
+      <div class="page__footer-copyright">&copy; 2026 Lve Meng &nbsp;&middot;&nbsp; <a href="/sitemap.html">Sitemap</a> &nbsp;&middot;&nbsp; Powered by <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></div>
+    </footer>
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>

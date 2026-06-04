@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>在服务器上搭建训练环境 — Lve Meng</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+  <div class="masthead">
+    <div class="masthead__inner-wrap">
+      <div class="masthead__menu">
+        <nav id="site-nav" class="greedy-nav">
+          <button><div class="navicon"></div></button>
+          <ul class="visible-links">
+            <li class="masthead__menu-item masthead__menu-item--lg"><a href="/">蒙略 / Lve Meng</a></li>
+            <li class="masthead__menu-item"><a href="/publications/">Publications</a></li>
+            <li class="masthead__menu-item"><a href="/talks/">Talks</a></li>
+            <li class="masthead__menu-item"><a href="/datasets/">Datasets</a></li>
+            <li class="masthead__menu-item"><a href="/blogs/">Blogs</a></li>
+            <li class="masthead__menu-item"><a href="/projects/">Projects</a></li>
+            <li class="masthead__menu-item"><a href="/learning/">Learning</a></li>
+            <li class="masthead__menu-item"><a href="/misc/">Misc</a></li>
+          </ul>
+          <ul class="hidden-links hidden"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div id="main" role="main">
+
+    <div class="sidebar sticky">
+      <div itemscope itemtype="http://schema.org/Person">
+        <div class="author__avatar">
+          <img src="../docs/人物头像1.jpg" class="author__avatar" alt="Lve Meng" />
+        </div>
+        <div class="author__content">
+          <h3 class="author__name">蒙略 / Lve Meng</h3>
+          <p class="author__bio">
+            Master's student in Mathematics<br>USTC
+          </p>
+        </div>
+        <div class="author__urls-wrapper">
+          <button class="btn btn--inverse">Follow</button>
+          <ul class="author__urls social-icons">
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:1em;height:1em;vertical-align:middle;margin-right:0.4em;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              Beijing, China
+            </li>
+            <li>
+              <a href="mailto:ml130@mail.ustc.edu.cn">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                ml130@mail.ustc.edu.cn
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/ml1301215" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+      <div class="page__inner-wrap">
+        <header>
+          <h1 class="page__title" itemprop="headline">在服务器上搭建训练环境</h1>
+        </header>
+        <section class="page__content" itemprop="text">
+
+          <p><a href="/learning/" class="back-link">← Learning</a></p>
+          <p>整理自在成亭科技做 QLoRA + GRPO 训练时的实际经验。每个坑基本都是用几个小时换来的。</p>
+
+          <h2>一、拿到服务器后的第一步</h2>
+
+          <p>先确认基本信息：</p>
+          <pre><code>nvidia-smi          # GPU 型号、显存、驱动版本
+nvcc --version      # CUDA 版本（没有就需要单独装）
+cat /etc/os-release # 操作系统版本
+python3 --version   # 自带 Python 版本</code></pre>
+
+          <p>CUDA 驱动和 CUDA toolkit 是两回事。<code>nvidia-smi</code> 右上角显示的是驱动支持的最高 CUDA 版本，<code>nvcc --version</code> 是已安装的 toolkit 版本。PyTorch 依赖 toolkit，所以以 <code>nvcc</code> 的版本为准来选 PyTorch wheel。</p>
+
+          <h2>二、Miniconda 安装与环境管理</h2>
+
+          <p>不要用系统自带的 Python 装包，会污染全局环境，将来很难清理。Miniconda 安装后每个项目用独立的 conda 环境。</p>
+
+          <pre><code>wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+source ~/.bashrc
+
+# 新建环境
+conda create -n train python=3.10
+conda activate train</code></pre>
+
+          <p>创建环境时指定 Python 版本。不同的训练框架对 Python 版本有要求，提前确认。</p>
+
+          <h2>三、安装 PyTorch（版本对应很关键）</h2>
+
+          <p>PyTorch 官网有一个安装命令生成器，输入你的 CUDA 版本和 OS，它会给出对应的 pip/conda 命令。<strong>严格按照这个来</strong>，不要直接 <code>pip install torch</code>——默认会装 CPU 版本。</p>
+
+          <pre><code># 示例：CUDA 12.1
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+# 验证 GPU 可用
+python -c "import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0))"</code></pre>
+
+          <p>如果 <code>torch.cuda.is_available()</code> 返回 <code>False</code>，先检查 PyTorch 和 CUDA 版本是否匹配，再检查驱动是否正常（<code>nvidia-smi</code> 能否正常运行）。</p>
+
+          <h2>四、tmux：最重要的工具</h2>
+
+          <p>SSH 连接一旦断开，正在跑的训练进程就会被 kill。tmux 让你的会话在断开后继续运行。</p>
+
+          <pre><code>tmux new -s train      # 新建会话，命名为 train
+tmux ls                # 列出所有会话
+tmux attach -t train   # 重新连接到会话
+
+# 在 tmux 内部：
+Ctrl+b, d              # 脱离（detach），会话继续后台运行
+Ctrl+b, c              # 新建窗口
+Ctrl+b, 数字键         # 切换窗口</code></pre>
+
+          <p>每次开始训练前都应该先开一个 tmux 会话，这是最基本的习惯。</p>
+
+          <h2>五、GPU 监控</h2>
+
+          <pre><code>nvidia-smi                    # 一次性查看
+watch -n 1 nvidia-smi         # 每秒刷新，观察训练过程中的显存占用
+nvtop                         # 更直观的动态界面（需要单独安装）</code></pre>
+
+          <p>训练开始后，<code>watch -n 1 nvidia-smi</code> 挂在另一个 tmux 窗口里，可以实时看到显存是否撑得住。如果显存占用缓慢上升（内存泄漏），最终会 OOM 崩溃。</p>
+
+          <h2>六、OOM 的常见原因与处理</h2>
+
+          <p>OOM（Out of Memory）是训练时最常见的报错：<code>CUDA out of memory</code>。按可能性从高到低排列：</p>
+
+          <ul class="plain-list">
+            <li><strong>batch_size 太大</strong>：最常见原因。先减半，看是否能跑起来。</li>
+            <li><strong>序列长度太长</strong>：attention 的显存占用是序列长度的平方。将 <code>max_length</code> 减小。</li>
+            <li><strong>没有清理梯度</strong>：确认每个 step 都调用了 <code>optimizer.zero_grad()</code>。</li>
+            <li><strong>显存碎片化</strong>：训练前可以加 <code>torch.cuda.empty_cache()</code>，但不能解决根本问题。</li>
+            <li><strong>模型本身太大</strong>：考虑 QLoRA（量化 + LoRA），可以把显存需求压缩到原来的 1/4 左右。</li>
+          </ul>
+
+          <p>调整 batch_size 时可以用 gradient accumulation 补偿：<code>effective_batch_size = batch_size × gradient_accumulation_steps</code>。</p>
+
+          <h2>七、实验追踪（Wandb）</h2>
+
+          <p>训练日志只打印到终端，跑完之后很难回头分析。Wandb 可以自动记录 loss 曲线、学习率、GPU 使用率等，并生成可分享的可视化界面。</p>
+
+          <pre><code>pip install wandb
+wandb login       # 输入 API key（在 wandb.ai 注册后获取）
+
+# 在训练脚本里加：
+import wandb
+wandb.init(project="my-project", name="run-1")
+wandb.log({"loss": loss.item(), "lr": scheduler.get_last_lr()[0]})</code></pre>
+
+          <p>如果服务器没有外网，用 <code>wandb offline</code> 模式先本地记录，回来再同步。</p>
+
+          <h2>八、一个常见的坑：pip 和 conda 混用</h2>
+
+          <p>conda 环境里能用 pip 安装包，但 pip 和 conda 混用有时会造成依赖冲突，尤其是 CUDA 相关的包。经验法则：PyTorch 用 pip 官方 wheel 安装，其他包用 pip 安装，尽量不用 <code>conda install</code> 装科学计算包（因为 conda 源里的版本往往落后）。</p>
+
+        </section>
+        <footer class="page__meta"></footer>
+      </div>
+    </article>
+  </div>
+
+  <div class="page__footer">
+    <footer>
+      <div class="page__footer-copyright">&copy; 2026 Lve Meng &nbsp;&middot;&nbsp; <a href="/sitemap.html">Sitemap</a> &nbsp;&middot;&nbsp; Powered by <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></div>
+    </footer>
+  </div>
+
+  <script src="../script.js"></script>
+</body>
+</html>
