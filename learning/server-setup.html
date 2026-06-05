@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>在服务器上搭建训练环境 — Lve Meng</title>
+  <title>Setting Up a Training Environment on a Server — Lve Meng</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -70,103 +70,103 @@
     <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
       <div class="page__inner-wrap">
         <header>
-          <h1 class="page__title" itemprop="headline">在服务器上搭建训练环境</h1>
+          <h1 class="page__title" itemprop="headline">Setting Up a Training Environment on a Server</h1>
         </header>
         <section class="page__content" itemprop="text">
 
           <p><a href="/learning/" class="back-link">← Learning</a></p>
-          <p>整理自在成亭科技做 QLoRA + GRPO 训练时的实际经验。每个坑基本都是用几个小时换来的。</p>
+          <p>Compiled from hands-on experience setting up QLoRA + GRPO training at Chaitin Tech. Every pitfall described here cost several hours to work through.</p>
 
-          <h2>一、拿到服务器后的第一步</h2>
+          <h2>1. First Steps After Getting a Server</h2>
 
-          <p>先确认基本信息：</p>
-          <pre><code>nvidia-smi          # GPU 型号、显存、驱动版本
-nvcc --version      # CUDA 版本（没有就需要单独装）
-cat /etc/os-release # 操作系统版本
-python3 --version   # 自带 Python 版本</code></pre>
+          <p>Start by checking the basics:</p>
+          <pre><code>nvidia-smi          # GPU model, memory, and driver version
+nvcc --version      # CUDA version (install separately if missing)
+cat /etc/os-release # operating system version
+python3 --version   # system Python version</code></pre>
 
-          <p>CUDA 驱动和 CUDA toolkit 是两回事。<code>nvidia-smi</code> 右上角显示的是驱动支持的最高 CUDA 版本，<code>nvcc --version</code> 是已安装的 toolkit 版本。PyTorch 依赖 toolkit，所以以 <code>nvcc</code> 的版本为准来选 PyTorch wheel。</p>
+          <p>The CUDA driver and CUDA toolkit are two different things. The upper-right corner of <code>nvidia-smi</code> shows the highest CUDA version the driver supports; <code>nvcc --version</code> shows the installed toolkit version. PyTorch depends on the toolkit, so use the <code>nvcc</code> version to choose the right PyTorch wheel.</p>
 
-          <h2>二、Miniconda 安装与环境管理</h2>
+          <h2>2. Miniconda Installation and Environment Management</h2>
 
-          <p>不要用系统自带的 Python 装包，会污染全局环境，将来很难清理。Miniconda 安装后每个项目用独立的 conda 环境。</p>
+          <p>Do not install packages into the system Python — it pollutes the global environment and is hard to clean up later. After installing Miniconda, use a separate conda environment for each project.</p>
 
           <pre><code>wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 source ~/.bashrc
 
-# 新建环境
+# create a new environment
 conda create -n train python=3.10
 conda activate train</code></pre>
 
-          <p>创建环境时指定 Python 版本。不同的训练框架对 Python 版本有要求，提前确认。</p>
+          <p>Specify the Python version when creating an environment. Different training frameworks have different Python version requirements; verify them beforehand.</p>
 
-          <h2>三、安装 PyTorch（版本对应很关键）</h2>
+          <h2>3. Installing PyTorch (Matching Versions Is Critical)</h2>
 
-          <p>PyTorch 官网有一个安装命令生成器，输入你的 CUDA 版本和 OS，它会给出对应的 pip/conda 命令。<strong>严格按照这个来</strong>，不要直接 <code>pip install torch</code>——默认会装 CPU 版本。</p>
+          <p>The PyTorch website has a command generator: enter your CUDA version and OS and it produces the exact pip/conda command. Follow it strictly. Running <code>pip install torch</code> without a version flag installs the CPU-only build.</p>
 
-          <pre><code># 示例：CUDA 12.1
+          <pre><code># example: CUDA 12.1
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
-# 验证 GPU 可用
+# verify GPU is available
 python -c "import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0))"</code></pre>
 
-          <p>如果 <code>torch.cuda.is_available()</code> 返回 <code>False</code>，先检查 PyTorch 和 CUDA 版本是否匹配，再检查驱动是否正常（<code>nvidia-smi</code> 能否正常运行）。</p>
+          <p>If <code>torch.cuda.is_available()</code> returns <code>False</code>, first check whether the PyTorch and CUDA versions match, then check whether the driver is functioning (<code>nvidia-smi</code> should run without errors).</p>
 
-          <h2>四、tmux：最重要的工具</h2>
+          <h2>4. tmux: The Most Important Tool</h2>
 
-          <p>SSH 连接一旦断开，正在跑的训练进程就会被 kill。tmux 让你的会话在断开后继续运行。</p>
+          <p>When an SSH connection drops, any running training process gets killed. tmux keeps your session alive after disconnecting.</p>
 
-          <pre><code>tmux new -s train      # 新建会话，命名为 train
-tmux ls                # 列出所有会话
-tmux attach -t train   # 重新连接到会话
+          <pre><code>tmux new -s train      # create a named session
+tmux ls                # list all sessions
+tmux attach -t train   # reattach to a session
 
-# 在 tmux 内部：
-Ctrl+b, d              # 脱离（detach），会话继续后台运行
-Ctrl+b, c              # 新建窗口
-Ctrl+b, 数字键         # 切换窗口</code></pre>
+# inside tmux:
+Ctrl+b, d              # detach; the session keeps running in the background
+Ctrl+b, c              # open a new window
+Ctrl+b, &lt;number&gt;       # switch to window &lt;number&gt;</code></pre>
 
-          <p>每次开始训练前都应该先开一个 tmux 会话，这是最基本的习惯。</p>
+          <p>Always start a tmux session before launching a training run — this is a non-negotiable habit.</p>
 
-          <h2>五、GPU 监控</h2>
+          <h2>5. GPU Monitoring</h2>
 
-          <pre><code>nvidia-smi                    # 一次性查看
-watch -n 1 nvidia-smi         # 每秒刷新，观察训练过程中的显存占用
-nvtop                         # 更直观的动态界面（需要单独安装）</code></pre>
+          <pre><code>nvidia-smi                    # one-shot snapshot
+watch -n 1 nvidia-smi         # refresh every second
+nvtop                         # interactive display (install separately)</code></pre>
 
-          <p>训练开始后，<code>watch -n 1 nvidia-smi</code> 挂在另一个 tmux 窗口里，可以实时看到显存是否撑得住。如果显存占用缓慢上升（内存泄漏），最终会 OOM 崩溃。</p>
+          <p>Once training starts, keep <code>watch -n 1 nvidia-smi</code> running in a separate tmux window to monitor memory usage in real time. Slowly increasing memory usage indicates a leak that will eventually cause an OOM crash.</p>
 
-          <h2>六、OOM 的常见原因与处理</h2>
+          <h2>6. Common Causes of OOM and How to Handle Them</h2>
 
-          <p>OOM（Out of Memory）是训练时最常见的报错：<code>CUDA out of memory</code>。按可能性从高到低排列：</p>
+          <p>OOM (Out of Memory) is the most common error in training: <code>CUDA out of memory</code>. Ordered from most to least likely:</p>
 
           <ul class="plain-list">
-            <li><strong>batch_size 太大</strong>：最常见原因。先减半，看是否能跑起来。</li>
-            <li><strong>序列长度太长</strong>：attention 的显存占用是序列长度的平方。将 <code>max_length</code> 减小。</li>
-            <li><strong>没有清理梯度</strong>：确认每个 step 都调用了 <code>optimizer.zero_grad()</code>。</li>
-            <li><strong>显存碎片化</strong>：训练前可以加 <code>torch.cuda.empty_cache()</code>，但不能解决根本问题。</li>
-            <li><strong>模型本身太大</strong>：考虑 QLoRA（量化 + LoRA），可以把显存需求压缩到原来的 1/4 左右。</li>
+            <li><strong>batch_size too large</strong>: the most common cause. Halve it first and see if training starts.</li>
+            <li><strong>Sequence length too long</strong>: attention memory scales as the square of sequence length. Reduce <code>max_length</code>.</li>
+            <li><strong>Gradients not cleared</strong>: confirm that <code>optimizer.zero_grad()</code> is called every step.</li>
+            <li><strong>Memory fragmentation</strong>: adding <code>torch.cuda.empty_cache()</code> before training can help, but does not solve the root cause.</li>
+            <li><strong>Model itself too large</strong>: consider QLoRA (quantization + LoRA), which can reduce memory requirements to roughly one-quarter.</li>
           </ul>
 
-          <p>调整 batch_size 时可以用 gradient accumulation 补偿：<code>effective_batch_size = batch_size × gradient_accumulation_steps</code>。</p>
+          <p>When reducing batch_size, use gradient accumulation to compensate: <code>effective_batch_size = batch_size × gradient_accumulation_steps</code>.</p>
 
-          <h2>七、实验追踪（Wandb）</h2>
+          <h2>7. Experiment Tracking (Wandb)</h2>
 
-          <p>训练日志只打印到终端，跑完之后很难回头分析。Wandb 可以自动记录 loss 曲线、学习率、GPU 使用率等，并生成可分享的可视化界面。</p>
+          <p>Training logs printed only to the terminal are hard to analyze after the fact. Wandb automatically records loss curves, learning rate, GPU utilization, and more, and produces shareable visualizations.</p>
 
           <pre><code>pip install wandb
-wandb login       # 输入 API key（在 wandb.ai 注册后获取）
+wandb login       # enter your API key (register at wandb.ai)
 
-# 在训练脚本里加：
+# in your training script:
 import wandb
 wandb.init(project="my-project", name="run-1")
 wandb.log({"loss": loss.item(), "lr": scheduler.get_last_lr()[0]})</code></pre>
 
-          <p>如果服务器没有外网，用 <code>wandb offline</code> 模式先本地记录，回来再同步。</p>
+          <p>If the server has no internet access, use <code>wandb offline</code> mode to log locally and sync later.</p>
 
-          <h2>八、一个常见的坑：pip 和 conda 混用</h2>
+          <h2>8. A Common Pitfall: Mixing pip and conda</h2>
 
-          <p>conda 环境里能用 pip 安装包，但 pip 和 conda 混用有时会造成依赖冲突，尤其是 CUDA 相关的包。经验法则：PyTorch 用 pip 官方 wheel 安装，其他包用 pip 安装，尽量不用 <code>conda install</code> 装科学计算包（因为 conda 源里的版本往往落后）。</p>
+          <p>pip can be used inside a conda environment, but mixing pip and conda sometimes causes dependency conflicts, especially for CUDA-related packages. Rule of thumb: install PyTorch via the official pip wheel, install other packages with pip, and avoid using <code>conda install</code> for scientific packages since the conda channel versions often lag behind.</p>
 
         </section>
         <footer class="page__meta"></footer>

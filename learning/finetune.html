@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>大模型微调笔记 — Lve Meng</title>
+  <title>LLM Fine-Tuning Notes — Lve Meng</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -54,63 +54,63 @@
     <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
       <div class="page__inner-wrap">
         <header>
-          <h1 class="page__title" itemprop="headline">大模型微调笔记：QLoRA + GRPO</h1>
+          <h1 class="page__title" itemprop="headline">LLM Fine-Tuning Notes: QLoRA + GRPO</h1>
         </header>
         <section class="page__content" itemprop="text">
 
           <p><a href="/learning/" class="back-link">← Learning</a></p>
-          <p>本笔记基于在成亭科技实习期间（2025年10–12月）对 Qwen3-30B-A3B 进行安全告警分类微调的完整实践过程整理而成。任务目标是将企业 SOC 收到的安全告警自动归类为 critical / high / medium / low / informational 五个等级，辅助安全分析师优先处理高风险事件。微调方案使用 QLoRA 压缩显存占用、GRPO 对齐分类行为，并在 A100 双卡环境下完成训练。</p>
+          <p>These notes are compiled from fine-tuning Qwen3-30B-A3B for security alert classification during my internship at Chaitin Tech (October–December 2025). The task: automatically sort alerts received by an enterprise SOC into five severity levels — critical / high / medium / low / informational — to help analysts triage. The training run uses QLoRA to fit the model in GPU memory, GRPO to align classification behavior, and finishes on a dual-A100 setup.</p>
 
           <!-- Section 1 -->
           <div class="note-section">
-            <h2>1. 问题背景：为什么通用 LLM 不够用</h2>
+            <h2>1. Problem Background: Why a General LLM Isn't Enough</h2>
 
-            <p>通用大语言模型（如 Qwen3、LLaMA、GPT-4）在大量互联网文本上预训练，具备广泛的语言理解能力。但在企业安全运营中心（SOC）这类高度专业化的场景下，直接使用通用模型往往效果不佳。根本原因并不是模型"不知道"安全知识——大多数主流模型对 CVE、MITRE ATT&amp;CK 框架、常见攻击手法都有一定了解。问题在于<strong>分布偏移（distribution mismatch）</strong>：模型在训练时从未见过企业内部的告警格式、日志字段命名约定、业务上下文，以及该企业特有的资产重要性定义。</p>
+            <p>General-purpose LLMs (Qwen3, LLaMA, GPT-4) are pretrained on huge amounts of internet text and have broad language ability. But in a specialized setting like an enterprise security operations center (SOC), using them off the shelf works poorly. The reason isn't that the model "doesn't know" security — most mainstream models have some grasp of CVEs, the MITRE ATT&amp;CK framework, and common attack techniques. The problem is <strong>distribution mismatch</strong>: the model has never seen this company's alert format, log field naming conventions, business context, or its specific definition of asset importance.</p>
 
-            <p>更根本的挑战是<strong>损失不对称性（asymmetric loss）</strong>。在通用分类任务中，假阳性和假阴性的代价往往相近，可以用整体精度作为优化目标。但在 SOC 场景中：</p>
+            <p>A second issue is <strong>asymmetric loss</strong>. In typical classification tasks, false positives and false negatives carry roughly the same cost, so overall accuracy is a reasonable optimization target. In a SOC:</p>
             <ul class="plain-list">
-              <li><strong>漏报 critical/high 告警（假阴性）</strong>：可能导致攻击者在网络中长期潜伏、数据泄露或勒索事件，后果极其严重，事后补救成本极高。</li>
-              <li><strong>误报 critical/high 告警（假阳性）</strong>：分析师收到大量误报会产生"告警疲劳"，降低响应速度，但不会直接导致安全事件，危害远小于漏报。</li>
+              <li><strong>Missing a critical/high alert (false negative)</strong>: the attacker can persist in the network for a long time, exfiltrate data, or deploy ransomware. The downstream cost is severe and remediation is expensive.</li>
+              <li><strong>Wrongly flagging an alert as critical/high (false positive)</strong>: analysts get alert fatigue and slow down, but no actual security incident happens. The damage is much smaller than a missed critical.</li>
             </ul>
 
-            <p>这种不对称性意味着，即便一个模型在整体 F1 分数上表现不错，只要 critical 告警的召回率不够高，它在生产环境中就是不可用的。标准的监督微调（SFT）以最大化对数似然为目标，将所有错误等同对待，无法天然地编码这种不对称损失。因此，我们需要两件事：</p>
+            <p>Because of this asymmetry, even a model with a respectable overall F1 is unusable in production if its critical-alert recall is too low. Standard supervised fine-tuning (SFT) maximizes log-likelihood and treats every error the same, so it can't naturally encode an asymmetric loss. That gives us two requirements:</p>
             <ol class="plain-list">
-              <li><strong>领域适配（Domain Adaptation）</strong>：让模型理解企业内部的告警格式和字段语义——这是分布对齐问题。</li>
-              <li><strong>奖励对齐（Reward Alignment）</strong>：让模型真正优化"不漏报严重告警"这个业务目标，而不只是拟合标注分布——这是损失函数设计问题。</li>
+              <li><strong>Domain adaptation</strong>: teach the model the company's alert format and field semantics — a distribution-alignment problem.</li>
+              <li><strong>Reward alignment</strong>: train the model to actually pursue the business objective (don't miss severe alerts), not just fit the labeled distribution — a loss-function design problem.</li>
             </ol>
 
-            <p>QLoRA 解决第一个问题（高效领域适配），GRPO 解决第二个问题（奖励对齐）。两者组合是这个任务的核心技术选型理由。</p>
+            <p>QLoRA addresses the first (efficient domain adaptation), GRPO the second (reward alignment). The combination is the reason this technical approach was chosen.</p>
 
-            <p><strong>任务定义</strong>：输入为企业防火墙、IDS、EDR、SIEM 等系统生成的安全告警（包含告警标题、源/目标 IP、端口、协议、原始日志片段、设备类型等字段），输出为五个严重程度等级之一：<code>critical</code>（需立即响应）、<code>high</code>（当天响应）、<code>medium</code>（本周响应）、<code>low</code>（下周排期）、<code>informational</code>（仅记录，无需响应）。告警由 SOC 分析师事后标注，形成训练数据集。数据集规模约 12,000 条，其中 critical 占 4%，high 占 11%，剩余三类各约 20–30%——典型的严重类别稀缺问题。</p>
+            <p><strong>Task definition</strong>: input is an alert produced by enterprise firewalls, IDS, EDR, or SIEM systems (alert title, source/destination IP, port, protocol, raw log snippet, device type, and so on). Output is one of five severity levels: <code>critical</code> (respond immediately), <code>high</code> (respond same day), <code>medium</code> (respond this week), <code>low</code> (schedule for next week), <code>informational</code> (record only, no response needed). Alerts are labeled retrospectively by SOC analysts. The dataset has roughly 12,000 samples, with critical at 4%, high at 11%, and the remaining three classes at 20–30% each — a typical "rare severe class" distribution.</p>
           </div>
 
           <!-- Section 2 -->
           <div class="note-section">
-            <h2>2. LoRA：权重更新的低秩分解</h2>
+            <h2>2. LoRA: Low-Rank Decomposition of Weight Updates</h2>
 
-            <p>理解 QLoRA 的前提是理解 LoRA（Low-Rank Adaptation）。LoRA 的核心思想是：神经网络在微调过程中，权重矩阵的更新量 &Delta;W 具有<strong>低内在秩（low intrinsic rank）</strong>，可以用两个小矩阵的乘积来近似表达，从而大幅减少可训练参数量。</p>
+            <p>To understand QLoRA you first need LoRA (Low-Rank Adaptation). The idea: during fine-tuning, the weight update &Delta;W has <strong>low intrinsic rank</strong>, so it can be approximated by the product of two small matrices, cutting trainable-parameter count substantially.</p>
 
-            <p><strong>全量微调的显存瓶颈</strong>：Qwen3-30B-A3B 有约 300 亿参数。全量微调所需显存：模型参数（fp16，约 60 GB）+ 梯度（同等大小，约 60 GB）+ Adam 优化器状态（两份一阶/二阶动量，约 120 GB）= 约 240 GB。这远超单机多卡的实际能力，在工业界环境中几乎不可行。</p>
+            <p><strong>Memory bottleneck for full fine-tuning</strong>: Qwen3-30B-A3B has about 30 billion parameters. Full fine-tuning needs: model weights (fp16, ~60 GB) + gradients (same size, ~60 GB) + Adam optimizer state (first- and second-order moments, ~120 GB) ≈ 240 GB. Far beyond what's practical on a single multi-GPU node, and not feasible in most industrial settings.</p>
 
-            <p><strong>LoRA 的数学形式</strong>：对于原始权重矩阵 W &isin; &#8477;<sup>d&times;k</sup>，LoRA 不直接更新 W，而是将增量 &Delta;W 约束为两个低秩矩阵的乘积：</p>
+            <p><strong>The math of LoRA</strong>: instead of updating the original weight matrix W &isin; &#8477;<sup>d&times;k</sup> directly, LoRA constrains the update &Delta;W to be a product of two low-rank matrices:</p>
 
             <p style="margin-left:1.5em; font-family: 'Courier New', monospace; background: #f8f9fa; padding: 0.6em 1.2em; border-left: 3px solid #bdc1c4; display:inline-block; width:100%; box-sizing:border-box;">
               W' = W + &Delta;W = W + A &middot; B<br>
               A &isin; &#8477;<sup>d&times;r</sup>,&nbsp;&nbsp; B &isin; &#8477;<sup>r&times;k</sup>,&nbsp;&nbsp; r &lt;&lt; min(d, k)
             </p>
 
-            <p>前向传播时完整计算为：<code>h = W&middot;x + (A&middot;B)&middot;x &times; (&alpha;/r)</code>，其中 &alpha; 是缩放超参数。训练时冻结原始权重 W（梯度不通过它传播），只更新小矩阵 A 和 B。推理时可将 &Delta;W = A&middot;B 合并回 W，推理速度与原始模型完全相同——无额外推理开销。</p>
+            <p>The forward pass becomes <code>h = W&middot;x + (A&middot;B)&middot;x &times; (&alpha;/r)</code>, where &alpha; is a scaling hyperparameter. During training W is frozen (no gradient flows through it) and only A and B are updated. At inference time &Delta;W = A&middot;B can be merged back into W, so inference speed matches the original model — no extra inference overhead.</p>
 
-            <p><strong>参数量对比</strong>（以 Qwen3-30B 的注意力投影层为例，d=k=4096，r=8）：</p>
+            <p><strong>Parameter count comparison</strong> (using a Qwen3-30B attention projection layer with d=k=4096, r=8):</p>
             <ul class="plain-list">
-              <li>全量微调该层：4096 &times; 4096 = <strong>16,777,216</strong> 个参数</li>
-              <li>LoRA（r=8）该层：8 &times; (4096 + 4096) = <strong>65,536</strong> 个参数</li>
-              <li>压缩比：约 256:1；总体可训练参数约占模型总参数的 0.14%</li>
+              <li>Full fine-tuning of this layer: 4096 &times; 4096 = <strong>16,777,216</strong> parameters</li>
+              <li>LoRA (r=8) for this layer: 8 &times; (4096 + 4096) = <strong>65,536</strong> parameters</li>
+              <li>Compression ratio about 256:1; total trainable parameters end up at roughly 0.14% of the base model</li>
             </ul>
 
-            <p><strong>为什么低秩分解能奏效</strong>：Aghajanyan et al. (2020) 的实证研究表明，预训练语言模型的"内在维度"很低——在高维参数空间中，有效的优化方向集中在一个远比总维度低的子空间内。微调时的权重更新继承了这一特性：绝大多数对任务有帮助的更新都落在低秩子空间，高秩分量大多是噪声。因此，低秩分解在损失极少有效信息的同时，极大地减少了参数量。</p>
+            <p><strong>Why low-rank decomposition works</strong>: Aghajanyan et al. (2020) showed empirically that pretrained language models have a low "intrinsic dimension" — in the high-dimensional parameter space, useful optimization directions concentrate in a subspace much smaller than the full dimension. Weight updates during fine-tuning inherit this property: the bulk of task-relevant updates fall in a low-rank subspace, and the higher-rank components are mostly noise. So low-rank decomposition loses very little useful information while shrinking parameter count substantially.</p>
 
-            <p><strong>初始化策略</strong>：矩阵 A 用随机高斯初始化，矩阵 B 初始化为全零。这保证训练开始时 &Delta;W = A&middot;B = 0，即 LoRA 从原始基座模型的行为出发，避免训练初期因随机扰动导致的不稳定。</p>
+            <p><strong>Initialization</strong>: A is initialized with random Gaussian values, B is initialized to zero. This gives &Delta;W = A&middot;B = 0 at the start of training, so LoRA begins from the base model's behavior and avoids early-training instability from random perturbation.</p>
 
 <pre class="code-block"># LoRA adds two small matrices A and B alongside the frozen weight W
 # Forward pass: h = W·x + (A·B)·x * (alpha/r)
@@ -146,27 +146,27 @@ lora_config = LoraConfig(
                              # CAUSAL_LM = decoder-only autoregressive model
 )</pre>
 
-            <p><strong>哪些模块应该加 LoRA</strong>：原则是覆盖模型中参数量最集中、对任务最相关的投影矩阵。对于大多数 Transformer 解码器（Qwen、LLaMA、Mistral 等），推荐覆盖所有注意力投影（q/k/v/o）和 FFN 投影（gate/up/down）。对于纯分类或格式迁移类任务，有时注意力层已经足够；对于需要改变模型知识或推理方式的任务，FFN 层不可省略。</p>
+            <p><strong>Which modules to attach LoRA to</strong>: cover the projection matrices that hold the bulk of the parameters and matter most for the task. For most Transformer decoders (Qwen, LLaMA, Mistral), it's reasonable to cover all attention projections (q/k/v/o) and FFN projections (gate/up/down). For pure classification or format-transfer tasks, attention layers alone are sometimes enough; for tasks that need to change the model's knowledge or reasoning style, FFN layers shouldn't be skipped.</p>
           </div>
 
           <!-- Section 3 -->
           <div class="note-section">
-            <h2>3. QLoRA：4-bit 量化 + LoRA</h2>
+            <h2>3. QLoRA: 4-bit Quantization + LoRA</h2>
 
-            <p>QLoRA（Quantized LoRA，Dettmers et al. 2023）在 LoRA 的基础上引入 4-bit 量化，进一步将模型的显存占用从 fp16 的 2 字节/参数压缩到约 0.5 字节/参数。对于 30B 参数的模型：</p>
+            <p>QLoRA (Quantized LoRA, Dettmers et al. 2023) adds 4-bit quantization on top of LoRA, taking the model's storage footprint from 2 bytes per parameter (fp16) down to about 0.5 bytes per parameter. For a 30B-parameter model:</p>
             <ul class="plain-list">
-              <li>fp16 全量存储：30B &times; 2 字节 = <strong>60 GB</strong></li>
-              <li>4-bit 量化存储：30B &times; 0.5 字节 = <strong>15 GB</strong></li>
-              <li>节省约 75%，使单张 A100 (80 GB) 可以容纳基座模型 + LoRA 适配器 + 优化器状态</li>
+              <li>fp16 storage: 30B &times; 2 bytes = <strong>60 GB</strong></li>
+              <li>4-bit quantized storage: 30B &times; 0.5 bytes = <strong>15 GB</strong></li>
+              <li>Roughly 75% saved, so a single A100 (80 GB) can hold the base model + LoRA adapter + optimizer state</li>
             </ul>
 
-            <p><strong>NF4（NormalFloat4）量化</strong>：QLoRA 使用 NF4 数据类型，而不是普通的 INT4。关键区别在于：神经网络权重在预训练后近似服从零均值正态分布。NF4 针对这种分布设计了非均匀量化区间，使得每个 4-bit 值对应的权重范围与权重分布的分位数对齐，理论上是正态分布权重的信息论最优 4-bit 量化方案，比均匀量化损失更少精度。</p>
+            <p><strong>NF4 (NormalFloat4) quantization</strong>: QLoRA uses NF4 instead of plain INT4. The reason: after pretraining, neural-network weights are approximately zero-mean Gaussian. NF4 places non-uniform quantization buckets so each 4-bit value lands on a quantile of that distribution. In information-theoretic terms it's the optimal 4-bit quantization for normally distributed weights, and it loses less precision than uniform quantization.</p>
 
-            <p><strong>双重量化（Double Quantization）</strong>：量化过程本身需要存储量化常数（每个量化块的缩放因子），这些常数通常用 fp32 表示，占用额外显存。双重量化将这些量化常数再次量化（fp32 &rarr; fp8 或 fp4），进一步减少显存开销。对于 30B 模型，双重量化可额外节省约 3–4 GB。</p>
+            <p><strong>Double quantization</strong>: quantization itself produces quantization constants (one scaling factor per block), usually stored in fp32. Double quantization quantizes those constants too (fp32 → fp8 or fp4), saving more memory. For a 30B model this gives about 3–4 GB of additional savings.</p>
 
-            <p><strong>分页优化器（Paged Optimizers）</strong>：GRPO 训练过程中，优化器状态（Adam 的一阶和二阶动量，各占 trainable_params × 4 字节）会在某些 step 出现显存峰值。分页优化器（paged_adamw_32bit）通过 NVIDIA 统一内存机制，在 GPU 显存不足时自动将优化器状态 offload 到 CPU 内存，避免 OOM，代价是偶发的 CPU-GPU 数据传输延迟。</p>
+            <p><strong>Paged optimizers</strong>: during GRPO training, optimizer state (Adam first/second moments, each trainable_params × 4 bytes) can spike GPU memory at certain steps. The paged optimizer (paged_adamw_32bit) uses NVIDIA unified memory to offload optimizer state to CPU RAM when GPU memory is tight, avoiding OOM at the cost of occasional CPU–GPU transfer latency.</p>
 
-            <p><strong>计算精度与存储精度分离</strong>：量化只影响模型权重的<em>存储</em>格式。实际的矩阵乘法在计算时会将权重反量化为 bf16 或 fp16 进行计算，保持数值精度。这是"近似存储，精确计算"的权衡——存储节省显著，计算精度损失极小。</p>
+            <p><strong>Storage precision is separate from compute precision</strong>: quantization only affects how weights are <em>stored</em>. Matrix multiplications dequantize weights to bf16 or fp16 before computing, so numerical precision in the math is preserved. The trade-off is "approximate storage, accurate computation" — storage savings are large, compute precision loss is small.</p>
 
 <pre class="code-block">import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
@@ -218,75 +218,75 @@ model.print_trainable_parameters()
 # Output: trainable params: 41,943,040 || all params: 30,143,561,728 || trainable%: 0.14%
 # Only 0.14% of parameters are updated — this is why QLoRA fits on a single A100</pre>
 
-            <p><strong>QLoRA 的代价</strong>：4-bit 量化会引入轻微的量化误差。在分类任务上，我们的实验结果显示，QLoRA（4-bit）与 fp16 LoRA 的分类 F1 差距小于 1pp，在实际应用中可以忽略不计。量化对生成任务（如摘要、对话）的影响可能稍大，但对判别性较强的分类任务几乎无明显影响。</p>
+            <p><strong>The cost of QLoRA</strong>: 4-bit quantization introduces a small quantization error. On classification tasks, our experiments showed the QLoRA (4-bit) F1 was within 1pp of fp16 LoRA — small enough to ignore in practice. The effect on generation tasks (summarization, dialogue) may be slightly larger, but for discriminative classification tasks it's barely visible.</p>
           </div>
 
           <!-- Section 4 -->
           <div class="note-section">
-            <h2>4. SFT、DPO、PPO、GRPO 横向对比</h2>
+            <h2>4. Comparing SFT, DPO, PPO, and GRPO</h2>
 
-            <p>在决定使用 GRPO 之前，我们系统评估了四种主流的大模型对齐/微调方法。每种方法针对不同的训练信号和应用场景设计，理解它们的优劣势有助于为特定任务选择合适的方法。</p>
+            <p>Before deciding on GRPO we walked through the four mainstream alignment / fine-tuning methods. Each is designed around a different training signal and use case; understanding their trade-offs helps pick the right one.</p>
 
-            <p><strong>SFT（监督微调，Supervised Fine-Tuning）</strong>：最基础的方法。给定一批（输入, 正确输出）对，最大化模型对正确输出的对数似然。优点：实现简单，收敛速度快，数据格式直觉清晰。缺点：目标函数与业务指标脱节——SFT 优化的是"模型输出与标注文本的字面相似度"，而非"分类是否正确"。更重要的是，SFT 无法编码非对称损失：它将 critical 误判为 informational 与将 medium 误判为 low 等同对待，而前者的实际代价远高于后者。此外，SFT 只能拟合训练集分布，对标注覆盖不足的 critical 类别帮助有限。</p>
+            <p><strong>SFT (Supervised Fine-Tuning)</strong>: the basic approach. Given a batch of (input, correct output) pairs, maximize the model's log-likelihood on the correct output. Pros: simple to implement, fast to converge, the data format is intuitive. Cons: the objective is decoupled from the business metric — SFT optimizes "how literally the output matches the labeled text," not "is the classification correct." More importantly, SFT can't encode asymmetric loss: it treats misclassifying critical as informational the same as misclassifying medium as low, even though the real cost is very different. SFT also only fits the training distribution, which limits its help on critical, where labels are sparse.</p>
 
-            <p><strong>DPO（直接偏好优化，Direct Preference Optimization）</strong>：使用偏好对（chosen 优于 rejected）来优化，无需训练独立的 Reward 模型。相比 PPO，DPO 更稳定、实现更简单。缺点：需要成对的标注数据（对同一输入有"好答案"和"坏答案"的对比），数据构造成本较高；偏好对的质量对结果影响极大；难以精确编码连续的、非对称的奖励信号——DPO 只知道 A 比 B 好，但不知道好多少，也无法轻易表达"某种错误比另一种错误坏 6 倍"这样的量化约束。</p>
+            <p><strong>DPO (Direct Preference Optimization)</strong>: uses preference pairs (chosen better than rejected) and avoids training a separate reward model. Compared with PPO, DPO is more stable and simpler. Cons: needs paired labels (a "good answer" and a "bad answer" for the same input), which costs more to produce; preference-pair quality drives the result; and it's hard to encode a continuous, asymmetric reward signal — DPO knows A is better than B but not by how much, and can't easily express "this kind of error is six times worse than that one."</p>
 
-            <p><strong>PPO（近端策略优化，Proximal Policy Optimization）</strong>：完整的强化学习方法。包含 Policy 网络（被训练的 LLM）、Reward 模型（评分器）和 Critic/Value 网络（估计基线）。功能最强大，能编码任意形式的奖励信号。缺点：需要同时维护两个大模型（Policy + Critic），显存占用是单模型的 2 倍以上；Value 网络的训练不稳定，容易出现奖励黑客（reward hacking）；超参数多，调参困难；对于 30B 级别的模型，双 A100 环境下几乎无法运行完整 PPO。</p>
+            <p><strong>PPO (Proximal Policy Optimization)</strong>: full reinforcement learning. Has a Policy network (the LLM being trained), a Reward model (scorer), and a Critic/Value network (baseline estimator). The most flexible — it can encode any reward signal. Cons: needs two large models in memory at once (Policy + Critic), more than 2× the GPU memory of a single model; the Value network is unstable and prone to reward hacking; many hyperparameters, hard to tune; for a 30B model, full PPO is essentially impossible on a dual-A100 setup.</p>
 
-            <p><strong>GRPO（组相对策略优化，Group Relative Policy Optimization）</strong>：PPO 的改进变体，专为 LLM 微调设计，由 DeepSeek 团队提出。核心创新：用"组内相对奖励归一化"代替 Critic 网络提供的基线——对同一 prompt 生成 G 个候选输出，将各输出的奖励减去组内均值再除以标准差，得到归一化优势。这样完全去掉了 Value 网络，显存需求降低约一半，训练更稳定。</p>
+            <p><strong>GRPO (Group Relative Policy Optimization)</strong>: a PPO variant designed for LLM fine-tuning, introduced by the DeepSeek team. The trick: replace the Critic-network baseline with a group-relative reward normalization — for each prompt, generate G candidates, subtract the group mean from each candidate's reward and divide by the group standard deviation to get a normalized advantage. This eliminates the Value network entirely, cutting memory roughly in half and improving training stability.</p>
 
-            <p><strong>选择 GRPO 的具体理由</strong>：</p>
+            <p><strong>Reasons we picked GRPO</strong>:</p>
             <ul class="plain-list">
-              <li>无需成对标注数据（只需单条带标签的告警，即可定义奖励）</li>
-              <li>自定义奖励函数直接编码不对称损失，无需近似</li>
-              <li>无 Critic 网络，双 A100 环境可运行 30B 级别模型</li>
-              <li>组内归一化使奖励量纲自适应，无需精心校准奖励的绝对值</li>
-              <li>TRL 库（Hugging Face）提供了生产级 GRPOTrainer 实现，接入成本低</li>
+              <li>No paired labels needed — a single labeled alert is enough to define a reward</li>
+              <li>A custom reward function can encode asymmetric loss directly, no approximation</li>
+              <li>No Critic, so a 30B-class model fits on dual A100s</li>
+              <li>Group normalization makes the reward scale self-adaptive, so we don't have to calibrate absolute reward values</li>
+              <li>The TRL library (Hugging Face) has a production-ready GRPOTrainer, low integration cost</li>
             </ul>
 
             <table>
               <thead>
                 <tr>
-                  <th>方法</th>
-                  <th>数据需求</th>
-                  <th>显存需求</th>
-                  <th>自定义奖励</th>
-                  <th>稳定性</th>
-                  <th>推荐场景</th>
+                  <th>Method</th>
+                  <th>Data needed</th>
+                  <th>Memory</th>
+                  <th>Custom reward</th>
+                  <th>Stability</th>
+                  <th>Use case</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>SFT</td>
-                  <td>（输入, 输出）对</td>
-                  <td>低</td>
-                  <td>无</td>
-                  <td>高</td>
-                  <td>格式迁移、初始对齐</td>
+                  <td>(input, output) pairs</td>
+                  <td>Low</td>
+                  <td>No</td>
+                  <td>High</td>
+                  <td>Format transfer, initial alignment</td>
                 </tr>
                 <tr>
                   <td>DPO</td>
-                  <td>偏好对</td>
-                  <td>中</td>
-                  <td>间接</td>
-                  <td>高</td>
-                  <td>有质量偏好对的对话对齐</td>
+                  <td>Preference pairs</td>
+                  <td>Medium</td>
+                  <td>Indirect</td>
+                  <td>High</td>
+                  <td>Dialogue alignment with quality preference pairs</td>
                 </tr>
                 <tr>
                   <td>PPO</td>
-                  <td>带奖励的样本</td>
-                  <td>极高（2×）</td>
-                  <td>完全</td>
-                  <td>低</td>
-                  <td>需要复杂奖励且资源充足</td>
+                  <td>Reward-labeled samples</td>
+                  <td>Very high (2×)</td>
+                  <td>Full</td>
+                  <td>Low</td>
+                  <td>Complex reward + abundant resources</td>
                 </tr>
                 <tr>
                   <td>GRPO</td>
-                  <td>带奖励的样本</td>
-                  <td>中（无Critic）</td>
-                  <td>完全</td>
-                  <td>中高</td>
-                  <td>自定义奖励 + 资源受限场景</td>
+                  <td>Reward-labeled samples</td>
+                  <td>Medium (no Critic)</td>
+                  <td>Full</td>
+                  <td>Medium-high</td>
+                  <td>Custom reward + limited resources</td>
                 </tr>
               </tbody>
             </table>
@@ -294,101 +294,101 @@ model.print_trainable_parameters()
 
           <!-- Section 5 -->
           <div class="note-section">
-            <h2>5. GRPO 原理</h2>
+            <h2>5. How GRPO Works</h2>
 
-            <p>GRPO（Group Relative Policy Optimization）的核心思想是用"组内相对比较"代替 Critic 网络提供的学习基线，从而在保留 RL 对齐能力的同时，大幅降低计算开销。</p>
+            <p>The idea behind GRPO is to replace the Critic-network baseline with a group-relative comparison, keeping the alignment power of RL while cutting compute substantially.</p>
 
-            <p><strong>标准 PPO 中的基线问题</strong>：策略梯度方法通过最大化期望奖励 E[r(y|x)] 来更新策略参数。直接用奖励作为梯度信号方差极高（不同 prompt 的奖励量纲不同，难以比较），因此 PPO 引入 Value 网络 V(x) 作为基线，将梯度信号替换为优势 A(y,x) = r(y,x) - V(x)。但训练 V(x) 本身需要一个与 Policy 同量级的网络，代价巨大。</p>
+            <p><strong>The baseline problem in standard PPO</strong>: policy-gradient methods update parameters to maximize expected reward E[r(y|x)]. Using raw rewards as the gradient signal has very high variance (rewards on different prompts have different scales and aren't directly comparable), so PPO introduces a Value network V(x) as a baseline, replacing the gradient signal with the advantage A(y,x) = r(y,x) − V(x). But training V(x) requires a network at the same scale as the Policy, which is expensive.</p>
 
-            <p><strong>GRPO 的优势估计</strong>：对每个 prompt x，采样 G 个候选回答 {y<sub>1</sub>, ..., y<sub>G</sub>}，分别计算奖励 {r<sub>1</sub>, ..., r<sub>G</sub>}，然后用组内统计量归一化：</p>
+            <p><strong>GRPO's advantage estimate</strong>: for each prompt x, sample G candidate responses {y<sub>1</sub>, ..., y<sub>G</sub>}, score them to get rewards {r<sub>1</sub>, ..., r<sub>G</sub>}, and normalize within the group:</p>
 
             <p style="margin-left:1.5em; font-family: 'Courier New', monospace; background: #f8f9fa; padding: 0.6em 1.2em; border-left: 3px solid #bdc1c4; display:inline-block; width:100%; box-sizing:border-box;">
               <span style="font-style:italic;">&#194;</span><sub>i</sub> = (r<sub>i</sub> &minus; mean(r<sub>1</sub>, ..., r<sub>G</sub>)) / std(r<sub>1</sub>, ..., r<sub>G</sub>)
             </p>
 
-            <p>组内均值作为自适应基线，组内标准差作为归一化因子。这样，&Acirc;<sub>i</sub> 的含义是：在同一 prompt 的 G 个候选中，第 i 个回答相对于平均水平有多好（以标准差为单位）。</p>
+            <p>The group mean is the adaptive baseline; the group standard deviation is the normalization factor. So &Acirc;<sub>i</sub> means "in the G candidates for the same prompt, how much better than average is candidate i, in standard-deviation units."</p>
 
-            <p><strong>策略更新目标函数</strong>：类似 PPO，使用 clipped surrogate 目标防止策略更新过大：</p>
+            <p><strong>Policy update objective</strong>: as in PPO, use a clipped surrogate objective to prevent overly large policy updates:</p>
 
             <p style="margin-left:1.5em; font-family: 'Courier New', monospace; background: #f8f9fa; padding: 0.6em 1.2em; border-left: 3px solid #bdc1c4; display:inline-block; width:100%; box-sizing:border-box;">
               L<sub>GRPO</sub>(&theta;) = E[ min( r<sub>t</sub>(&theta;) &cdot; <span style="font-style:italic;">&#194;</span><sub>i</sub>,&nbsp; clip(r<sub>t</sub>(&theta;), 1&minus;&epsilon;, 1+&epsilon;) &cdot; <span style="font-style:italic;">&#194;</span><sub>i</sub> ) ]
             </p>
 
-            <p>其中 r<sub>t</sub>(&theta;) = &pi;<sub>&theta;</sub>(y<sub>i</sub>|x) / &pi;<sub>old</sub>(y<sub>i</sub>|x) 是新旧策略的概率比，&epsilon; 是裁剪范围（通常 0.1–0.2），防止策略在单步内更新过多。</p>
+            <p>where r<sub>t</sub>(&theta;) = &pi;<sub>&theta;</sub>(y<sub>i</sub>|x) / &pi;<sub>old</sub>(y<sub>i</sub>|x) is the new-vs-old policy probability ratio, and &epsilon; is the clipping range (usually 0.1–0.2), keeping the policy from moving too far in a single step.</p>
 
-            <p><strong>为什么组内归一化是有效基线</strong>：Critic 网络的作用是估计"对于 prompt x，期望获得的平均奖励是多少"，以此提供比较基线。对于同一个 prompt x 生成的 G 个回答，它们共享同一个 prompt 的所有上下文因素——只有回答本身的质量差异才导致奖励差异。因此，组内均值天然地近似了 V(x)，且无需任何训练，只需采样即可获得。组内 G 越大，这个近似越准确，梯度方差越低，但计算成本也线性增长。</p>
+            <p><strong>Why group normalization is a valid baseline</strong>: the Critic network's role is to estimate "for prompt x, what's the average expected reward?" so it can serve as a comparison baseline. For G responses generated from the same prompt x, all the prompt-related context is shared — only the responses themselves differ in quality, and that's what causes reward differences. The group mean naturally approximates V(x), with no training needed, just sampling. Larger G gives a more accurate approximation and lower gradient variance, but compute cost grows linearly with G.</p>
 
-            <p><strong>KL 散度正则化</strong>：为防止策略偏离参考模型（原始基座模型）过远，GRPO 通常在目标函数中加入 KL 惩罚项：L = L<sub>GRPO</sub> &minus; &beta; &cdot; KL(&pi;<sub>&theta;</sub> || &pi;<sub>ref</sub>)，&beta; 控制正则化强度。这防止模型在追求高奖励时产生退化行为（如输出固定格式套语以稳定获得格式奖励，但丧失语言能力）。</p>
+            <p><strong>KL regularization</strong>: to prevent the policy from drifting too far from the reference model (the original base), GRPO usually adds a KL penalty: L = L<sub>GRPO</sub> − &beta; &middot; KL(&pi;<sub>&theta;</sub> || &pi;<sub>ref</sub>), where &beta; controls regularization strength. This stops the model from finding degenerate behaviors that chase the reward (for example, producing a fixed phrase to lock in a format reward at the cost of language ability).</p>
 
-            <p><strong>计算图</strong>：一个 GRPO 训练 step 的流程如下：</p>
+            <p><strong>Compute graph for one GRPO step</strong>:</p>
             <ol class="plain-list">
-              <li>从训练集采样一批 prompts {x<sub>1</sub>, ..., x<sub>B</sub>}</li>
-              <li>对每个 prompt 用当前策略生成 G 个候选回答（共 B&times;G 个序列）</li>
-              <li>对所有 B&times;G 个回答调用 Reward 函数，得到奖励矩阵 R ∈ &#8477;<sup>B&times;G</sup></li>
-              <li>按行归一化（每个 prompt 独立归一化），得到优势矩阵 <span style="font-style:italic;">&#194;</span></li>
-              <li>用 clipped surrogate 损失对策略参数做一步梯度更新</li>
-              <li>更新参考概率（old policy），准备下一步</li>
+              <li>Sample a batch of prompts {x<sub>1</sub>, ..., x<sub>B</sub>} from the training set</li>
+              <li>For each prompt, generate G candidate responses with the current policy (B&times;G sequences total)</li>
+              <li>Call the Reward function on all B&times;G responses to get a reward matrix R ∈ &#8477;<sup>B&times;G</sup></li>
+              <li>Normalize row-wise (each prompt independently) to get the advantage matrix <span style="font-style:italic;">&#194;</span></li>
+              <li>Take one gradient step on the policy using the clipped surrogate loss</li>
+              <li>Update the reference probabilities (old policy), ready for the next step</li>
             </ol>
           </div>
 
           <!-- Section 6 -->
           <div class="note-section">
-            <h2>6. Reward 函数设计</h2>
+            <h2>6. Reward Function Design</h2>
 
-            <p>Reward 函数是 GRPO 微调中最关键的设计决策。它是人类对"什么是好的输出"的知识的编码，直接决定模型最终的行为倾向。设计原则：</p>
+            <p>Reward function design is where the key decisions in GRPO fine-tuning happen. It encodes human knowledge about what counts as a good output, and shapes the model's final behavior. Design principles:</p>
 
             <ol class="plain-list">
-              <li><strong>编码领域知识</strong>：奖励信号应反映任务的真实评价标准，而不是代理指标（如输出长度）。</li>
-              <li><strong>显式处理不对称代价</strong>：对于代价不对称的错误类型，奖励值的差异应与实际代价差异成正比。</li>
-              <li><strong>防御性解析</strong>：模型输出是自然语言，可能包含各种格式变体。奖励函数必须能可靠地从输出中提取关键信息，而不是因格式问题将所有格式异常都判为最低奖励。</li>
-              <li><strong>奖励量纲校准</strong>：奖励绝对值过大或过小都会导致梯度问题。通常将正确奖励设为 +1.0，不同严重程度的错误奖励设为 -0.5 到 -3.0 的范围内。</li>
+              <li><strong>Encode domain knowledge</strong>: the reward should reflect the real evaluation criterion of the task, not a proxy (such as output length).</li>
+              <li><strong>Handle asymmetric cost explicitly</strong>: when error types have very different costs, the reward differences should be roughly proportional to the cost differences.</li>
+              <li><strong>Defensive parsing</strong>: model output is natural language with all kinds of format variations. The reward function has to reliably extract the key information from the output, rather than dropping every malformed sample to the floor reward.</li>
+              <li><strong>Calibrate reward magnitude</strong>: rewards that are too large or too small both cause gradient problems. A common range: +1.0 for correct, and -0.5 to -3.0 for errors of varying severity.</li>
             </ol>
 
-            <p><strong>安全告警分类的不对称代价矩阵</strong>：</p>
+            <p><strong>Asymmetric cost matrix for security alert classification</strong>:</p>
             <table>
               <thead>
                 <tr>
-                  <th>错误类型</th>
-                  <th>例子</th>
-                  <th>实际代价</th>
-                  <th>奖励值</th>
+                  <th>Error type</th>
+                  <th>Example</th>
+                  <th>Real cost</th>
+                  <th>Reward</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>正确</td>
+                  <td>Correct</td>
                   <td>critical → critical</td>
-                  <td>无</td>
+                  <td>None</td>
                   <td>+1.0</td>
                 </tr>
                 <tr>
-                  <td>严重低估（2级+）</td>
+                  <td>Severe underestimate (2+ levels)</td>
                   <td>critical → medium/low/info</td>
-                  <td>极高（漏报严重威胁）</td>
+                  <td>Very high (severe threat missed)</td>
                   <td>-3.0</td>
                 </tr>
                 <tr>
-                  <td>轻微低估（1级）</td>
+                  <td>Mild underestimate (1 level)</td>
                   <td>critical → high, high → medium</td>
-                  <td>较高（优先级降低）</td>
+                  <td>High (priority lowered)</td>
                   <td>-1.5</td>
                 </tr>
                 <tr>
-                  <td>严重高估（2级+）</td>
+                  <td>Severe overestimate (2+ levels)</td>
                   <td>info → high/critical</td>
-                  <td>低（增加噪声）</td>
+                  <td>Low (extra noise)</td>
                   <td>-0.5</td>
                 </tr>
                 <tr>
-                  <td>相邻错误（1级）</td>
+                  <td>Adjacent error (1 level)</td>
                   <td>medium → high, low → medium</td>
-                  <td>较低（可接受偏差）</td>
+                  <td>Low (acceptable drift)</td>
                   <td>-0.8</td>
                 </tr>
                 <tr>
-                  <td>格式错误</td>
-                  <td>无法解析输出</td>
-                  <td>中等（完全不可用）</td>
+                  <td>Format error</td>
+                  <td>Output cannot be parsed</td>
+                  <td>Medium (unusable)</td>
                   <td>-1.0</td>
                 </tr>
               </tbody>
@@ -495,19 +495,19 @@ def security_alert_reward(completions: list, prompts: list, **kwargs) -> list:
 
     return rewards</pre>
 
-            <p><strong>奖励函数设计的几个教训</strong>：</p>
+            <p><strong>Lessons from designing the reward function</strong>:</p>
             <ul class="plain-list">
-              <li><strong>parse 防御性要充分</strong>：早期版本的 <code>extract_severity</code> 在模型输出 "I classify this as High severity" 时失败（因为搜索 "severity: high" 而不是单独搜索 "high"），导致大量格式正确但被判为格式错误的样本，训练信号噪声极大。</li>
-              <li><strong>不要奖励输出长度</strong>：曾测试过对"解释了推理过程"的输出给予奖励加成，但模型很快学会在回答末尾附上无意义的推理语句，属于奖励黑客。最终只保留分类正确性作为奖励信号。</li>
-              <li><strong>格式奖励可分离</strong>：可以设计一个单独的格式奖励（如输出包含结构化字段给 +0.1），与分类奖励加权求和，有助于早期训练阶段稳定输出格式。但最终分类奖励应占主导。</li>
+              <li><strong>Be defensive about parsing</strong>: an early version of <code>extract_severity</code> failed on outputs like "I classify this as High severity" (because it only looked for "severity: high", not the standalone word "high"), so a lot of correctly formatted samples were marked as format errors and the training signal was very noisy.</li>
+              <li><strong>Don't reward output length</strong>: I tried adding a bonus for outputs that "explained the reasoning," and the model quickly learned to append meaningless reasoning to every response — reward hacking. In the end I kept only classification correctness as the reward.</li>
+              <li><strong>Format reward can be separable</strong>: a separate format reward (for example, +0.1 for outputs containing structured fields) can be added to the classification reward to stabilize output format in early training. The classification reward should still dominate.</li>
             </ul>
           </div>
 
           <!-- Section 7 -->
           <div class="note-section">
-            <h2>7. 完整训练配置</h2>
+            <h2>7. Full Training Configuration</h2>
 
-            <p>以下是我们最终确定的训练配置，经过约 20 次实验迭代收敛。每个超参数都附有选择理由和调整建议。</p>
+            <p>This is the configuration we settled on after about 20 iterations of experiments. Each hyperparameter has a rationale and a tuning suggestion.</p>
 
 <pre class="code-block">from trl import GRPOConfig, GRPOTrainer
 from datasets import load_dataset
@@ -617,26 +617,26 @@ trainer.train()
 trainer.save_model("./qwen3_alert_grpo_final")
 tokenizer.save_pretrained("./qwen3_alert_grpo_final")</pre>
 
-            <p><strong>监控训练过程的关键指标</strong>：</p>
+            <p><strong>Metrics to watch during training</strong>:</p>
             <ul class="plain-list">
-              <li><code>reward/mean</code>：组内平均奖励，应在训练初期上升然后趋于稳定（通常稳定在 0.5–0.8 左右）。若奖励持续下降或剧烈震荡，检查 learning_rate 和 kl_coef。</li>
-              <li><code>reward/std</code>：组内奖励标准差，应保持一定值（不为零）。若接近零，说明所有生成都趋同，梯度信号消失——尝试增大 temperature。</li>
-              <li><code>kl</code>：与参考模型的 KL 散度，应缓慢上升并在合理范围内（0.1–1.0）稳定。若飙升，增大 kl_coef。</li>
-              <li><code>policy_loss</code>：策略损失，正常应缓慢降低并最终稳定。</li>
+              <li><code>reward/mean</code>: group-mean reward. Should rise early in training and then plateau (typically around 0.5–0.8). If it keeps dropping or oscillates wildly, check learning_rate and kl_coef.</li>
+              <li><code>reward/std</code>: group reward standard deviation. Should stay non-zero. If it approaches zero, all generations have collapsed to the same output and the gradient signal disappears — try raising temperature.</li>
+              <li><code>kl</code>: KL divergence to the reference model. Should rise slowly and stabilize in a reasonable range (0.1–1.0). If it spikes, raise kl_coef.</li>
+              <li><code>policy_loss</code>: policy loss. Should decline slowly and stabilize.</li>
             </ul>
           </div>
 
           <!-- Section 8 -->
           <div class="note-section">
-            <h2>8. unsloth 加速</h2>
+            <h2>8. unsloth Acceleration</h2>
 
-            <p>unsloth 是专为 QLoRA/LoRA 训练优化的加速库，通过手写 CUDA kernel 和优化的 Flash Attention 实现，在 A100 上典型提速约 2×（官方在多个基准上报告 1.5–2.5× 加速）。它提供了与 transformers + peft 完全兼容的 API，可以视为"drop-in replacement"——几乎不需要修改训练代码。</p>
+            <p>unsloth is an acceleration library tailored to QLoRA / LoRA training, using hand-written CUDA kernels and an optimized Flash Attention implementation. On A100 it typically gives about 2× speedup (the project reports 1.5–2.5× across various benchmarks). It's API-compatible with transformers + peft, so it's roughly a drop-in replacement and the training code barely changes.</p>
 
-            <p><strong>unsloth 的核心优化</strong>：</p>
+            <p><strong>What unsloth optimizes</strong>:</p>
             <ul class="plain-list">
-              <li><strong>手写 LoRA CUDA kernel</strong>：标准 PEFT 的 LoRA 前向/反向传播在 PyTorch 层面实现，有额外的 Python overhead 和 kernel launch 开销。unsloth 将 A&middot;B 的计算与基础权重 W 的矩阵乘法融合为单一 CUDA kernel，减少显存往返次数。</li>
-              <li><strong>Flash Attention 2 集成</strong>：自动使用 Flash Attention 2 的分块计算，将注意力计算的显存从 O(n²) 降到 O(n)，对长序列训练尤为重要。</li>
-              <li><strong>自定义梯度检查点</strong>：unsloth 的梯度检查点实现比 transformers 默认版本更激进，在重计算粒度上做了针对 LoRA 的优化，减少不必要的重计算。</li>
+              <li><strong>Hand-written LoRA CUDA kernel</strong>: standard PEFT implements LoRA forward/backward at the PyTorch level, with extra Python overhead and kernel launch cost. unsloth fuses A&middot;B with the base W matmul into a single CUDA kernel, cutting memory round-trips.</li>
+              <li><strong>Flash Attention 2 integration</strong>: automatic Flash Attention 2 with tiled compute, reducing attention's memory footprint from O(n²) to O(n) — important on long-sequence training.</li>
+              <li><strong>Custom gradient checkpointing</strong>: unsloth's gradient checkpointing is more aggressive than transformers' default, with re-computation granularity tuned for LoRA, avoiding unneeded recomputation.</li>
             </ul>
 
 <pre class="code-block">from unsloth import FastLanguageModel
@@ -680,202 +680,202 @@ model = FastLanguageModel.get_peft_model(
 # The rest of training is identical to standard TRL GRPOTrainer
 # No other code changes needed — this is the full unsloth integration</pre>
 
-            <p><strong>unsloth vs 标准 PEFT 的选择</strong>：</p>
+            <p><strong>unsloth vs. standard PEFT</strong>:</p>
             <table>
               <thead>
                 <tr>
-                  <th>因素</th>
-                  <th>选 unsloth</th>
-                  <th>选标准 peft</th>
+                  <th>Factor</th>
+                  <th>unsloth</th>
+                  <th>standard peft</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>速度优先</td>
-                  <td>是，2× 提速</td>
+                  <td>Speed first</td>
+                  <td>Yes, ~2× speedup</td>
                   <td></td>
                 </tr>
                 <tr>
-                  <td>自定义训练循环</td>
+                  <td>Custom training loop</td>
                   <td></td>
-                  <td>更灵活</td>
+                  <td>More flexible</td>
                 </tr>
                 <tr>
-                  <td>需要 dropout 在 LoRA</td>
+                  <td>Need dropout in LoRA</td>
                   <td></td>
-                  <td>支持</td>
+                  <td>Supported</td>
                 </tr>
                 <tr>
-                  <td>非标准架构模型</td>
-                  <td>可能不支持</td>
-                  <td>更通用</td>
+                  <td>Non-standard architectures</td>
+                  <td>May not be supported</td>
+                  <td>More general</td>
                 </tr>
                 <tr>
-                  <td>生产环境稳定性</td>
-                  <td>活跃维护，社区大</td>
-                  <td>HuggingFace 官方</td>
+                  <td>Production stability</td>
+                  <td>Active maintenance, large community</td>
+                  <td>HuggingFace official</td>
                 </tr>
                 <tr>
-                  <td>调试难度</td>
-                  <td>稍高（定制 kernel）</td>
-                  <td>标准 PyTorch，易调试</td>
+                  <td>Debuggability</td>
+                  <td>Harder (custom kernels)</td>
+                  <td>Standard PyTorch, easy</td>
                 </tr>
               </tbody>
             </table>
 
-            <p>我们的实践：初期用标准 PEFT 调通训练逻辑，确认奖励函数和超参数后，切换到 unsloth 跑完整训练以节省时间。两套代码几乎可以直接互换。</p>
+            <p>What we actually did: started with standard PEFT to debug the training logic and confirm the reward function and hyperparameters, then switched to unsloth for the full run to save time. The two code bases are nearly interchangeable.</p>
           </div>
 
           <!-- Section 9 -->
           <div class="note-section">
-            <h2>9. 超参数调参指南</h2>
+            <h2>9. Hyperparameter Tuning Guide</h2>
 
-            <p>以下是对每个关键超参数的系统性指南，包括它控制的内容、典型取值范围、以及基于实验经验的调参法则。</p>
+            <p>A walkthrough of each major hyperparameter — what it controls, the typical range, and rules of thumb from our experiments.</p>
 
-            <p><strong>LoRA 架构参数</strong></p>
+            <p><strong>LoRA architecture parameters</strong></p>
 
-            <p><code>r</code>（秩）：控制 LoRA 的表达能力。r 越大，可学习的更新维度越多，但可训练参数量以 O(r) 增长（具体为 r&times;(d+k) per layer）。</p>
+            <p><code>r</code> (rank): controls LoRA's expressive capacity. Larger r means more learnable update dimensions, with trainable parameter count growing as O(r) (specifically r&times;(d+k) per layer).</p>
             <ul class="plain-list">
-              <li>典型范围：4, 8, 16, 32（超过 64 通常无明显收益）</li>
-              <li>起点：r=8。若训练 loss 快速收敛但验证集性能差（欠拟合），增大到 r=16 或 r=32</li>
-              <li>若任务非常简单（如格式转换），r=4 已足够；若需要显著改变模型的知识或推理策略，考虑 r=32</li>
-              <li>注意：更大的 r 不一定更好，超过某个阈值后性能趋于平稳而显存持续增加</li>
+              <li>Typical range: 4, 8, 16, 32 (above 64 usually shows no further gain)</li>
+              <li>Starting point: r=8. If training loss converges quickly but validation underfits, raise to r=16 or r=32</li>
+              <li>For very simple tasks (format conversion), r=4 is enough; for tasks that need to substantially change the model's knowledge or reasoning, consider r=32</li>
+              <li>Larger r isn't always better — beyond a threshold, performance flattens while memory keeps growing</li>
             </ul>
 
-            <p><code>lora_alpha</code>（缩放因子）：控制 LoRA 更新相对于基座权重的影响强度，前向传播的缩放系数为 alpha/r。</p>
+            <p><code>lora_alpha</code> (scaling factor): controls LoRA's effective influence on the base weights. The forward-pass scaling is alpha/r.</p>
             <ul class="plain-list">
-              <li>起点：设为 2&times;r（即 r=8 → alpha=16）</li>
-              <li>若 LoRA 没有足够影响力（模型行为改变不明显），增大 alpha 或减小 r</li>
-              <li>若训练不稳定（loss 震荡），减小 alpha 或增大 r（降低缩放比）</li>
-              <li>RSLoRA（use_rslora=True）将缩放改为 alpha/sqrt(r)，对大 r 更稳定</li>
+              <li>Starting point: 2&times;r (e.g., r=8 → alpha=16)</li>
+              <li>If LoRA isn't having enough effect (model behavior barely changes), raise alpha or lower r</li>
+              <li>If training is unstable (loss oscillates), lower alpha or raise r (smaller scaling ratio)</li>
+              <li>RSLoRA (use_rslora=True) changes scaling to alpha/sqrt(r), more stable for large r</li>
             </ul>
 
-            <p><code>target_modules</code>：决定哪些权重矩阵接受 LoRA 适配。</p>
+            <p><code>target_modules</code>: which weight matrices LoRA attaches to.</p>
             <ul class="plain-list">
-              <li>最全覆盖（推荐）：注意力投影（q/k/v/o）+ FFN 投影（gate/up/down），共 7 类</li>
-              <li>最小覆盖：仅 q_proj + v_proj（参数量最少，适合极度显存受限场景）</li>
-              <li>经验法则：分类和知识密集型任务需要 FFN 层；纯格式迁移任务注意力层可能足够</li>
+              <li>Maximum coverage (recommended): attention projections (q/k/v/o) + FFN projections (gate/up/down), 7 modules in total</li>
+              <li>Minimum coverage: q_proj + v_proj only (fewest parameters, for memory-tight setups)</li>
+              <li>Rule of thumb: classification and knowledge-heavy tasks need FFN layers; pure format-transfer tasks may get away with attention-only</li>
             </ul>
 
-            <p><strong>GRPO 训练参数</strong></p>
+            <p><strong>GRPO training parameters</strong></p>
 
-            <p><code>learning_rate</code>：RL 微调最敏感的超参数之一。</p>
+            <p><code>learning_rate</code>: among the more sensitive hyperparameters in RL fine-tuning.</p>
             <ul class="plain-list">
-              <li>SFT 典型范围：1e-4 到 2e-4</li>
-              <li>GRPO 推荐范围：1e-6 到 1e-5（比 SFT 低 1–2 个数量级）</li>
-              <li>原因：策略梯度更新噪声大，大 LR 会导致策略剧烈抖动，产生"奖励崩溃"（reward collapse）——模型学会了某个能稳定拿到奖励的简并策略，而不是真正的分类能力</li>
-              <li>起点：5e-6；若奖励曲线震荡大，减小到 2e-6；若奖励上升过慢，增大到 1e-5</li>
+              <li>SFT typical range: 1e-4 to 2e-4</li>
+              <li>GRPO recommended range: 1e-6 to 1e-5 (1–2 orders of magnitude lower than SFT)</li>
+              <li>Why: policy-gradient updates are noisy, and a high LR causes the policy to oscillate and produce "reward collapse" — the model finds a degenerate strategy that locks in a stable reward instead of learning real classification</li>
+              <li>Starting point: 5e-6; if the reward curve oscillates a lot, drop to 2e-6; if reward rises too slowly, raise to 1e-5</li>
             </ul>
 
-            <p><code>num_generations</code>（G）：每个 prompt 生成的候选数量。</p>
+            <p><code>num_generations</code> (G): candidates generated per prompt.</p>
             <ul class="plain-list">
-              <li>典型范围：4 到 16</li>
-              <li>G=8 是我们实验中的最优平衡点：梯度质量与显存/速度的最佳折中</li>
-              <li>G=4：训练更快，但优势估计噪声更大，需要更多 epoch 收敛</li>
-              <li>G=16：梯度更准确，但需要减少 per_device_train_batch_size 到 1</li>
-              <li>显存影响：G 个候选序列同时驻留显存，G 增大 1 相当于 batch 增大 1</li>
+              <li>Typical range: 4 to 16</li>
+              <li>G=8 was our best balance in experiments — good gradient quality with reasonable memory and speed</li>
+              <li>G=4: trains faster, but the advantage estimate is noisier and convergence takes more epochs</li>
+              <li>G=16: more accurate gradients, but you have to drop per_device_train_batch_size to 1</li>
+              <li>Memory impact: all G candidates live in memory during generation, so each +1 in G costs about as much as +1 in batch</li>
             </ul>
 
-            <p><code>gradient_checkpointing</code>：激活显存与计算速度的权衡。</p>
+            <p><code>gradient_checkpointing</code>: trade activation memory for compute time.</p>
             <ul class="plain-list">
-              <li>30B+ 模型必须启用；20B 以下可选（启用可以增大 batch size 或序列长度）</li>
-              <li>典型代价：增加约 30% 计算时间，换取约 8–10× 激活显存节省</li>
-              <li>用 unsloth：设为 "unsloth" 而不是 True，效果更好</li>
+              <li>Required for 30B+ models; optional below 20B (turning it on lets you raise batch size or sequence length)</li>
+              <li>Typical cost: about 30% more compute, in exchange for roughly 8–10× less activation memory</li>
+              <li>With unsloth: set to "unsloth" rather than True for better results</li>
             </ul>
 
-            <p><code>per_device_train_batch_size</code>：单卡单步处理的 prompt 数量。</p>
+            <p><code>per_device_train_batch_size</code>: prompts per GPU per step.</p>
             <ul class="plain-list">
-              <li>起点：2（30B 模型在单 A100 80GB 上）；若 OOM 减小到 1</li>
-              <li>用 gradient_accumulation_steps 补偿：effective_batch = batch_size × accum_steps</li>
-              <li>GRPO 的实际计算量为 effective_batch × G，确保这个乘积在 32–128 之间</li>
+              <li>Starting point: 2 (30B model on a single A100 80GB); drop to 1 if OOM</li>
+              <li>Compensate with gradient_accumulation_steps: effective_batch = batch_size × accum_steps</li>
+              <li>GRPO's actual workload is effective_batch × G — keep this product between 32 and 128</li>
             </ul>
 
-            <p><code>warmup_ratio</code>：预热步数占总步数的比例。</p>
+            <p><code>warmup_ratio</code>: fraction of total steps used for warmup.</p>
             <ul class="plain-list">
-              <li>RL 训练中比 SFT 更重要：预热阶段用极小 LR 让策略先"热身"，避免初期大梯度破坏基座能力</li>
-              <li>推荐：0.05 到 0.1（5%–10% 的步数用于预热）</li>
+              <li>Matters more in RL than in SFT: warmup uses a tiny LR so the policy "warms up" before any large gradient hits and damages the base model's abilities</li>
+              <li>Recommended: 0.05 to 0.1 (5–10% of total steps)</li>
             </ul>
 
-            <p><code>kl_coef</code>（KL 系数）：控制策略与参考模型的偏离惩罚强度。</p>
+            <p><code>kl_coef</code> (KL coefficient): penalty strength for drifting away from the reference model.</p>
             <ul class="plain-list">
-              <li>典型范围：0.001 到 0.1</li>
-              <li>太小：模型可能学会奖励黑客（用奇特格式"套"奖励）</li>
-              <li>太大：策略更新受到强约束，难以偏离基座模型，学习效率低</li>
-              <li>起点：0.01；监控 KL 散度值，保持在 0.1–1.0 范围内</li>
+              <li>Typical range: 0.001 to 0.1</li>
+              <li>Too small: the model may find reward-hacking strategies (gaming the reward with weird formats)</li>
+              <li>Too large: policy updates are over-constrained and learning is slow</li>
+              <li>Starting point: 0.01; watch the KL value and keep it in roughly 0.1–1.0</li>
             </ul>
           </div>
 
           <!-- Section 10 -->
           <div class="note-section">
-            <h2>10. OOM 调试流程</h2>
+            <h2>10. OOM Debugging</h2>
 
-            <p>显存不足（Out of Memory）是 30B 级别模型训练中最常见的问题。有效的 OOM 调试需要系统化，而不是随机尝试降低各种参数。以下是我们在实践中形成的调试流程。</p>
+            <p>Out-of-memory is the most common problem when training models in the 30B class. A systematic OOM debug process beats randomly lowering parameters. Here's the routine I settled on.</p>
 
-            <p><strong>第一步：定位 OOM 发生在哪个阶段</strong></p>
+            <p><strong>Step 1: locate which phase the OOM happens in</strong></p>
             <ul class="plain-list">
-              <li><strong>数据加载阶段</strong>：极少数情况，通常是 tokenization 时序列过长。检查 max_seq_length。</li>
-              <li><strong>前向传播（forward）</strong>：模型参数 + 激活占用超限。症状：第一个 training step 就 OOM。</li>
-              <li><strong>反向传播（backward）</strong>：梯度 + 激活占用超限。症状：forward 正常，backward OOM。</li>
-              <li><strong>优化器步骤（optimizer step）</strong>：优化器状态骤然加载。症状：几个 step 后 OOM。使用 paged 优化器可缓解。</li>
-              <li><strong>GRPO 生成阶段</strong>：G × batch_size 个序列同时生成。症状：reward 计算前 OOM。</li>
+              <li><strong>Data loading</strong>: rare. Usually a sequence is too long during tokenization. Check max_seq_length.</li>
+              <li><strong>Forward pass</strong>: model parameters + activations exceed memory. Symptom: OOM on the first training step.</li>
+              <li><strong>Backward pass</strong>: gradients + activations exceed memory. Symptom: forward passes succeed, backward OOMs.</li>
+              <li><strong>Optimizer step</strong>: optimizer state suddenly loaded. Symptom: OOM after a few steps. Paged optimizer helps.</li>
+              <li><strong>GRPO generation</strong>: G × batch_size sequences generated at once. Symptom: OOM before the reward calculation.</li>
             </ul>
 
-            <p><strong>第二步：按优先级逐一尝试以下缓解措施</strong></p>
+            <p><strong>Step 2: try these mitigations in order</strong></p>
             <ol class="plain-list">
-              <li><strong>减小 batch size 到 1</strong>：最直接的显存缩减手段。用 gradient_accumulation_steps 维持有效 batch 大小。</li>
-              <li><strong>启用 gradient_checkpointing</strong>：若尚未启用，立即开启。30B 模型必须。节省激活显存 8–10×。</li>
-              <li><strong>缩短 max_seq_length</strong>：注意力的 KV cache 随序列长度平方增长（Flash Attention 后线性，但常数项仍大）。分析数据集中的实际最大长度，设置合理上限。</li>
-              <li><strong>切换到分页优化器</strong>：<code>optim="paged_adamw_32bit"</code>，将优化器状态 offload 到 CPU，减少 GPU 显存峰值。</li>
-              <li><strong>减小 num_generations (G)</strong>：从 8 减到 4，GRPO 生成阶段的显存减半。梯度质量降低，但通常可接受。</li>
-              <li><strong>减小 LoRA rank r</strong>：从 8 减到 4，可训练参数减半，对训练显存影响较小，但影响模型能力。</li>
-              <li><strong>使用 unsloth</strong>：若上述措施仍不够，切换到 unsloth，其自定义 kernel 在相同计算量下使用更少显存。</li>
-              <li><strong>多卡分布式训练</strong>：使用 DeepSpeed ZeRO-3 将参数、梯度、优化器状态分片到多卡。注意 GRPO 与 ZeRO-3 的兼容性需要验证。</li>
+              <li><strong>Drop batch size to 1</strong>: the most direct memory cut. Use gradient_accumulation_steps to keep effective batch.</li>
+              <li><strong>Enable gradient_checkpointing</strong>: turn it on if it isn't already. Required for 30B models. Cuts activation memory by 8–10×.</li>
+              <li><strong>Shorten max_seq_length</strong>: attention KV cache grows quadratically with sequence length (linearly after Flash Attention, but the constant is still large). Look at the actual maximum length in your dataset and set a reasonable cap.</li>
+              <li><strong>Switch to the paged optimizer</strong>: <code>optim="paged_adamw_32bit"</code>, offloads optimizer state to CPU and reduces GPU memory peaks.</li>
+              <li><strong>Lower num_generations (G)</strong>: from 8 to 4, halving the GRPO generation memory. Gradient quality drops but is usually fine.</li>
+              <li><strong>Lower LoRA rank r</strong>: from 8 to 4, halving trainable parameters. Small effect on training memory, larger effect on capacity.</li>
+              <li><strong>Use unsloth</strong>: if the above isn't enough, switch — its custom kernels use less memory at the same compute load.</li>
+              <li><strong>Multi-GPU distributed training</strong>: use DeepSpeed ZeRO-3 to shard parameters, gradients, and optimizer state across GPUs. Verify GRPO/ZeRO-3 compatibility before relying on it.</li>
             </ol>
 
-            <p><strong>显存估算（诊断用）</strong>：</p>
+            <p><strong>Memory estimation (for diagnosis)</strong>:</p>
             <table>
               <thead>
                 <tr>
-                  <th>组件</th>
-                  <th>估算公式</th>
-                  <th>30B NF4 示例</th>
+                  <th>Component</th>
+                  <th>Estimate</th>
+                  <th>Example (30B NF4)</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>基座模型（4-bit）</td>
+                  <td>Base model (4-bit)</td>
                   <td>params × 0.5 bytes</td>
                   <td>30B × 0.5 = 15 GB</td>
                 </tr>
                 <tr>
-                  <td>LoRA 参数（bf16）</td>
+                  <td>LoRA parameters (bf16)</td>
                   <td>trainable_params × 2 bytes</td>
                   <td>42M × 2 = 84 MB</td>
                 </tr>
                 <tr>
-                  <td>激活（含梯度检查点）</td>
+                  <td>Activations (with gradient checkpointing)</td>
                   <td>batch × seq_len × hidden × layers × 2 bytes / 8</td>
                   <td>2 × 2048 × 7168 × 80 × 2 / 8 ≈ 7 GB</td>
                 </tr>
                 <tr>
-                  <td>优化器状态（Adam）</td>
+                  <td>Optimizer state (Adam)</td>
                   <td>trainable_params × 2 × 4 bytes</td>
                   <td>42M × 8 = 336 MB</td>
                 </tr>
                 <tr>
-                  <td>GRPO 生成缓存</td>
+                  <td>GRPO generation cache</td>
                   <td>G × batch × seq_len × hidden × 2 bytes</td>
                   <td>8 × 2 × 128 × 7168 × 2 ≈ 3 GB</td>
                 </tr>
                 <tr>
-                  <td><strong>总计（估算）</strong></td>
+                  <td><strong>Total (estimate)</strong></td>
                   <td></td>
-                  <td><strong>≈ 26 GB（单 A100 可运行）</strong></td>
+                  <td><strong>≈ 26 GB (fits on a single A100)</strong></td>
                 </tr>
               </tbody>
             </table>
 
-            <p>注意这只是近似值；实际占用受 PyTorch 内存碎片化、框架 overhead 等因素影响，通常比估算高 10–20%。建议在正式训练前用 1 个 step 测量实际峰值（<code>torch.cuda.max_memory_allocated()</code>）。</p>
+            <p>These are approximate; actual usage is affected by PyTorch memory fragmentation, framework overhead, and so on, and is usually 10–20% higher than the estimate. Before committing to a long training run, measure peak usage on a single step with <code>torch.cuda.max_memory_allocated()</code>.</p>
 
 <pre class="code-block"># ── Quick OOM diagnostic: measure peak memory for 1 step ──────────────────────
 import torch
@@ -910,17 +910,17 @@ print(f"After optimizer: {torch.cuda.max_memory_allocated()/1e9:.1f} GB")</pre>
 
           <!-- Section 11 -->
           <div class="note-section">
-            <h2>11. 评估与分析</h2>
+            <h2>11. Evaluation and Analysis</h2>
 
-            <p><strong>为什么不能只看准确率</strong>：我们的数据集中 critical 占 4%，informational 占 30%。一个将所有告警预测为 informational 的哑模型准确率可达 30%，但 critical 召回率为 0——在生产环境中完全没有价值。对于类别严重不平衡的分类任务，准确率（accuracy）是一个误导性指标。</p>
+            <p><strong>Why accuracy alone isn't enough</strong>: in our dataset, critical is 4% and informational is 30%. A dummy model that predicts informational for everything reaches 30% accuracy, but its critical recall is 0 — useless in production. For severely imbalanced classification, accuracy is misleading.</p>
 
-            <p><strong>应该关注的指标</strong>：</p>
+            <p><strong>What to look at instead</strong>:</p>
             <ul class="plain-list">
-              <li><strong>逐类 Precision / Recall / F1</strong>：分别报告每个严重级别的精准率和召回率，了解模型在哪些类别上表现最差。</li>
-              <li><strong>Critical 告警召回率</strong>：最重要的单一业务指标。目标：在生产环境中不低于 95%（即每 100 个真实 critical 告警，漏报不超过 5 个）。</li>
-              <li><strong>混淆矩阵</strong>：可视化所有类别对之间的混淆模式，识别系统性错误（如模型经常把 high 误判为 medium）。</li>
-              <li><strong>训练过程中的 Reward 曲线</strong>：reward/mean 应稳定上升然后趋于平稳；reward/std 应保持非零（表明组内仍有多样性）。</li>
-              <li><strong>生成解析成功率</strong>：<code>extract_severity</code> 返回 "unknown" 的比例，衡量输出格式的可靠性。</li>
+              <li><strong>Per-class precision / recall / F1</strong>: report each severity level separately so you know where the model is weakest.</li>
+              <li><strong>Critical recall</strong>: the headline business metric. Target: at least 95% in production (no more than 5 misses per 100 real critical alerts).</li>
+              <li><strong>Confusion matrix</strong>: visualize where the model gets confused (e.g., it often predicts medium when high is correct).</li>
+              <li><strong>Reward curves during training</strong>: reward/mean should rise and stabilize; reward/std should stay non-zero (the group still has some diversity).</li>
+              <li><strong>Generation parse rate</strong>: fraction of <code>extract_severity</code> returning "unknown" — measures how reliable the output format is.</li>
             </ul>
 
 <pre class="code-block">from sklearn.metrics import classification_report, confusion_matrix
@@ -1017,52 +1017,52 @@ def evaluate_model(model, tokenizer, eval_dataset, label_list=LABEL_LIST):
         "confusion_matrix": cm,
     }</pre>
 
-            <p><strong>训练曲线异常的诊断</strong>：</p>
+            <p><strong>Diagnosing abnormal training curves</strong>:</p>
             <ul class="plain-list">
-              <li><strong>奖励迅速达到上限并停止增长</strong>：可能是奖励黑客——模型学会了某个能稳定获得高奖励的简单规则（如总是输出 "high"）。检查 reward/std 是否趋近于零，以及每个类别的预测分布是否严重偏斜。</li>
-              <li><strong>奖励持续震荡不收敛</strong>：learning_rate 过大或 kl_coef 过小。先尝试减半 learning_rate。</li>
-              <li><strong>训练初期奖励突然崩溃</strong>：预热步数不够，或 learning_rate 太大导致策略初期过度更新。增大 warmup_ratio 到 0.15。</li>
-              <li><strong>验证集 critical recall 低但训练奖励高</strong>：过拟合或分布偏移。检查训练集 critical 样本是否足够多样；考虑数据增强。</li>
+              <li><strong>Reward hits a ceiling and stops growing</strong>: possibly reward hacking — the model has found a simple rule that locks in a high reward (e.g., always predict "high"). Check whether reward/std drops toward zero and whether the per-class prediction distribution is heavily skewed.</li>
+              <li><strong>Reward oscillates without converging</strong>: learning_rate too large or kl_coef too small. Try halving learning_rate first.</li>
+              <li><strong>Reward collapses early in training</strong>: not enough warmup, or learning_rate too high causing aggressive early updates. Raise warmup_ratio to 0.15.</li>
+              <li><strong>Validation critical recall low while training reward is high</strong>: overfitting or distribution shift. Check whether the training set has enough diverse critical samples; consider data augmentation.</li>
             </ul>
           </div>
 
           <!-- Section 12 -->
           <div class="note-section">
-            <h2>12. 实验结论</h2>
+            <h2>12. Findings</h2>
 
-            <p>以下是从成亭科技项目中提炼的核心结论，对未来类似项目具有参考价值。</p>
+            <p>Conclusions worth carrying over to similar projects, distilled from the Chaitin Tech project.</p>
 
-            <p><strong>结论一：Reward 函数设计 > 基座模型选择</strong></p>
-            <p>这是本项目最重要的发现。使用非对称 reward（对漏报严重告警给予重惩）与对称 reward（只区分对/错，代价相同）相比，critical 告警召回率提升约 <strong>15 个百分点</strong>（从约 0.72 到约 0.87）。而在相同量级的基座模型之间切换（Qwen3-30B-A3B vs 同规模的其他模型）对这个指标的影响约为 3pp。这说明：对于业务目标明确的任务，训练信号的设计质量远比模型本身更重要。"用更好的模型"是诱人但低效的路径；"用更准确的 reward"是高回报的投入。</p>
+            <p><strong>Finding one: reward function design beats base model choice</strong></p>
+            <p>The headline result. Switching to an asymmetric reward (heavy penalty for missing severe alerts) compared with a symmetric reward (right vs. wrong, equal cost) raised critical-alert recall by about <strong>15 percentage points</strong> (from ~0.72 to ~0.87). Swapping base models at the same scale (Qwen3-30B-A3B vs. comparable peers) moved the same metric by about 3pp. Takeaway: when the business objective is well-defined, the quality of the training signal matters more than the model itself. "Use a better model" is tempting but inefficient; "use a more accurate reward" is high-leverage.</p>
 
-            <p><strong>结论二：GRPO 训练稳定性良好</strong></p>
-            <p>在 lr=5e-6、kl_coef=0.01、G=8 的配置下，GRPO 在 3 个 epoch 内稳定收敛，奖励曲线单调上升后平稳，没有出现奖励崩溃或严重震荡。相比之下，我们在初期尝试 PPO 时，Value 网络的不稳定性导致训练在约 200 step 后发散。GRPO 的去 Critic 设计在这个任务上展示了实质性的稳定性优势。</p>
+            <p><strong>Finding two: GRPO trained stably</strong></p>
+            <p>With lr=5e-6, kl_coef=0.01, G=8, GRPO converged within 3 epochs — the reward curve rose monotonically and then plateaued, no reward collapse and no severe oscillation. By contrast, when I tried PPO early on, the Value network's instability led the run to diverge after about 200 steps. GRPO's no-Critic design showed real stability advantages on this task.</p>
 
-            <p><strong>结论三：QLoRA 精度损失可忽略</strong></p>
-            <p>在相同训练配置下对比 QLoRA（4-bit NF4）与 fp16 LoRA：整体 weighted F1 差距小于 <strong>1pp</strong>（0.86 vs 0.87），critical recall 差距约 0.5pp。4-bit 量化对分类型任务的精度影响极小，而显存节省（60 GB → 15 GB）是实质性的。这一结论与 Dettmers et al. 的原始论文一致，但现在有了特定任务的实验验证。</p>
+            <p><strong>Finding three: QLoRA precision loss is negligible here</strong></p>
+            <p>Comparing QLoRA (4-bit NF4) to fp16 LoRA at the same training configuration: weighted F1 differed by less than <strong>1pp</strong> (0.86 vs. 0.87), and critical recall by about 0.5pp. 4-bit quantization has minimal effect on classification, while the memory savings (60 GB → 15 GB) are real. Consistent with the original Dettmers et al. paper, but now with a task-specific data point.</p>
 
-            <p><strong>结论四：输出格式的显式约束至关重要</strong></p>
-            <p>在 prompt 末尾加入 "Respond with exactly one word: critical, high, medium, low, or informational." 将输出解析成功率从约 73% 提升到约 97%。在格式不确定的情况下，约 27% 的输出无法可靠解析，这些样本会被分配 -1.0 的惩罚奖励，大量污染训练信号。结构化输出约束是提升解析率的最低成本手段。</p>
+            <p><strong>Finding four: explicit output-format constraints matter</strong></p>
+            <p>Adding "Respond with exactly one word: critical, high, medium, low, or informational." at the end of the prompt raised the parse rate from ~73% to ~97%. Without it, ~27% of outputs couldn't be parsed reliably; those samples received the -1.0 format penalty and added a lot of noise to the training signal. Constraining output format is the cheapest way to lift parse rate.</p>
 
-            <p><strong>结论五：G=8 是组大小的甜点</strong></p>
-            <p>系统地测试了 G=4、8、16：</p>
+            <p><strong>Finding five: G=8 was the sweet spot for group size</strong></p>
+            <p>I systematically tested G=4, 8, 16:</p>
             <ul class="plain-list">
-              <li>G=4：梯度估计噪声较大，需要多约 1 个 epoch 才能达到与 G=8 相当的性能，但每步计算量更少，适合显存极度受限的情况。</li>
-              <li>G=8：最优平衡。在 A100×2 环境下 batch_size=2 时内存使用率约 75%，训练速度与梯度质量的平衡最好。</li>
-              <li>G=16：critical recall 相比 G=8 提升约 1pp，但需要将 batch_size 减小到 1，整体训练时间反而更长。边际收益低于边际成本。</li>
+              <li>G=4: noisier gradient estimate, needed about one extra epoch to match G=8, but each step is cheaper — useful when memory is very tight.</li>
+              <li>G=8: best balance. Memory utilization ~75% with batch_size=2 on 2× A100, and the trade-off between training speed and gradient quality landed well.</li>
+              <li>G=16: critical recall improved by about 1pp over G=8, but batch_size had to drop to 1 and the total run time went up. Marginal gain wasn't worth the marginal cost.</li>
             </ul>
 
-            <p><strong>结论六：阶段性训练策略有效</strong></p>
-            <p>我们最终采用了两阶段策略：第一阶段用 SFT 在标注数据上做 1 个 epoch 的初始对齐（让模型先学会正确的输出格式和大致的分类方向），第二阶段再用 GRPO 做奖励对齐。相比直接从基座模型开始 GRPO，SFT 热启动使 GRPO 阶段的收敛速度加快约 30%，且早期训练更稳定（因为初始策略已经能输出格式正确的分类结果，奖励信号质量更高）。</p>
+            <p><strong>Finding six: a two-phase training strategy worked</strong></p>
+            <p>The final approach was two-phase: phase 1 ran SFT on labeled data for 1 epoch as initial alignment (so the model first learned the right output format and rough classification direction); phase 2 ran GRPO for reward alignment. Compared with starting GRPO directly from the base model, the SFT warmup made GRPO converge about 30% faster and more stably early on, since the initial policy could already produce well-formatted classifications and the reward signal was higher quality.</p>
 
-            <p><strong>总结：给类似项目的建议优先级排序</strong></p>
+            <p><strong>Summary: priority order for similar projects</strong></p>
             <ol class="plain-list">
-              <li>先把 reward 函数设计做对（不对称代价、防御性解析、奖励量纲）</li>
-              <li>用结构化输出 prompt 保证解析成功率</li>
-              <li>用 SFT 做初始热启动，再切到 GRPO</li>
-              <li>从 G=8、lr=5e-6 开始，不要在超参上过早花时间</li>
-              <li>以 critical recall 为核心评估指标，不要被整体 accuracy/F1 迷惑</li>
-              <li>在以上都做好之后，再考虑换更大的模型</li>
+              <li>Get the reward function right first (asymmetric cost, defensive parsing, calibrated magnitudes)</li>
+              <li>Use a structured output prompt to keep the parse rate high</li>
+              <li>Warm up with SFT, then switch to GRPO</li>
+              <li>Start at G=8, lr=5e-6 — don't burn time on hyperparameters too early</li>
+              <li>Track critical recall as the headline metric, not overall accuracy/F1</li>
+              <li>Only after all of the above, consider a larger base model</li>
             </ol>
           </div>
 

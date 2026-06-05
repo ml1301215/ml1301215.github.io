@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Linux 服务器实用工具 — Lve Meng</title>
+  <title>Useful Linux Server Tools — Lve Meng</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -70,136 +70,136 @@
     <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
       <div class="page__inner-wrap">
         <header>
-          <h1 class="page__title" itemprop="headline">Linux 服务器实用工具</h1>
+          <h1 class="page__title" itemprop="headline">Useful Linux Server Tools</h1>
         </header>
         <section class="page__content" itemprop="text">
 
           <p><a href="/learning/" class="back-link">← Learning</a></p>
-          <p>整理自实际在服务器上工作时发现的工具。有些是内置的，有些需要安装。按使用频率排列，最高频的放最前面。</p>
+          <p>Compiled from tools discovered while working on Linux servers. Some are built in; others need to be installed. Listed in order of how frequently I use them.</p>
 
-          <h2>一、tmux（必装，优先级最高）</h2>
+          <h2>1. tmux (Install First, Highest Priority)</h2>
 
-          <p>SSH 连接断开时，终端里所有正在运行的进程都会被 kill。tmux 让你的工作在断开后继续运行，下次连上可以无缝恢复。</p>
+          <p>When an SSH connection drops, all running processes in that terminal get killed. tmux keeps your work running after a disconnect, and you can resume seamlessly the next time you connect.</p>
 
-          <pre><code># 基本操作
-tmux new -s mysession       # 新建会话，命名
-tmux ls                     # 列出所有会话
-tmux attach -t mysession    # 重新连接到会话
+          <pre><code># Basic operations
+tmux new -s mysession       # create a named session
+tmux ls                     # list all sessions
+tmux attach -t mysession    # reattach to a session
 
-# 快捷键（都以 Ctrl+b 开头）
-Ctrl+b, d     # detach，离开会话（会话继续后台运行）
-Ctrl+b, c     # 新建窗口
-Ctrl+b, n     # 下一个窗口
-Ctrl+b, p     # 上一个窗口
-Ctrl+b, 数字  # 切换到对应编号的窗口
-Ctrl+b, "     # 上下分割当前窗格
-Ctrl+b, %     # 左右分割当前窗格
-Ctrl+b, 方向键 # 切换窗格</code></pre>
+# Shortcuts (all start with Ctrl+b)
+Ctrl+b, d     # detach — leave the session (it keeps running in the background)
+Ctrl+b, c     # create a new window
+Ctrl+b, n     # next window
+Ctrl+b, p     # previous window
+Ctrl+b, &lt;num&gt; # switch to the numbered window
+Ctrl+b, "     # split current pane horizontally
+Ctrl+b, %     # split current pane vertically
+Ctrl+b, arrow # switch between panes</code></pre>
 
-          <p>一个实用的工作流：开一个 tmux 会话，三个窗口分别跑训练脚本、监控 GPU、查看日志。断开 SSH 后训练继续，回来直接 attach。</p>
+          <p>A practical workflow: open one tmux session with three windows — one running the training script, one monitoring the GPU, one tailing the log. The training continues after you disconnect; come back and attach.</p>
 
-          <h2>二、htop（进程与资源监控）</h2>
+          <h2>2. htop (Process and Resource Monitor)</h2>
 
-          <p>比内置的 <code>top</code> 更直观，可以看到每个 CPU 核的使用率、内存、swap，以及进程树。</p>
+          <p>More intuitive than the built-in <code>top</code>. Shows per-CPU-core usage, memory, swap, and a process tree.</p>
 
-          <pre><code>sudo apt-get install htop    # 安装
-htop                         # 运行
+          <pre><code>sudo apt-get install htop    # install
+htop                         # run
 
-# 在 htop 里：
-F5   # 切换树形视图（看进程父子关系）
-F6   # 按某个字段排序
-F9   # kill 选中的进程
-/    # 搜索进程名</code></pre>
+# Inside htop:
+F5   # toggle tree view (shows parent-child process relationships)
+F6   # sort by a field
+F9   # kill the selected process
+/    # search by process name</code></pre>
 
-          <p>训练时 CPU 内存突然被吃满，<code>htop</code> 可以快速找到是哪个进程在占用。</p>
+          <p>When CPU memory suddenly spikes during training, <code>htop</code> quickly pinpoints which process is responsible.</p>
 
-          <h2>三、nvidia-smi（GPU 监控）</h2>
+          <h2>3. nvidia-smi (GPU Monitoring)</h2>
 
-          <p>内置于 NVIDIA 驱动，是 GPU 监控最基本的工具。</p>
+          <p>Built into the NVIDIA driver — the most basic GPU monitoring tool.</p>
 
-          <pre><code>nvidia-smi                     # 一次性快照
-watch -n 1 nvidia-smi          # 每秒刷新
+          <pre><code>nvidia-smi                     # one-shot snapshot
+watch -n 1 nvidia-smi          # refresh every second
 nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.total \
-  --format=csv -l 1            # 只显示关键指标，每秒更新</code></pre>
+  --format=csv -l 1            # show only key metrics, updated every second</code></pre>
 
-          <p><code>nvtop</code> 是更现代的替代品，界面类似 htop，需要单独安装（<code>sudo apt install nvtop</code>），动态可视化更直观。</p>
+          <p><code>nvtop</code> is a more modern alternative with an htop-style interface; install it with <code>sudo apt install nvtop</code> for more visual monitoring.</p>
 
-          <h2>四、nohup 和 screen（后台运行）</h2>
+          <h2>4. nohup and screen (Background Execution)</h2>
 
-          <p>如果不想用 tmux，可以用 <code>nohup</code> 让进程在退出后继续运行：</p>
+          <p>If you do not want to use tmux, <code>nohup</code> lets a process continue running after you log out:</p>
 
-          <pre><code>nohup python train.py > train.log 2>&1 &
-# 输出重定向到 train.log，& 放入后台
-# 进程 ID 会打印出来，记下来方便之后 kill</code></pre>
+          <pre><code>nohup python train.py > train.log 2>&amp;1 &amp;
+# redirects output to train.log; &amp; sends it to the background
+# the process ID is printed — keep it in case you need to kill it later</code></pre>
 
-          <p><code>screen</code> 功能类似 tmux 但更简单：</p>
+          <p><code>screen</code> is similar to tmux but simpler:</p>
 
-          <pre><code>screen -S train          # 新建会话
-screen -ls               # 列出会话
-screen -r train          # 重新连接
+          <pre><code>screen -S train          # create a session
+screen -ls               # list sessions
+screen -r train          # reattach
 Ctrl+a, d                # detach</code></pre>
 
-          <p>tmux 功能更丰富（多窗口、分屏），建议优先用 tmux。nohup 适合快速启动一个不需要交互的后台任务。</p>
+          <p>tmux has more features (multiple windows, split panes), so prefer it. Use <code>nohup</code> for quickly launching a background task that needs no interaction.</p>
 
-          <h2>五、rsync 和 scp（文件传输）</h2>
+          <h2>5. rsync and scp (File Transfer)</h2>
 
-          <pre><code># scp：简单文件传输
+          <pre><code># scp: simple file transfer
 scp local_file.txt user@server:/remote/path/
-scp -r local_dir/ user@server:/remote/path/    # 目录
+scp -r local_dir/ user@server:/remote/path/    # directory
 
-# rsync：增量同步，适合大量文件
+# rsync: incremental sync, better for large file sets
 rsync -avz local_dir/ user@server:/remote/path/
-# -a：保留权限、时间戳等元信息
-# -v：显示进度
-# -z：压缩传输
+# -a: preserve permissions, timestamps, and other metadata
+# -v: verbose output
+# -z: compress during transfer
 rsync --progress -avz model_weights/ server:/data/weights/</code></pre>
 
-          <p>传输模型权重（几十 GB）时，rsync 比 scp 快很多，因为它只传输变化的部分，断点续传也更可靠。</p>
+          <p>When transferring model weights (tens of GB), rsync is much faster than scp because it only transfers changed parts, and it handles resume-on-failure reliably.</p>
 
-          <h2>六、df 和 du（磁盘使用）</h2>
+          <h2>6. df and du (Disk Usage)</h2>
 
-          <pre><code>df -h             # 查看各分区剩余空间（-h 人类可读格式）
-du -sh /path/*    # 查看某目录下各子目录的大小
-du -sh .          # 查看当前目录总大小
+          <pre><code>df -h             # show remaining space per partition (-h for human-readable sizes)
+du -sh /path/*    # show size of each subdirectory under a path
+du -sh .          # show total size of the current directory
 
-# 找出占用空间最多的目录
+# find the directories using the most space
 du -h --max-depth=1 /data | sort -hr | head -20</code></pre>
 
-          <p>训练中途磁盘满了会导致进程崩溃，且通常没有清晰的报错信息。定期 <code>df -h</code> 检查磁盘，是个好习惯。</p>
+          <p>A full disk during training causes a crash with no clear error message. Running <code>df -h</code> periodically is a good habit.</p>
 
-          <h2>七、tail 和 grep（日志查看）</h2>
+          <h2>7. tail and grep (Log Viewing)</h2>
 
-          <pre><code>tail -f train.log             # 实时跟踪日志文件末尾
-tail -n 100 train.log         # 查看最后 100 行
-grep "loss" train.log         # 过滤包含 loss 的行
-grep -n "Error" train.log     # 显示行号
-tail -f train.log | grep --line-buffered "loss"  # 实时过滤</code></pre>
+          <pre><code>tail -f train.log             # follow the end of a log file in real time
+tail -n 100 train.log         # show the last 100 lines
+grep "loss" train.log         # filter lines containing "loss"
+grep -n "Error" train.log     # show line numbers
+tail -f train.log | grep --line-buffered "loss"  # real-time filtered tail</code></pre>
 
-          <p>训练日志通常很长，用 <code>grep</code> 过滤关键词是最快的定位方式。</p>
+          <p>Training logs are usually long. Filtering with <code>grep</code> is the fastest way to find what you need.</p>
 
-          <h2>八、几个容易忽略但很有用的命令</h2>
+          <h2>8. A Few Easily Overlooked but Useful Commands</h2>
 
-          <pre><code>free -h               # 内存使用情况（总量、已用、可用、swap）
-lscpu                 # CPU 信息（核数、架构）
-which python          # 确认当前用的是哪个 Python
-pip show torch        # 查看某个包的版本和安装位置
-ps aux | grep train   # 找正在运行的训练进程
-kill -9 PID           # 强制 kill 进程（PID 从 ps 或 htop 获取）
-history | grep conda  # 在历史命令里搜索</code></pre>
+          <pre><code>free -h               # memory usage (total, used, available, swap)
+lscpu                 # CPU info (core count, architecture)
+which python          # check which Python is currently active
+pip show torch        # show a package's version and install location
+ps aux | grep train   # find running training processes
+kill -9 PID           # force-kill a process (get PID from ps or htop)
+history | grep conda  # search command history</code></pre>
 
-          <h2>九、别名（alias）省时间</h2>
+          <h2>9. Aliases to Save Time</h2>
 
-          <p>把常用的长命令存成短别名，放在 <code>~/.bashrc</code> 或 <code>~/.zshrc</code> 里：</p>
+          <p>Store frequently used long commands as short aliases in <code>~/.bashrc</code> or <code>~/.zshrc</code>:</p>
 
-          <pre><code># 加入 ~/.bashrc
+          <pre><code># add to ~/.bashrc
 alias gpu='watch -n 1 nvidia-smi'
 alias mem='free -h'
 alias py='python3'
 alias tl='tail -f'
 
-source ~/.bashrc    # 使改动生效</code></pre>
+source ~/.bashrc    # apply the changes</code></pre>
 
-          <p>这些别名在每次登录时自动加载，之后直接输 <code>gpu</code> 就能监控 GPU，省掉重复打字。</p>
+          <p>These aliases load automatically on every login. Typing <code>gpu</code> instantly starts GPU monitoring, saving you from retyping the full command each time.</p>
 
         </section>
         <footer class="page__meta"></footer>

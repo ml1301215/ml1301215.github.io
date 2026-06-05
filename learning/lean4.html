@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lean 4 入门路径 — Lve Meng</title>
+  <title>Lean 4 Getting Started — Lve Meng</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -54,57 +54,57 @@
     <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
       <div class="page__inner-wrap">
         <header>
-          <h1 class="page__title" itemprop="headline">Lean 4 入门路径</h1>
+          <h1 class="page__title" itemprop="headline">Lean 4 Getting Started: From Competition Math to Mathlib Formalization</h1>
         </header>
         <section class="page__content" itemprop="text">
 
           <p><a href="/learning/" class="back-link">← Learning</a></p>
-          <p>本指南面向有数学背景但无类型论经验的读者，基于形式化 18 道 ICCM 竞赛题的实践总结。</p>
+          <p>This guide is aimed at readers with a mathematics background but no prior type-theory experience, compiled from the practical work of formalizing 18 ICCM competition problems.</p>
 
           <!-- ===== SECTION 1 ===== -->
           <div class="note-section">
-          <h2>1. 为什么选 Lean 4</h2>
+          <h2>1. Why Lean 4</h2>
 
-          <p>常用的定理证明器有四个：Coq（法国 INRIA，OCaml 实现）、Isabelle/HOL（剑桥/慕尼黑，ML 系）、Agda（瑞典 Chalmers，依赖类型）和 Lean 4（微软研究院/Leanprover 社区，C++/Lean 自举）。本文基于形式化 ICCM 竞赛题的实际需要，以下比较各系统的差异，说明选用 Lean 4 的理由。</p>
+          <p>The four common theorem provers are: Coq (INRIA, OCaml-based), Isabelle/HOL (Cambridge/Munich, ML-family), Agda (Chalmers, dependent types), and Lean 4 (Microsoft Research / Leanprover community, C++ with self-hosted Lean). The comparison below is grounded in what's actually needed to formalize ICCM-style problems, and explains why I went with Lean 4.</p>
 
-          <p><strong>与 Coq 的比较。</strong>Coq 拥有数十年积累，但语法相对繁琐，策略（tactic）语言 Ltac 与主语言割裂，学习曲线陡峭。数学库 MathComp 虽然成熟，但命名风格晦涩，对竞赛题涉及的实数分析、组合数学覆盖并不全面。Lean 4 的 Mathlib4 在覆盖广度上已经超越 MathComp，且策略语法与主语言统一，更接近数学家的习惯。</p>
+          <p><strong>Compared with Coq.</strong> Coq has decades of accumulated work but a relatively heavy syntax, and its tactic language Ltac is divorced from the main language, which makes the learning curve steep. The MathComp library is mature but uses a terse naming style, and its coverage of real analysis and combinatorics — both relevant for competition problems — isn't comprehensive. Mathlib4 has surpassed MathComp in breadth, and Lean 4 unifies tactic syntax with the main language so it reads closer to ordinary mathematical writing.</p>
 
-          <p><strong>与 Isabelle 的比较。</strong>Isabelle/HOL 的自动化能力（sledgehammer）极强，能调用外部 SMT/ATP 求解器，对于需要大量繁琐代数推导的题目非常有效。但 Isabelle 的类型系统相对弱，表达能力不如依赖类型系统，且社区主要集中在欧洲学术圈，中文资源极少。Lean 4 的 <code>decide</code>、<code>norm_num</code>、<code>omega</code> 等策略在竞赛场景下已足够强大。</p>
+          <p><strong>Compared with Isabelle.</strong> Isabelle/HOL has very strong automation (sledgehammer can call out to external SMT/ATP solvers), which is useful for problems that require long algebraic manipulation. But its type system is relatively weak and less expressive than dependent types, and the community is concentrated in European academia with sparse Chinese-language resources. For competition-level work, Lean 4's <code>decide</code>, <code>norm_num</code>, <code>omega</code>, and similar tactics are already enough.</p>
 
-          <p><strong>与 Agda 的比较。</strong>Agda 是依赖类型研究的前沿工具，表达能力最强，但几乎没有面向数学竞赛的库。形式化一道初等数论题在 Agda 中需要从头搭建大量基础设施，不适合以"完成形式化"为目标的工作。</p>
+          <p><strong>Compared with Agda.</strong> Agda is a research tool at the frontier of dependent-type theory, with the most expressive system, but almost nothing aimed at competition mathematics. Formalizing an elementary number-theory problem in Agda would mean building up a lot of infrastructure from scratch — not a good fit when the goal is "complete the formalization."</p>
 
-          <p><strong>Mathlib4 的覆盖范围。</strong>截至 2025 年，Mathlib4 已包含超过 18 万条引理，覆盖初等数论、线性代数、多项式理论、实分析、复分析、组合数学、代数拓扑、范畴论等领域。对于 ICCM 竞赛题这一层次的数学，所需的绝大多数工具都已有现成引理可用，不需要从头证明。</p>
+          <p><strong>Mathlib4 coverage.</strong> As of 2025, Mathlib4 has over 180,000 lemmas, covering elementary number theory, linear algebra, polynomial theory, real and complex analysis, combinatorics, algebraic topology, category theory, and more. For ICCM-level problems, almost all the tools you need exist as off-the-shelf lemmas, so you rarely have to prove something from scratch.</p>
 
-          <p><strong>活跃社区与持续开发。</strong>Lean 4 由 Leonardo de Moura 主导开发，Mathlib4 贡献者超过 500 人，每周持续有新引理合并。社区讨论在 Zulip（leanprover.zulipchat.com）上进行。</p>
+          <p><strong>Active community and continuous development.</strong> Lean 4 is led by Leonardo de Moura, Mathlib4 has more than 500 contributors, and new lemmas are merged every week. Discussion happens on Zulip (leanprover.zulipchat.com).</p>
 
-          <p><strong>为何适合形式化 ICCM 题目。</strong>ICCM 竞赛题以代数、数论、组合为主，Mathlib4 在这些领域的覆盖较为充分。Lean 4 的策略语言结构接近手写证明：用 <code>have</code> 引入中间步骤，用 <code>ring</code> 处理代数恒等式，用 <code>linarith</code> 处理不等式，整体结构与纸面证明对应关系清晰。</p>
+          <p><strong>Fit for ICCM problems.</strong> ICCM problems are mostly algebra, number theory, and combinatorics — areas Mathlib4 covers well. Lean 4's tactic language tracks how a proof is written by hand: <code>have</code> for intermediate steps, <code>ring</code> for algebraic identities, <code>linarith</code> for inequalities. The structure of the formal proof maps cleanly onto a paper proof.</p>
           </div>
 
           <!-- ===== SECTION 2 ===== -->
           <div class="note-section">
-          <h2>2. 环境配置</h2>
+          <h2>2. Environment Setup</h2>
 
-          <p>以下步骤适用于 Windows 10/11、macOS 和主流 Linux 发行版。建议优先在 Linux/macOS 下工作，因为 Lean 4 的工具链在这些平台上更成熟，构建速度更快。</p>
+          <p>The following steps work on Windows 10/11, macOS, and major Linux distributions. Linux/macOS is preferable — the Lean 4 toolchain is more mature on those platforms and builds are faster.</p>
 
-          <h3>2.1 安装 elan（Lean 版本管理器）</h3>
-          <p>elan 是 Lean 4 的版本管理工具，类似于 Rust 的 rustup。在终端中运行：</p>
+          <h3>2.1 Install elan (the Lean version manager)</h3>
+          <p>elan is Lean 4's version manager, similar to Rust's rustup. In a terminal:</p>
           <pre class="code-block">
 # Linux / macOS
 curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
 
-# Windows（PowerShell，需要先安装 curl 或使用 winget）
+# Windows (PowerShell; install curl first, or use winget)
 winget install leanprover.elan
-# 或直接下载 elan-init.exe 并运行</pre>
+# or download elan-init.exe and run it directly</pre>
 
-          <p>安装完成后重启终端，运行 <code>elan --version</code> 验证安装成功。elan 会自动管理不同项目所需的 Lean 工具链版本，无需手动切换。</p>
+          <p>Restart the terminal after installation, then run <code>elan --version</code> to verify. elan automatically manages the Lean toolchain version each project uses, so you don't have to switch by hand.</p>
 
-          <h3>2.2 创建新项目</h3>
-          <p>使用 Lake（Lean 的构建系统）创建一个使用 Mathlib4 的新项目：</p>
+          <h3>2.2 Create a New Project</h3>
+          <p>Use Lake (Lean's build system) to create a new project that depends on Mathlib4:</p>
           <pre class="code-block">
 lake new myproject math
 cd myproject</pre>
 
-          <p><code>math</code> 参数告诉 Lake 使用数学模板，会自动生成依赖 Mathlib4 的 <code>lakefile.toml</code>。你也可以手动配置该文件：</p>
+          <p>The <code>math</code> argument tells Lake to use the math template, which generates a <code>lakefile.toml</code> with a Mathlib4 dependency. You can also write the file by hand:</p>
           <pre class="code-block">
 import Lake
 open Lake DSL
@@ -117,117 +117,117 @@ require mathlib from git
 
 lean_lib «Myproject» where</pre>
 
-          <p>版本号 <code>v4.27.0</code> 指定了 Mathlib4 的具体版本。建议锁定版本以保证可重现性；当需要升级时，修改此处版本号并重新运行 <code>lake update</code>。</p>
+          <p>The version <code>v4.27.0</code> pins the Mathlib4 release. Pinning is recommended for reproducibility; when you want to upgrade, change the version here and re-run <code>lake update</code>.</p>
 
-          <h3>2.3 下载 Mathlib 缓存</h3>
-          <p>Mathlib4 的源代码本身需要数小时才能从零编译，但社区提供了预编译的二进制缓存（约 1–2 GB）。在项目根目录运行：</p>
+          <h3>2.3 Download the Mathlib Cache</h3>
+          <p>Compiling Mathlib4 from source takes hours, but the community provides a precompiled binary cache (about 1–2 GB). From the project root:</p>
           <pre class="code-block">
 lake exe cache get</pre>
 
-          <p>这会从 Mathlib 服务器下载与当前工具链版本匹配的编译缓存。下载完成后，<code>lake build</code> 只需几分钟而非数小时。如果网络速度较慢，可以考虑使用镜像或在有良好网络的机器上提前下载。</p>
+          <p>This downloads the compiled cache matching the current toolchain version. After this, <code>lake build</code> takes a few minutes instead of hours. If your network is slow, consider a mirror or pre-downloading on a machine with better connectivity.</p>
 
-          <h3>2.4 VS Code 配置</h3>
-          <p>在 VS Code 扩展市场搜索并安装 <strong>lean4</strong>（扩展 ID：<code>leanprover.lean4</code>）。该扩展会：</p>
+          <h3>2.4 VS Code Setup</h3>
+          <p>In the VS Code marketplace, search for and install <strong>lean4</strong> (extension ID: <code>leanprover.lean4</code>). The extension will:</p>
           <ul class="plain-list">
-            <li>自动检测项目中的 <code>lakefile.toml</code> 并配置语言服务器</li>
-            <li>在右侧显示 <strong>Lean Infoview</strong> 面板（快捷键 <code>Ctrl+Shift+Enter</code> 切换）</li>
-            <li>光标移动时实时更新当前证明状态</li>
-            <li>提供代码补全、引理搜索、语法高亮</li>
+            <li>Detect <code>lakefile.toml</code> in the project and configure the language server</li>
+            <li>Show a <strong>Lean Infoview</strong> panel on the right (toggle with <code>Ctrl+Shift+Enter</code>)</li>
+            <li>Update the current proof state in real time as you move the cursor</li>
+            <li>Provide completion, lemma search, and syntax highlighting</li>
           </ul>
 
-          <p>打开项目后，VS Code 底部状态栏会显示 Lean 服务器的加载状态。首次打开需要等待语言服务器启动（通常 30 秒到 2 分钟）。当你在 <code>by</code> 关键字后的策略块中移动光标时，Infoview 会显示如下格式的证明状态：</p>
+          <p>After opening the project, the VS Code status bar shows the Lean server's load state. The first open takes 30 seconds to a couple of minutes for the language server to start. When you move the cursor inside a tactic block following <code>by</code>, the Infoview shows the proof state in this format:</p>
           <pre class="code-block">
 ⊢ n * (n + 1) % 2 = 0
--- 上方是目标 (goal)
--- 假设列表：
+-- The line above is the goal
+-- Hypotheses:
 a b : ℤ
 h : a + b = 0</pre>
 
-          <h3>2.5 验证安装</h3>
-          <p>在 <code>Myproject.lean</code> 中写入以下代码，如果 Infoview 不报错且能自动完成，则安装成功：</p>
+          <h3>2.5 Verify the Install</h3>
+          <p>Put the following in <code>Myproject.lean</code>. If the Infoview shows no errors and completion works, the install is good:</p>
           <pre class="code-block">
 import Mathlib
 
--- 验证 Mathlib 可用
+-- Verify Mathlib is available
 #check Nat.add_comm
-#eval 2 + 3  -- 应输出 5
+#eval 2 + 3  -- should output 5
 
 theorem hello_lean : 1 + 1 = 2 := by norm_num</pre>
           </div>
 
           <!-- ===== SECTION 3 ===== -->
           <div class="note-section">
-          <h2>3. 核心概念：命题即类型</h2>
+          <h2>3. Core Concept: Propositions as Types</h2>
 
-          <p>理解 Lean 4 最重要的一步是接受 <strong>Curry-Howard 同构</strong>（命题即类型，证明即程序）这一核心思想。这不只是哲学比喻，而是 Lean 4 的实现基础。</p>
+          <p>The first step in understanding Lean 4 is accepting the <strong>Curry–Howard isomorphism</strong> (propositions are types, proofs are programs) as a working idea. It isn't just a philosophical metaphor — it's how Lean 4 is actually implemented.</p>
 
-          <h3>3.1 命题即类型</h3>
-          <p>在 Lean 4 中，每一个命题（proposition）都是一个类型（type），而该命题的一个证明就是该类型的一个项（term）。具体地说：</p>
+          <h3>3.1 Propositions Are Types</h3>
+          <p>In Lean 4, every proposition is a type, and a proof of that proposition is a term of that type. Concretely:</p>
           <ul class="plain-list">
-            <li><code>1 + 1 = 2</code> 是一个类型（命题类型）</li>
-            <li>提供该命题的证明，等同于构造一个属于该类型的项</li>
-            <li><code>theorem foo : P := proof_term</code> 宣告 <code>foo</code> 是类型 <code>P</code> 的一个项</li>
+            <li><code>1 + 1 = 2</code> is a type (a proposition type)</li>
+            <li>To supply a proof is to construct a term of that type</li>
+            <li><code>theorem foo : P := proof_term</code> declares <code>foo</code> as a term of type <code>P</code></li>
           </ul>
 
-          <p>这意味着"证明一个命题"和"写一个函数"在本质上是同一件事。蕴含 <code>P → Q</code> 就是从 <code>P</code> 类型的项到 <code>Q</code> 类型的项的函数类型；全称量化 <code>∀ x, P x</code> 就是依赖函数类型（dependent function type）；存在量化 <code>∃ x, P x</code> 就是依赖对类型（dependent pair type）。</p>
+          <p>So "proving a proposition" and "writing a function" are the same activity. Implication <code>P → Q</code> is the function type from <code>P</code>-terms to <code>Q</code>-terms; the universal quantifier <code>∀ x, P x</code> is a dependent function type; the existential quantifier <code>∃ x, P x</code> is a dependent pair type.</p>
 
           <pre class="code-block">
--- 命题 P → Q 的证明就是一个函数
--- 给定 h : P（类型 P 的项），返回 Q 的项
+-- A proof of P → Q is a function
+-- given h : P (a term of type P), return a term of type Q
 theorem modus_ponens (P Q : Prop) (hpq : P → Q) (hp : P) : Q :=
-  hpq hp  -- 直接用函数应用
+  hpq hp  -- direct function application
 
--- 全称量化：∀ n : ℕ, 0 ≤ n
--- 等同于：依赖函数，对每个 n 返回 0 ≤ n 的证明
+-- Universal quantification: ∀ n : ℕ, 0 ≤ n
+-- equivalent to: a dependent function returning a proof of 0 ≤ n for each n
 theorem zero_le_all : ∀ n : ℕ, 0 ≤ n := Nat.zero_le</pre>
 
-          <h3>3.2 策略模式（Tactic Mode）</h3>
-          <p>直接书写证明项（term-mode proof）对于复杂命题往往非常困难，因为需要在脑中同时管理整个类型结构。Lean 4 提供了 <strong>策略模式</strong>（tactic mode），通过 <code>by</code> 关键字进入。策略模式允许你逐步分解目标，每一步只需要关注当前的证明状态。</p>
+          <h3>3.2 Tactic Mode</h3>
+          <p>Writing proof terms directly (term-mode proofs) is hard for non-trivial propositions, because you have to keep the entire type structure in your head at once. Lean 4 provides <strong>tactic mode</strong>, entered with the <code>by</code> keyword, which lets you reduce the goal step by step and only worry about the current state at each step.</p>
 
           <pre class="code-block">
--- 项模式（Term Mode）：直接给出证明项
+-- Term mode: write the proof term directly
 theorem add_comm_example (a b : ℕ) : a + b = b + a :=
   Nat.add_comm a b
 
--- 策略模式（Tactic Mode）：用 by 关键字进入
+-- Tactic mode: enter via the `by` keyword
 theorem add_comm_example' (a b : ℕ) : a + b = b + a := by
-  exact Nat.add_comm a b  -- exact 提供精确的证明项
+  exact Nat.add_comm a b  -- exact provides the precise proof term
 
--- 更复杂的例子，展示逐步分解
+-- More involved example, showing step-by-step decomposition
 theorem example_tactic (a b c : ℕ) (h1 : a ≤ b) (h2 : b ≤ c) : a ≤ c := by
   exact Nat.le_trans h1 h2</pre>
 
-          <h3>3.3 Infoview 读法</h3>
-          <p>在策略模式中，Infoview 是你的主要导航工具。理解 Infoview 的格式对高效证明至关重要：</p>
+          <h3>3.3 Reading the Infoview</h3>
+          <p>In tactic mode, the Infoview is your main navigation tool. Reading it fluently is essential:</p>
           <pre class="code-block">
--- 将光标放在某行策略之后，Infoview 显示该行执行后的状态
--- 格式如下：
+-- Place the cursor after a tactic line; the Infoview shows the state after that line
+-- Format:
 --
 -- case left
 -- a b : ℤ
 -- h : a > 0
 -- ⊢ a + b > b
 --
--- 解读：
--- "case left"  — 当前处于 constructor/cases 的哪个分支
--- "a b : ℤ"   — 上下文中已有的变量及其类型
--- "h : a > 0"  — 上下文中的假设，h 是它的名字
--- "⊢ a + b > b" — 需要证明的目标（⊢ 读作"turnstile"）
+-- Reading:
+-- "case left"  — current branch in a constructor/cases split
+-- "a b : ℤ"   — variables in scope and their types
+-- "h : a > 0"  — hypothesis named h in scope
+-- "⊢ a + b > b" — current goal (⊢ is read "turnstile")
 
--- 目标为 No goals 时，证明完成
+-- "No goals" means the proof is finished
 theorem simple_example (a b : ℤ) (h : a > 0) : a + b > b := by
-  linarith  -- 执行后 Infoview 显示 "No goals"</pre>
+  linarith  -- after this, the Infoview shows "No goals"</pre>
 
-          <p>当你不确定下一步该怎么做时，最有效的方法是：看清当前目标的形式，然后选择匹配该形式的策略。本指南第 5 节详细介绍了各类策略的适用场景。</p>
+          <p>When you don't know what to do next, the most useful move is: read the current goal's shape, then pick a tactic that matches that shape. Section 5 walks through tactics by category.</p>
 
-          <h3>3.4 sorry 占位符</h3>
-          <p><code>sorry</code> 是 Lean 4 的"万能证明项"——它可以填入任何目标，但会产生警告。在证明复杂定理时，先用 <code>sorry</code> 占位勾勒出整体结构，然后逐步填充，是常用的工作流程。注意：含有 <code>sorry</code> 的文件虽然通过类型检查，但 <code>lake build</code> 会报警告，不能算作完成形式化。</p>
+          <h3>3.4 The sorry Placeholder</h3>
+          <p><code>sorry</code> is Lean 4's universal proof term — it fits any goal, but produces a warning. When working on a complex theorem, sketching the structure with <code>sorry</code> and filling in the pieces gradually is a common workflow. A file containing <code>sorry</code> still type-checks, but <code>lake build</code> emits warnings; it doesn't count as a finished formalization.</p>
           <pre class="code-block">
--- 使用 sorry 搭建证明框架
+-- Use sorry to sketch the proof
 theorem complex_theorem (n : ℕ) : n * (n + 1) % 2 = 0 := by
-  sorry  -- 待填充
+  sorry  -- to be filled in
 
--- 分步填充
+-- Fill in step by step
 theorem complex_theorem' (n : ℕ) : n * (n + 1) % 2 = 0 := by
   have h : n * (n + 1) = 2 * (n * (n + 1) / 2) := by sorry
   sorry</pre>
@@ -235,744 +235,741 @@ theorem complex_theorem' (n : ℕ) : n * (n + 1) % 2 = 0 := by
 
           <!-- ===== SECTION 4 ===== -->
           <div class="note-section">
-          <h2>4. 基础语法</h2>
+          <h2>4. Basic Syntax</h2>
 
-          <h3>4.1 定义与检查</h3>
+          <h3>4.1 Definitions and Inspection</h3>
           <pre class="code-block">
--- def 定义常量或函数
+-- def: define a constant or function
 def myNat : ℕ := 42
 def double (n : ℕ) : ℕ := 2 * n
 def add3 (a b c : ℕ) : ℕ := a + b + c
 
--- #check 查询类型（不求值）
+-- #check: query a type (does not evaluate)
 #check myNat         -- myNat : ℕ
 #check double        -- double : ℕ → ℕ
 #check Nat.add_comm  -- Nat.add_comm : ∀ (n m : ℕ), n + m = m + n
 
--- #eval 求值（运行时计算）
+-- #eval: evaluate (runtime computation)
 #eval double 21      -- 42
 #eval 2 ^ 10         -- 1024
 #eval Nat.gcd 12 8   -- 4</pre>
 
-          <h3>4.2 函数类型</h3>
+          <h3>4.2 Function Types</h3>
           <pre class="code-block">
--- 简单函数类型：A → B
+-- Plain function type: A → B
 def f : ℕ → ℕ := fun n => n + 1
 
--- 多参数函数（柯里化）：A → B → C
+-- Multi-argument (curried): A → B → C
 def g : ℕ → ℕ → ℕ := fun a b => a * b
 
--- 依赖类型：∀ (n : ℕ), P n
--- 在数学中表示"对所有 n，命题 P n 成立"
+-- Dependent type: ∀ (n : ℕ), P n
+-- mathematically: "for all n, P n holds"
 def h : ∀ (n : ℕ), n + 0 = n := fun n => Nat.add_zero n
 
--- 匿名函数（lambda）
+-- Anonymous function (lambda)
 #check fun (x : ℝ) => x ^ 2   -- ℝ → ℝ
 #eval (fun x => x + 1) 5       -- 6
 
--- 模式匹配
+-- Pattern matching
 def factorial : ℕ → ℕ
   | 0     => 1
   | n + 1 => (n + 1) * factorial n
 
 #eval factorial 5  -- 120</pre>
 
-          <h3>4.3 theorem 与 have / show / exact</h3>
+          <h3>4.3 theorem and have / show / exact</h3>
           <pre class="code-block">
--- theorem 声明一个定理
+-- theorem: declare a theorem
 theorem nat_add_zero (n : ℕ) : n + 0 = n := by
   exact Nat.add_zero n
 
--- have 引入中间步骤（局部命名）
+-- have: introduce an intermediate step (with a local name)
 theorem transitivity_example (a b c : ℕ) (h1 : a ≤ b) (h2 : b ≤ c) : a ≤ c := by
-  have step : a ≤ c := Nat.le_trans h1 h2  -- 命名为 step
+  have step : a ≤ c := Nat.le_trans h1 h2  -- named "step"
   exact step
 
--- have 的另一种写法（内联证明）
+-- have without a name (anonymous, accessible as "this")
 theorem example_with_have (n : ℕ) : n + n = 2 * n := by
-  have : n + n = 2 * n := by ring  -- 匿名 have，名为 this
+  have : n + n = 2 * n := by ring
   exact this
 
--- show 改写当前目标的显示形式（定义等价时有用）
+-- show: rewrite the goal in an equivalent form (useful when definitionally equal)
 theorem show_example (n : ℕ) : n * 2 = n + n := by
-  show n * 2 = n + n  -- 明确当前要证什么
+  show n * 2 = n + n
   ring
 
--- exact 提供完全匹配目标的证明项
+-- exact: provide a proof term that exactly matches the goal
 theorem exact_example : 1 + 1 = 2 := by
-  exact rfl  -- rfl 是自反性，对可计算的等式直接成立
+  exact rfl  -- rfl is reflexivity; works for computable equalities
 
--- from 是 exact 的别名（更像英语语序）
+-- from: alias for exact (reads more like English word order)
 theorem from_example (h : 1 = 1) : 1 = 1 := by
   exact h</pre>
 
-          <h3>4.4 变量与命名空间</h3>
+          <h3>4.4 Variables and Namespaces</h3>
           <pre class="code-block">
--- variable 声明全局变量（在文件内所有定理共享）
+-- variable: declare a global variable shared by all theorems in the file
 variable (n m k : ℕ)
 variable (a b c : ℝ)
 
--- namespace 组织代码
+-- namespace: organize code
 namespace MyLemmas
 
 theorem double_add (x : ℤ) : x + x = 2 * x := by ring
 
 end MyLemmas
 
--- 使用时需加命名空间前缀
+-- prefix the namespace when using
 #check MyLemmas.double_add
 
--- open 打开命名空间（避免重复写前缀）
+-- open: open a namespace (avoid repeating prefixes)
 open Nat in
-#check succ_pos  -- 等价于 Nat.succ_pos</pre>
+#check succ_pos  -- equivalent to Nat.succ_pos</pre>
           </div>
 
           <!-- ===== SECTION 5 ===== -->
           <div class="note-section">
-          <h2>5. Tactic 详解</h2>
-          <p>策略（tactic）是 Lean 4 证明的核心工具。以下按功能分类，每个策略给出定义、适用场景和完整代码示例。</p>
+          <h2>5. Tactics</h2>
+          <p>Tactics are the working tools of Lean 4 proofs. Below they are grouped by function, with definition, use cases, and full code examples for each.</p>
 
-          <!-- 5.1 自动化求解类 -->
-          <h3>5.1 自动化求解类</h3>
+          <!-- 5.1 -->
+          <h3>5.1 Automated Solvers</h3>
 
-          <p><strong>ring</strong> — 证明交换环（commutative ring）中的多项式等式。它通过规范化两侧表达式来判断是否相等，可处理加、减、乘、幂。无法处理除法（除非在域上用 <code>field_simp</code> 预处理）。</p>
+          <p><strong>ring</strong> — proves polynomial equalities in a commutative ring. Normalizes both sides and compares; handles +, −, ×, and powers. Doesn't handle division (use <code>field_simp</code> first on a field).</p>
           <pre class="code-block">
--- 最经典的应用：平方差公式
+-- The classic: difference of squares
 example (a b : ℝ) : (a - b) * (a + b) = a ^ 2 - b ^ 2 := by ring
 
--- 展开乘积
+-- Expanding a product
 example (x y : ℤ) : (x + y) ^ 2 = x ^ 2 + 2 * x * y + y ^ 2 := by ring
 
--- 验证代数恒等式
+-- Verifying an algebraic identity
 example (a b c : ℝ) : (a + b + c) ^ 2 = a^2 + b^2 + c^2 + 2*a*b + 2*b*c + 2*a*c := by ring
 
--- ring 在 ℕ 上无法处理减法（因为 ℕ 中减法是截断减法）
--- 以下在 ℕ 上会失败，需转换到 ℤ
--- example (a b : ℕ) : (a - b) * (a + b) = a ^ 2 - b ^ 2 := by ring  -- 失败
-example (a b : ℤ) : (a - b) * (a + b) = a ^ 2 - b ^ 2 := by ring  -- 成功</pre>
+-- ring fails on ℕ subtraction (ℕ uses truncated subtraction)
+-- The following fails on ℕ; convert to ℤ
+-- example (a b : ℕ) : (a - b) * (a + b) = a ^ 2 - b ^ 2 := by ring  -- fails
+example (a b : ℤ) : (a - b) * (a + b) = a ^ 2 - b ^ 2 := by ring  -- works</pre>
 
-          <p><strong>norm_num</strong> — 对具体数值的命题进行计算验证。可以判断数的大小比较、整除性、素数判定、平方根等涉及具体数字的命题。</p>
+          <p><strong>norm_num</strong> — verifies propositions about specific numerical values. Handles size comparisons, divisibility, primality, square roots, and other claims involving concrete numbers.</p>
           <pre class="code-block">
--- 数值等式
+-- Numerical equality
 example : (2 : ℝ) + 3 = 5 := by norm_num
 
--- 不等式
+-- Inequality
 example : (7 : ℝ) > 3 := by norm_num
 
--- 整除性
+-- Divisibility
 example : (6 : ℤ) ∣ 42 := by norm_num
 
--- 素数判定
+-- Primality
 example : Nat.Prime 997 := by norm_num
 
--- 证明某数不是素数（1001 = 7 × 11 × 13）
+-- Showing a number is not prime (1001 = 7 × 11 × 13)
 example : ¬ Nat.Prime 1001 := by norm_num
 
--- 分数计算
+-- Fraction arithmetic
 example : (1 : ℚ) / 3 + 1 / 6 = 1 / 2 := by norm_num
 
--- 大数计算（norm_num 使用高效算法）
+-- Large-number arithmetic (norm_num uses efficient algorithms)
 example : (2 : ℕ) ^ 31 - 1 = 2147483647 := by norm_num</pre>
 
-          <p><strong>omega</strong> — 解决线性整数/自然数算术问题（Presburger arithmetic 的决策过程）。可处理含有 <code>+</code>、<code>-</code>、数字常数的等式和不等式，但不能处理乘法（变量相乘）。</p>
+          <p><strong>omega</strong> — decision procedure for linear integer/natural-number arithmetic (Presburger arithmetic). Handles equalities and inequalities involving +, −, and constant multiples; doesn't handle multiplication of variables.</p>
           <pre class="code-block">
--- 基本线性算术
+-- Basic linear arithmetic
 example (n : ℕ) : n + 1 > n := by omega
 
--- 整除相关（通过余数表达）
+-- Divisibility via remainders
 example (n : ℕ) (h : n % 2 = 0) : (n + 2) % 2 = 0 := by omega
 
--- 多个变量的线性关系
+-- Linear relations among multiple variables
 example (a b : ℤ) (h1 : a ≤ b) (h2 : b ≤ a + 3) : b - a ≤ 3 := by omega
 
--- 涉及自然数的界
+-- Bounds on natural numbers
 example (n : ℕ) (h : n < 10) : n ≤ 9 := by omega
 
--- 绝对值不等式（通过分类讨论展开后使用 omega）
+-- Absolute-value-style inequalities (split cases first if needed, then omega)
 example (a b : ℤ) (h : a + b = 0) : a = -b := by omega</pre>
 
-          <p><strong>linarith</strong> — 通过线性算术的 Farkas 引理证明线性不等式。与 <code>omega</code> 不同，<code>linarith</code> 可以处理实数（以及任意有序域），并能利用上下文中的假设进行组合推导。</p>
+          <p><strong>linarith</strong> — proves linear inequalities via Farkas' lemma. Unlike <code>omega</code>, <code>linarith</code> works over the reals (and any ordered field) and can combine hypotheses in context.</p>
           <pre class="code-block">
--- 利用假设的传递性
+-- Transitivity from hypotheses
 example (a b c : ℝ) (h1 : a ≤ b) (h2 : b ≤ c) : a ≤ c := by linarith
 
--- 组合多个不等式
+-- Combining multiple inequalities
 example (x y : ℝ) (h1 : x ≥ 0) (h2 : y ≥ 0) (h3 : x + y = 1) : x ≤ 1 := by linarith
 
--- 通过线性组合得到矛盾
+-- Deriving a contradiction
 example (a b : ℝ) (h1 : a > b) (h2 : b > a) : False := by linarith
 
--- 配合 have 使用
+-- Combined with have
 example (n : ℝ) (h : n > 2) : n ^ 2 > 4 := by
   have h2 : n > 0 := by linarith
   nlinarith [sq_nonneg (n - 2)]</pre>
 
-          <p><strong>nlinarith</strong> — <code>linarith</code> 的非线性扩展，可处理含有乘积项的不等式。通常需要提供 hint（非负项的平方）来帮助求解器。</p>
+          <p><strong>nlinarith</strong> — a non-linear extension of <code>linarith</code> that handles inequalities involving products. Usually needs hints (non-negative squares) to help the solver.</p>
           <pre class="code-block">
--- AM-GM 不等式：a² + b² ≥ 2ab
+-- AM-GM: a² + b² ≥ 2ab
 example (a b : ℝ) : a ^ 2 + b ^ 2 ≥ 2 * a * b := by
   nlinarith [sq_nonneg (a - b)]
-  -- 提示：(a-b)² ≥ 0，展开后正好给出所需结论
+  -- Hint: (a-b)² ≥ 0; expanding it gives the desired conclusion
 
--- 带平方的不等式
+-- Inequality involving squares
 example (x : ℝ) (h : x > 0) : x + 1 / x ≥ 2 := by
   have h1 : x > 0 := h
   have h2 : (x - 1) ^ 2 ≥ 0 := sq_nonneg _
   nlinarith [mul_pos h1 h1]
 
--- 多个 hint
+-- Multiple hints
 example (a b c : ℝ) (ha : a ≥ 0) (hb : b ≥ 0) (hc : c ≥ 0) :
     a * b + b * c + a * c ≤ a ^ 2 + b ^ 2 + c ^ 2 := by
   nlinarith [sq_nonneg (a - b), sq_nonneg (b - c), sq_nonneg (a - c)]</pre>
 
-          <p><strong>decide</strong> — 对可判定命题（Decidable）进行机械验证。适用于有限域上的命题，如小范围内的全称命题、具体的 Prop 计算。</p>
+          <p><strong>decide</strong> — mechanically verifies decidable propositions (Decidable). Suitable for finite-domain claims, like universal statements over a small range or concrete Prop computations.</p>
           <pre class="code-block">
--- 直接验证小素数
+-- Verify a small prime
 example : Nat.Prime 7 := by decide
 
--- 有限集合上的全称命题
+-- Universal over a finite set
 example : ∀ n : Fin 5, n.val < 5 := by decide
 
--- 布尔等式
+-- Boolean equality
 example : (true && false) = false := by decide
 
--- 小范围内的整除判断
+-- Small-range divisibility
 example : 3 ∣ 12 := by decide
 
--- 注意：decide 对大数会超时，此时用 native_decide（JIT 编译求值）
+-- decide can time out on large numbers; native_decide (JIT-compiled) is faster
 example : Nat.Prime 65537 := by native_decide</pre>
 
-          <!-- 5.2 逻辑推导类 -->
-          <h3>5.2 逻辑推导类</h3>
+          <!-- 5.2 -->
+          <h3>5.2 Logical Reasoning</h3>
 
-          <p><strong>exact h</strong> — 当上下文中某个假设或引理 <code>h</code> 精确匹配当前目标时，用 <code>exact h</code> 关闭目标。是最基本的策略。</p>
+          <p><strong>exact h</strong> — closes the current goal when a hypothesis or lemma <code>h</code> in context matches it exactly. The most basic tactic.</p>
           <pre class="code-block">
 example (P : Prop) (h : P) : P := by exact h
 
--- exact 也可以接受复杂表达式
+-- exact also accepts complex expressions
 example (a b : ℕ) (h : a = b) : b = a := by exact h.symm
 
--- exact 配合引理应用
+-- exact with a lemma application
 example (n : ℕ) : n ≤ n := by exact Nat.le_refl n</pre>
 
-          <p><strong>intro h</strong> — 将目标 <code>P → Q</code> 中的前提 <code>P</code> 引入为假设 <code>h</code>，新目标变为 <code>Q</code>。对全称命题 <code>∀ x, P x</code>，<code>intro x</code> 引入一个任意变量。</p>
+          <p><strong>intro h</strong> — given a goal <code>P → Q</code>, introduces <code>P</code> as a hypothesis named <code>h</code> and changes the goal to <code>Q</code>. For a universal goal <code>∀ x, P x</code>, <code>intro x</code> introduces an arbitrary variable.</p>
           <pre class="code-block">
--- 引入蕴含的前提
+-- Introduce the antecedent of an implication
 example (P Q : Prop) : P → P := by
-  intro h  -- h : P，目标变为 P
+  intro h  -- h : P, goal becomes P
   exact h
 
--- 引入多个变量/假设
+-- Introduce multiple variables/hypotheses at once
 example (a b c : ℝ) : a ≤ b → b ≤ c → a ≤ c := by
-  intro h1 h2  -- 一次引入两个
+  intro h1 h2
   linarith
 
--- 引入全称量化变量
+-- Introduce a universally quantified variable
 example : ∀ (n : ℕ), n + 0 = n := by
-  intro n  -- n 成为任意自然数
+  intro n
   exact Nat.add_zero n
 
--- intro 可以解构模式（同时引入并析构）
+-- intro with pattern destructuring
 example (P Q : Prop) : P ∧ Q → Q ∧ P := by
-  intro ⟨hp, hq⟩  -- 直接析构合取
+  intro ⟨hp, hq⟩  -- destructure the conjunction
   exact ⟨hq, hp⟩</pre>
 
-          <p><strong>apply h</strong> — 向后推理：如果 <code>h : A → B</code>（或更一般的 <code>A₁ → A₂ → ... → B</code>），且当前目标是 <code>B</code>，则 <code>apply h</code> 将目标变为 <code>A</code>（或多个子目标）。</p>
+          <p><strong>apply h</strong> — backward reasoning: if <code>h : A → B</code> (or more generally <code>A₁ → A₂ → ... → B</code>) and the goal is <code>B</code>, <code>apply h</code> changes the goal to <code>A</code> (or several subgoals).</p>
           <pre class="code-block">
--- 基本 apply
+-- Basic apply
 example (P Q : Prop) (hpq : P → Q) (hp : P) : Q := by
-  apply hpq  -- 目标变为 P
+  apply hpq  -- goal becomes P
   exact hp
 
--- apply 引理
+-- apply with a lemma
 example (a b c : ℕ) (h1 : a ≤ b) (h2 : b ≤ c) : a ≤ c := by
-  apply Nat.le_trans h1  -- 应用传递性，目标变为 b ≤ c
+  apply Nat.le_trans h1  -- transitivity, goal becomes b ≤ c
   exact h2
 
--- apply 产生多个子目标
+-- apply producing multiple subgoals
 example (n : ℕ) : 0 < n + 1 := by
-  apply Nat.succ_pos  -- 立即完成</pre>
+  apply Nat.succ_pos</pre>
 
-          <p><strong>assumption</strong> — 自动搜索上下文中与当前目标完全匹配的假设。比 <code>exact</code> 更懒惰但更方便。</p>
+          <p><strong>assumption</strong> — searches the context for a hypothesis exactly matching the current goal. Lazier than <code>exact</code> and convenient.</p>
           <pre class="code-block">
 example (P Q R : Prop) (hp : P) (hq : Q) (hr : R) : Q := by
-  assumption  -- 自动找到 hq : Q
+  assumption  -- finds hq : Q
 
--- 常用于多分支证明的叶节点
+-- Common as the leaf step in branching proofs
 example (P Q : Prop) (h : P ∧ Q) : P := by
   obtain ⟨hp, _⟩ := h
   assumption</pre>
 
-          <p><strong>constructor</strong> — 将目标分裂为其构造子的分量。对合取（<code>P ∧ Q</code>）产生两个子目标 <code>P</code> 和 <code>Q</code>；对存在命题（<code>∃ x, P x</code>）需要提供 witness。</p>
+          <p><strong>constructor</strong> — splits the goal into the components of its constructor. For a conjunction <code>P ∧ Q</code>, produces two subgoals <code>P</code> and <code>Q</code>; for an existential <code>∃ x, P x</code>, you need to provide a witness.</p>
           <pre class="code-block">
--- 证明合取
+-- Prove a conjunction
 example (n : ℕ) : n ≤ n + 1 ∧ n < n + 2 := by
   constructor
-  · linarith  -- 第一个分量
-  · linarith  -- 第二个分量
+  · linarith  -- first component
+  · linarith  -- second component
 
--- 证明双向蕴含（Iff）
+-- Prove an Iff
 example (n : ℕ) : n = 0 ↔ n < 1 := by
   constructor
   · intro h; omega
   · intro h; omega</pre>
 
-          <p><strong>left / right</strong> — 选择析取（<code>P ∨ Q</code>）的左支或右支。</p>
+          <p><strong>left / right</strong> — choose the left or right disjunct of <code>P ∨ Q</code>.</p>
           <pre class="code-block">
--- 选择左支
+-- Choose the left disjunct
 example : 1 = 1 ∨ 1 = 2 := by
   left; rfl
 
--- 根据条件选择
+-- Choose by case
 example (n : ℕ) (h : n = 0 ∨ n > 0) : n = 0 ∨ n ≥ 0 := by
   cases h with
   | inl h0 => left; exact h0
   | inr hpos => right; linarith</pre>
 
-          <p><strong>exfalso</strong> — 将当前目标替换为 <code>False</code>。用于"从矛盾推出任意结论"的场景，通常配合矛盾的假设使用。</p>
+          <p><strong>exfalso</strong> — replaces the current goal with <code>False</code>. For "ex falso quodlibet" arguments — usually combined with contradictory hypotheses.</p>
           <pre class="code-block">
--- 从矛盾假设证明任意命题
+-- Derive any proposition from a contradiction
 example (P : Prop) (h1 : P) (h2 : ¬P) : 0 = 1 := by
   exfalso
-  exact h2 h1  -- 现在目标是 False，用 h2 h1 : False
+  exact h2 h1  -- now the goal is False; h2 h1 : False
 
--- 配合 linarith 使用
+-- Combined with linarith
 example (n : ℕ) (h1 : n > 5) (h2 : n < 3) : False := by
-  linarith  -- 直接从假设的矛盾关闭目标（linarith 也可直接证明 False）</pre>
+  linarith  -- linarith closes the goal directly from contradictory hypotheses</pre>
 
-          <!-- 5.3 否定与反证类 -->
-          <h3>5.3 否定与反证类</h3>
+          <!-- 5.3 -->
+          <h3>5.3 Negation and Contradiction</h3>
 
-          <p><strong>push_neg</strong> — 将否定符号向内推，应用德摩根定律和量词否定规则。把 <code>¬∀ x, P x</code> 变为 <code>∃ x, ¬P x</code>，把 <code>¬(P ∧ Q)</code> 变为 <code>P → ¬Q</code> 等。</p>
+          <p><strong>push_neg</strong> — pushes negation inward using De Morgan and quantifier-negation rules. Converts <code>¬∀ x, P x</code> to <code>∃ x, ¬P x</code>, <code>¬(P ∧ Q)</code> to <code>P → ¬Q</code>, and so on.</p>
           <pre class="code-block">
--- 否定全称命题
+-- Negate a universal claim
 example : ¬ (∀ n : ℕ, n < 10) := by
-  push_neg          -- 目标变为 ∃ n, 10 ≤ n
+  push_neg          -- goal becomes ∃ n, 10 ≤ n
   exact ⟨10, le_refl 10⟩
 
--- 否定蕴含
+-- Negate an implication
 example (P Q : Prop) (h : ¬(P → Q)) : P ∧ ¬Q := by
-  push_neg at h  -- h 变为 P ∧ ¬Q（将 push_neg 作用于假设）
+  push_neg at h  -- h becomes P ∧ ¬Q (push_neg on a hypothesis)
   exact h
 
--- 连续否定
+-- Nested negation
 example : ¬ (∀ x : ℝ, ∃ y : ℝ, y > x) := by
-  push_neg   -- 目标变为 ∃ x, ∀ y, y ≤ x（有上界）
-  -- 但这个命题是假的，所以这个例子是无法完成的
+  push_neg   -- goal becomes ∃ x, ∀ y, y ≤ x (an upper bound)
+  -- but this proposition is false, so the example can't be completed
   sorry</pre>
 
-          <p><strong>contrapose</strong> — 将目标 <code>P → Q</code> 转化为逆否命题 <code>¬Q → ¬P</code>。有时逆否方向更容易证明。</p>
+          <p><strong>contrapose</strong> — turns the goal <code>P → Q</code> into its contrapositive <code>¬Q → ¬P</code>. Sometimes the contrapositive is easier to prove.</p>
           <pre class="code-block">
--- 证明：若 n² 为奇数，则 n 为奇数（逆否：n 为偶数 → n² 为偶数）
+-- If n² is odd, then n is odd (contrapositive: n even → n² even)
 theorem odd_sq_imp_odd (n : ℤ) (h : ¬ 2 ∣ n ^ 2) : ¬ 2 ∣ n := by
-  contrapose! h   -- 目标变为：2 ∣ n → 2 ∣ n²（contrapose! 同时 push_neg）
+  contrapose! h   -- goal becomes 2 ∣ n → 2 ∣ n²; contrapose! also pushes negation
   intro ⟨k, hk⟩
   exact ⟨2 * k ^ 2, by rw [hk]; ring⟩
 
--- 基本 contrapose（不 push_neg）
+-- Plain contrapose (no push_neg)
 example (P Q : Prop) : (P → Q) → (¬Q → ¬P) := by
   intro hpq hnq hp
   exact hnq (hpq hp)</pre>
 
-          <p><strong>by_contra h</strong> — 假设目标的否定并命名为 <code>h</code>，进行反证。目标变为 <code>False</code>。</p>
+          <p><strong>by_contra h</strong> — assumes the negation of the goal as <code>h</code> for proof by contradiction. The new goal becomes <code>False</code>.</p>
           <pre class="code-block">
--- 反证法：证明素数有无穷多个（简化版）
--- 若只有有限多个素数，则其乘积+1不被任何已知素数整除，矛盾
--- 这里演示反证法的结构
+-- Proof-by-contradiction structure
 example (P : Prop) : ¬¬P → P := by
   intro hnnp
-  by_contra hnp  -- 假设 ¬P，目标变为 False
-  exact hnnp hnp  -- ¬¬P 应用于 ¬P 得 False
+  by_contra hnp  -- assume ¬P, goal becomes False
+  exact hnnp hnp  -- ¬¬P applied to ¬P gives False
 
--- 更实际的例子
+-- A more practical example
 theorem sqrt2_irrational_sketch : ¬ ∃ (p q : ℕ), q ≠ 0 ∧
     Nat.Coprime p q ∧ (p : ℝ)^2 = 2 * q^2 := by
   intro ⟨p, q, hq, hcop, heq⟩
-  -- 这里会涉及复杂推导，用 sorry 展示结构
+  -- The detailed argument is involved; sorry to show structure
   sorry</pre>
 
-          <!-- 5.4 结构析构类 -->
-          <h3>5.4 结构析构类</h3>
+          <!-- 5.4 -->
+          <h3>5.4 Destructuring</h3>
 
-          <p><strong>obtain</strong> — 析构存在命题或合取命题，将其分量引入上下文。是 <code>rcases</code> 的常用别名。</p>
+          <p><strong>obtain</strong> — destructures an existential or conjunction, bringing the components into context. Common alias for <code>rcases</code>.</p>
           <pre class="code-block">
--- 析构存在命题 ∃ x, P x
+-- Destructure ∃ x, P x
 example (h : ∃ n : ℕ, n > 5) : ∃ m : ℕ, m > 3 := by
-  obtain ⟨n, hn⟩ := h  -- 引入 n : ℕ 和 hn : n > 5
+  obtain ⟨n, hn⟩ := h  -- introduce n : ℕ and hn : n > 5
   exact ⟨n, by linarith⟩
 
--- 析构合取 P ∧ Q
+-- Destructure P ∧ Q
 example (h : (1 : ℕ) < 2 ∧ 2 < 3) : (1 : ℕ) < 3 := by
   obtain ⟨h1, h2⟩ := h  -- h1 : 1 < 2, h2 : 2 < 3
   linarith
 
--- 嵌套析构
+-- Nested destructuring
 example (h : ∃ n : ℕ, n > 0 ∧ n < 5) : ∃ m : ℕ, m < 10 := by
   obtain ⟨n, hpos, hlt⟩ := h
   exact ⟨n, by linarith⟩</pre>
 
-          <p><strong>cases h</strong> — 对归纳类型按构造子分类讨论。对 <code>h : P ∨ Q</code> 产生两个分支；对 <code>h : ℕ</code> 产生 zero 和 succ 两个分支。</p>
+          <p><strong>cases h</strong> — case split on the constructors of an inductive type. For <code>h : P ∨ Q</code>, two branches; for <code>h : ℕ</code>, zero and succ branches.</p>
           <pre class="code-block">
--- 对析取分类
+-- Split on a disjunction
 example (h : 2 ∣ n ∨ 2 ∣ (n + 1)) : 2 ∣ n * (n + 1) := by
   cases h with
   | inl h2n => exact Dvd.dvd.mul_right h2n _
   | inr h2n1 => exact Dvd.dvd.mul_left h2n1 _
 
--- 对自然数分类（零和后继）
+-- Split on a natural number (zero / successor)
 example (n : ℕ) : n = 0 ∨ ∃ m, n = m + 1 := by
   cases n with
   | zero => left; rfl
   | succ m => right; exact ⟨m, rfl⟩
 
--- 对 Option 分类
+-- Split on Option
 example (x : Option ℕ) : x = none ∨ ∃ n, x = some n := by
   cases x with
   | none => left; rfl
   | some n => right; exact ⟨n, rfl⟩</pre>
 
-          <p><strong>rcases</strong> — 递归案例分析，支持复杂的嵌套模式。比 <code>cases</code> 更灵活，可以一次性析构多层结构。</p>
+          <p><strong>rcases</strong> — recursive case analysis with nested pattern support. More flexible than <code>cases</code>; can destructure several layers at once.</p>
           <pre class="code-block">
--- 析构嵌套存在
+-- Destructure nested existentials
 example (h : ∃ a b : ℕ, a + b = 10) : ∃ n : ℕ, n ≤ 10 := by
   rcases h with ⟨a, b, hab⟩
   exact ⟨a, by omega⟩
 
--- 析构析取的每个分支
+-- Destructure each branch of a disjunction
 example (h : (n : ℤ) = 2 * k ∨ n = 2 * k + 1) : True := by
   rcases h with heven | hodd <;> trivial
 
--- 复杂嵌套模式
+-- Complex nested patterns
 example (h : ∃ x : ℕ, x > 0 ∧ (x = 1 ∨ x = 2)) : True := by
   rcases h with ⟨x, hx, h1 | h2⟩ <;> trivial</pre>
 
-          <p><strong>use t</strong> — 为存在命题 <code>∃ x, P x</code> 提供 witness <code>t</code>，目标变为 <code>P t</code>。</p>
+          <p><strong>use t</strong> — supplies a witness <code>t</code> for a goal <code>∃ x, P x</code>; the goal becomes <code>P t</code>.</p>
           <pre class="code-block">
--- 提供具体的 witness
+-- Provide a concrete witness
 example : ∃ n : ℕ, n * n = 25 := by
-  use 5  -- 目标变为 5 * 5 = 25
+  use 5  -- goal becomes 5 * 5 = 25
   norm_num
 
--- 提供表达式作为 witness
+-- Provide an expression as witness
 example (n : ℕ) : ∃ m : ℕ, m = n + 1 := by
-  use n + 1  -- 目标变为 n + 1 = n + 1
+  use n + 1  -- goal becomes n + 1 = n + 1
   rfl
 
--- 多个 use（同时提供多个 witness 和条件）
+-- Multiple use (witnesses and conditions at once)
 example : ∃ a b : ℕ, a + b = 7 ∧ a < b := by
   use 3, 4
   norm_num</pre>
 
-          <!-- 5.5 归纳与递归 -->
-          <h3>5.5 归纳与递归</h3>
+          <!-- 5.5 -->
+          <h3>5.5 Induction and Recursion</h3>
 
-          <p><strong>induction</strong> — 对归纳类型应用归纳原理。Lean 4 的新语法使用 <code>with</code> 关键字分支。</p>
+          <p><strong>induction</strong> — applies the induction principle of an inductive type. Lean 4's new syntax uses <code>with</code> for branches.</p>
           <pre class="code-block">
--- 自然数归纳：证明前 n 个自然数之和 = n*(n+1)/2
--- 等价形式：2 * ∑ k in Finset.range (n+1), k = n * (n+1)
+-- Natural induction: sum of the first n natural numbers = n*(n+1)/2
+-- Equivalent form: 2 * ∑ k in Finset.range (n+1), k = n * (n+1)
 theorem sum_range_eq (n : ℕ) :
     2 * ∑ k ∈ Finset.range (n + 1), k = n * (n + 1) := by
   induction n with
   | zero =>
-    simp  -- 基础情形：n = 0，等式两侧均为 0
+    simp  -- base case: n = 0, both sides are 0
   | succ n ih =>
-    -- 归纳步骤：假设对 n 成立（ih），证明对 n+1 成立
+    -- inductive step: assume the case n (ih), prove for n+1
     rw [Finset.sum_range_succ]
     linarith
 
--- 更简单的例子：证明偶数的归纳定义
+-- A simpler example: induction on the definition of even
 theorem even_add_two (n : ℕ) (h : 2 ∣ n) : 2 ∣ n + 2 := by
   obtain ⟨k, hk⟩ := h
   exact ⟨k + 1, by omega⟩
 
--- 强归纳（Strong Induction）
+-- Strong induction
 theorem divides_factorial (n k : ℕ) (h : 1 ≤ k) (hk : k ≤ n) : k ∣ n.factorial := by
   exact Nat.factorial_dvd_factorial_of_le hk |>.symm ▸ sorry</pre>
 
-          <p><strong>refine</strong> — 提供部分证明项，用 <code>?_</code> 或命名占位符标记未完成的子目标。适合自顶向下构造证明。</p>
+          <p><strong>refine</strong> — supplies a partial proof term, marking unfilled subgoals with <code>?_</code> or named placeholders. Useful for top-down construction.</p>
           <pre class="code-block">
--- refine 构造合取
+-- refine for a conjunction
 example (n : ℕ) : n ≤ n + 1 ∧ n < n + 2 := by
-  refine ⟨?_, ?_⟩  -- 产生两个子目标
+  refine ⟨?_, ?_⟩  -- two subgoals
   · omega
   · omega
 
--- refine 配合引理
+-- refine combined with a lemma
 example (a b c : ℕ) (h1 : a ≤ b) (h2 : b ≤ c) : a ≤ c := by
-  refine Nat.le_trans ?_ h2  -- 第一个参数未填
+  refine Nat.le_trans ?_ h2  -- first argument unfilled
   exact h1
 
--- refine 中命名占位符
+-- refine with named placeholders
 example : ∃ n : ℕ, n > 100 ∧ Nat.Prime n := by
   refine ⟨101, ?gt, ?prime⟩
   case gt => norm_num
   case prime => norm_num</pre>
 
-          <!-- 5.6 化简与搜索 -->
-          <h3>5.6 化简与搜索</h3>
+          <!-- 5.6 -->
+          <h3>5.6 Simplification and Search</h3>
 
-          <p><strong>simp</strong> — 利用等式引理库进行重写和化简。是最强大也最需要谨慎使用的策略之一。可以指定额外的引理，也可以用 <code>simp only</code> 限制使用的引理集。</p>
+          <p><strong>simp</strong> — rewrites and simplifies using the equational-lemma database. Among the most powerful tactics, and one to use carefully. You can pass extra lemmas, or restrict the lemma set with <code>simp only</code>.</p>
           <pre class="code-block">
--- 基本化简
+-- Basic simplification
 example (n : ℕ) : n + 0 = n := by simp
 
--- 利用指定引理化简
+-- Simplify with extra lemmas
 example (a b : ℝ) (ha : a > 0) : |a| = a := by
   simp [abs_of_pos ha]
 
--- simp only（只用指定引理，避免意外化简）
+-- simp only (just the listed lemmas, avoids surprise rewrites)
 example (n m : ℕ) : n + m = m + n := by
   simp only [Nat.add_comm]
 
--- simp 作用于假设
+-- simp on a hypothesis
 example (h : n + 0 = 5) : n = 5 := by
-  simp at h  -- h 变为 n = 5
+  simp at h  -- h becomes n = 5
   exact h
 
--- simp 配合 [*]（使用所有假设作为引理）
+-- simp [*] uses all available hypotheses as rewrite rules
 example (a b : ℕ) (ha : a = 3) (hb : b = 4) : a + b = 7 := by
   simp [ha, hb]</pre>
 
-          <p><strong>simp?</strong> — 执行 <code>simp</code> 并在 Infoview 中显示实际使用的引理列表，方便之后改用 <code>simp only</code> 加速。</p>
+          <p><strong>simp?</strong> — runs <code>simp</code> and shows the lemmas it actually used in the Infoview, so you can switch to <code>simp only</code> for speed.</p>
           <pre class="code-block">
--- simp? 会在 Infoview 中建议：
+-- simp? suggests in the Infoview:
 -- Try this: simp only [Nat.add_zero, Nat.zero_add, ...]
 example (n : ℕ) : n + 0 + 0 = n := by simp?</pre>
 
-          <p><strong>exact?</strong> — 在 Mathlib 中搜索能直接关闭当前目标的引理，并在 Infoview 中显示建议。这是发现引理名称最高效的方法。</p>
+          <p><strong>exact?</strong> — searches Mathlib for a lemma that closes the current goal directly, and shows the suggestion in the Infoview. The fastest way to find a lemma name.</p>
           <pre class="code-block">
--- 使用 exact? 时，将光标放在 exact? 上，
--- Infoview 会显示类似：
+-- Place the cursor on exact?, the Infoview shows something like:
 -- Try this: exact Nat.le_refl n
 example (n : ℕ) : n ≤ n := by exact?
 
--- exact? 发现的引理可以替换 exact? 本身
+-- The lemma exact? finds can replace exact? itself
 example (a b : ℤ) (h : a ∣ b) : a ∣ b * 2 := by exact?
--- 可能建议：exact h.mul_right 2</pre>
+-- might suggest: exact h.mul_right 2</pre>
 
-          <p><strong>apply?</strong> — 搜索能将当前目标规约为更简单目标的引理。返回可用引理列表，需要人工判断选择。</p>
+          <p><strong>apply?</strong> — searches for lemmas that reduce the current goal to a simpler one. Returns a list of candidates; you pick.</p>
           <pre class="code-block">
--- apply? 会建议可以 apply 的引理
+-- apply? suggests applicable lemmas
 example (a b c : ℕ) : a + b + c = c + b + a := by
-  apply?  -- 可能建议 Nat.add_comm, Nat.add_assoc 的组合</pre>
+  apply?  -- might suggest a combination of Nat.add_comm and Nat.add_assoc</pre>
 
-          <p><strong>norm_cast / push_cast</strong> — 处理不同数字类型之间的强制转换（coercion），消除 <code>(↑n : ℝ)</code> 类型的类型转换符号，使跨类型等式和不等式可以用其他策略处理。</p>
+          <p><strong>norm_cast / push_cast</strong> — handle coercions between numeric types, eliminating <code>(↑n : ℝ)</code>-style cast notation so other tactics can handle cross-type equalities and inequalities.</p>
           <pre class="code-block">
--- 混合 ℕ 和 ℝ 的等式
+-- Equality mixing ℕ and ℝ
 example (n : ℕ) : (n : ℝ) + 1 = (n + 1 : ℕ) := by norm_cast
 
--- push_cast 将 cast 向内推
+-- push_cast pushes casts inward
 example (a b : ℕ) : (a + b : ℝ) = (a : ℝ) + (b : ℝ) := by push_cast; ring
 
--- 常见场景：ℕ 和 ℤ 混用
+-- Common: mixing ℕ and ℤ
 example (n : ℕ) (h : (n : ℤ) > 0) : n > 0 := by exact_mod_cast h
 
--- norm_cast 处理含有 cast 的等式
+-- norm_cast on a cast-laden equality
 example (n m : ℕ) (h : (n : ℤ) = (m : ℤ)) : n = m := by exact_mod_cast h</pre>
           </div>
 
           <!-- ===== SECTION 6 ===== -->
           <div class="note-section">
-          <h2>6. Mathlib 命名惯例</h2>
+          <h2>6. Mathlib Naming Conventions</h2>
 
-          <p>Mathlib4 有超过 18 万条引理，掌握其命名规律是高效使用的关键。不需要记住引理名，但需要能够猜测引理名或有效搜索。</p>
+          <p>Mathlib4 has more than 180,000 lemmas, and knowing the naming patterns is what makes it usable. You don't need to memorize names; you do need to be able to guess names and search effectively.</p>
 
-          <h3>6.1 命名空间结构</h3>
-          <p>Mathlib 按数学结构组织命名空间，常见的有：</p>
+          <h3>6.1 Namespace Structure</h3>
+          <p>Mathlib organizes namespaces by mathematical structure. Common ones:</p>
           <ul class="plain-list">
-            <li><code>Nat.</code> — 自然数（<code>ℕ</code>）相关引理</li>
-            <li><code>Int.</code> — 整数（<code>ℤ</code>）相关引理</li>
-            <li><code>Real.</code> — 实数（<code>ℝ</code>）相关引理</li>
-            <li><code>Rat.</code> — 有理数（<code>ℚ</code>）相关引理</li>
-            <li><code>Finset.</code> — 有限集合引理</li>
-            <li><code>List.</code> — 列表相关引理</li>
-            <li><code>Polynomial.</code> — 多项式引理</li>
-            <li><code>Matrix.</code> — 矩阵引理</li>
-            <li><code>Complex.</code> — 复数引理</li>
+            <li><code>Nat.</code> — natural numbers (<code>ℕ</code>)</li>
+            <li><code>Int.</code> — integers (<code>ℤ</code>)</li>
+            <li><code>Real.</code> — real numbers (<code>ℝ</code>)</li>
+            <li><code>Rat.</code> — rationals (<code>ℚ</code>)</li>
+            <li><code>Finset.</code> — finite sets</li>
+            <li><code>List.</code> — lists</li>
+            <li><code>Polynomial.</code> — polynomials</li>
+            <li><code>Matrix.</code> — matrices</li>
+            <li><code>Complex.</code> — complex numbers</li>
           </ul>
 
-          <h3>6.2 命名模式</h3>
-          <p>Mathlib 引理名遵循几个核心模式：</p>
+          <h3>6.2 Naming Patterns</h3>
+          <p>Mathlib lemma names follow a few core patterns:</p>
           <pre class="code-block">
--- 模式一：属性_of_条件
--- "从条件得到属性"
+-- Pattern 1: property_of_condition
+-- "property given condition"
 #check Nat.lt_of_add_lt_add_left  -- a + b < a + c → b < c
 #check Int.pos_of_ne_zero_of_nonneg  -- n ≠ 0 → 0 ≤ n → 0 < n
 
--- 模式二：对象.操作_目标
--- "对象的操作关于目标成立"
+-- Pattern 2: object.operation_target
+-- "operation on object related to target"
 #check Nat.add_comm    -- n + m = m + n
 #check Nat.mul_comm    -- n * m = m * n
-#check Int.add_comm    -- n + m = m + n（ℤ 上）
+#check Int.add_comm    -- n + m = m + n on ℤ
 
--- 模式三：属性_属性（两个属性的关系）
+-- Pattern 3: property_property (relation between two properties)
 #check Nat.even_add_odd   -- even n → odd m → odd (n + m)
 #check Int.even_mul_succ_self  -- 2 ∣ n * (n + 1)
 
--- 模式四：Finset 操作
+-- Pattern 4: Finset operations
 #check Finset.sum_add_distrib  -- ∑ i, (f i + g i) = ∑ i, f i + ∑ i, g i
-#check Finset.prod_congr       -- 集合相等时乘积相等
+#check Finset.prod_congr       -- equal sets give equal products
 
--- 模式五：实分析
+-- Pattern 5: real analysis
 #check Real.sqrt_sq    -- 0 ≤ x → √(x²) = x
 #check Real.sq_sqrt    -- 0 ≤ x → (√x)² = x
 #check Real.log_mul    -- x > 0 → y > 0 → log(xy) = log x + log y</pre>
 
-          <h3>6.3 后缀惯例</h3>
+          <h3>6.3 Suffix Conventions</h3>
           <pre class="code-block">
--- _iff：当且仅当形式（最通用）
+-- _iff: if-and-only-if (most general)
 #check Nat.lt_iff_add_one_le  -- n < m ↔ n + 1 ≤ m
 
--- _eq：等式形式
+-- _eq: equational form
 #check Nat.succ_eq_add_one    -- n.succ = n + 1
 
--- _le：小于等于
+-- _le: less-than-or-equal
 #check Nat.le_add_left        -- n ≤ m + n
 
--- _lt：严格小于
+-- _lt: strict less-than
 #check Nat.lt_add_one         -- n < n + 1
 
--- _pos：正数条件
+-- _pos: positivity
 #check Nat.pos_of_ne_zero     -- n ≠ 0 → 0 < n
 
--- _nonneg：非负条件
-#check Int.natAbs_nonneg      -- 0 ≤ n.natAbs（实际是 ℕ，永远成立）
+-- _nonneg: non-negativity
+#check Int.natAbs_nonneg      -- 0 ≤ n.natAbs (always true since natAbs : ℕ)
 #check sq_nonneg              -- 0 ≤ x ^ 2
 
--- _comm：交换律
--- _assoc：结合律
--- _distrib：分配律
-#check mul_add   -- a * (b + c) = a * b + a * c（左分配）
-#check add_mul   -- (a + b) * c = a * c + b * c（右分配）</pre>
+-- _comm: commutativity
+-- _assoc: associativity
+-- _distrib: distributivity
+#check mul_add   -- a * (b + c) = a * b + a * c (left distributivity)
+#check add_mul   -- (a + b) * c = a * c + b * c (right distributivity)</pre>
 
-          <h3>6.4 搜索策略</h3>
-          <p>在实际工作中，以下几种方法可以帮助找到所需引理：</p>
+          <h3>6.4 Search Strategies</h3>
+          <p>In day-to-day work, these are the moves that locate the lemma you need:</p>
           <ul class="plain-list">
-            <li><strong>exact? / apply?</strong> — 在证明中直接让 Lean 搜索</li>
-            <li><strong>simp?</strong> — 让 simp 告诉你它用了哪些引理</li>
-            <li><strong>#check @Nat.</strong> — 在 VS Code 中输入 <code>Nat.</code> 后等待自动补全</li>
-            <li><strong>Loogle</strong> — Mathlib 的在线类型搜索引擎，输入类型签名查引理</li>
+            <li><strong>exact? / apply?</strong> — let Lean search inside the proof</li>
+            <li><strong>simp?</strong> — let simp tell you which lemmas it used</li>
+            <li><strong>#check @Nat.</strong> — type <code>Nat.</code> in VS Code and let autocomplete suggest</li>
+            <li><strong>Loogle</strong> — Mathlib's online type-search engine; query by type signature</li>
           </ul>
           <pre class="code-block">
--- 在 Lean 文件中使用 #check 探索
-#check @Nat.add_comm         -- 查看完整类型签名（@ 展开隐式参数）
-#check @Finset.sum_congr     -- 查看 sum_congr 的参数
+-- Use #check inside a Lean file to explore
+#check @Nat.add_comm         -- full type signature (@ unfolds implicit args)
+#check @Finset.sum_congr     -- arguments to sum_congr
 
--- example? 在当前上下文中搜索例子（需要 Mathlib）
--- 实际工作流：先猜名字，失败后用 exact? 确认</pre>
+-- example? searches for examples in the current context (Mathlib needed)
+-- Common workflow: guess the name, fall back to exact? to confirm</pre>
           </div>
 
           <!-- ===== SECTION 7 ===== -->
           <div class="note-section">
-          <h2>7. 竞赛数学形式化模式</h2>
-          <p>基于形式化 18 道 ICCM 题的经验，以下总结了各类题型的典型形式化模式和常用策略组合。</p>
+          <h2>7. Patterns for Formalizing Competition Math</h2>
+          <p>Based on formalizing 18 ICCM problems, here are typical patterns and tactic combinations by problem type.</p>
 
-          <h3>7.1 代数恒等式</h3>
-          <p>代数恒等式是最容易形式化的类型。<code>ring</code> 能自动处理绝大多数多项式恒等式；若涉及分式，先用 <code>field_simp</code> 清除分母，再用 <code>ring</code>。</p>
+          <h3>7.1 Algebraic Identities</h3>
+          <p>Algebraic identities are the easiest to formalize. <code>ring</code> handles almost any polynomial identity; for fractions, clear denominators with <code>field_simp</code> first, then <code>ring</code>.</p>
           <pre class="code-block">
--- 平方和公式：(a + b)² = a² + 2ab + b²
+-- Square expansion: (a + b)² = a² + 2ab + b²
 theorem sq_expand (a b : ℝ) : (a + b)^2 = a^2 + 2*a*b + b^2 := by ring
 
--- 立方差公式：a³ - b³ = (a-b)(a² + ab + b²)
+-- Difference of cubes: a³ - b³ = (a-b)(a² + ab + b²)
 theorem cube_diff (a b : ℝ) : a^3 - b^3 = (a - b) * (a^2 + a*b + b^2) := by ring
 
--- 多变量恒等式
+-- Multivariate identity
 theorem three_var_identity (a b c : ℝ) :
     (a + b + c)^2 = a^2 + b^2 + c^2 + 2*(a*b + b*c + a*c) := by ring
 
--- Vieta 关系（用于多项式根）
+-- Vieta-style relations (for polynomial roots)
 theorem vieta_check (p q r : ℝ) :
     (p + q + r) * (p*q + q*r + p*r) - p*q*r =
     p^2*q + p^2*r + q^2*p + q^2*r + r^2*p + r^2*q := by ring
 
--- 分式恒等式（先 field_simp 再 ring）
+-- Identity with fractions (field_simp first, then ring)
 theorem frac_identity (a b : ℝ) (ha : a ≠ 0) (hb : b ≠ 0) :
     1/a + 1/b = (a + b) / (a * b) := by
   field_simp
   ring</pre>
 
-          <h3>7.2 整数与整除</h3>
-          <p>整除性证明经常需要的工具：<code>dvd_intro</code>（提供 witness）、<code>Nat.dvd_add</code>（整除的加法性质）、<code>omega</code>（余数算术）。对于 mod 运算，<code>Int.emod_emod_of_dvd</code> 很有用。</p>
+          <h3>7.2 Integers and Divisibility</h3>
+          <p>Useful tools for divisibility proofs: <code>dvd_intro</code> (provide a witness), <code>Nat.dvd_add</code> (additivity of divisibility), <code>omega</code> (modular arithmetic). For mod, <code>Int.emod_emod_of_dvd</code> is handy.</p>
           <pre class="code-block">
--- n(n+1)(n+2) 被 6 整除
--- 策略：利用 n, n+1, n+2 中必有一个是 2 的倍数，一个是 3 的倍数
+-- 6 divides n(n+1)(n+2)
+-- Strategy: among n, n+1, n+2 there's one even and one multiple of 3
 theorem six_dvd_consec_prod (n : ℤ) : 6 ∣ n * (n + 1) * (n + 2) := by
   have h2 : 2 ∣ n * (n + 1) * (n + 2) := by
     have := Int.even_mul_succ_self n  -- 2 ∣ n*(n+1)
     exact this.mul_right (n + 2)
   have h3 : 3 ∣ n * (n + 1) * (n + 2) := by
-    have := Int.three_dvd_iff_sum_digits -- 这个引理可能不存在，用 omega/rcases 代替
+    have := Int.three_dvd_iff_sum_digits -- this lemma may not exist; use omega/rcases instead
     omega
-  sorry -- 完整证明需要 Int.Coprime → dvd 乘积
+  sorry -- full proof needs Int.Coprime → divides product
 
--- 更简单的整除例子：n(n+1) 被 2 整除
+-- Simpler divisibility: 2 ∣ n(n+1)
 theorem two_dvd_n_mul_succ (n : ℤ) : 2 ∣ n * (n + 1) := by
   rcases Int.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩
-  · -- n 是偶数
+  · -- n is even
     exact ⟨k * (n + 1), by rw [hk]; ring⟩
-  · -- n 是奇数（n+1 是偶数）
+  · -- n is odd (so n+1 is even)
     exact ⟨n * (k + 1), by rw [hk]; ring⟩
 
--- 使用 omega 的整除例子
+-- Divisibility example with omega
 theorem dvd_by_omega_example (n : ℤ) : 2 ∣ n^2 + n := by
   have factored : n^2 + n = n * (n + 1) := by ring
   rw [factored]
   exact two_dvd_n_mul_succ n
 
--- Nat 的整除
+-- Divisibility on ℕ
 theorem nat_dvd_example : 12 ∣ 3 * 4 * 5 - 3 * 4 := by norm_num
 
--- 使用 dvd_trans
+-- dvd_trans
 theorem dvd_trans_example (a b c : ℤ) (h1 : a ∣ b) (h2 : b ∣ c) : a ∣ c :=
   dvd_trans h1 h2</pre>
 
-          <h3>7.3 不等式</h3>
-          <p>竞赛不等式通常需要 AM-GM、Cauchy-Schwarz 等经典不等式作为引理，或者通过 SOS（平方和）分解后用 <code>nlinarith</code> 关闭。</p>
+          <h3>7.3 Inequalities</h3>
+          <p>Competition inequalities usually need classical inequalities (AM-GM, Cauchy-Schwarz) as lemmas, or a sum-of-squares decomposition closed by <code>nlinarith</code>.</p>
           <pre class="code-block">
--- AM-GM：a² + b² ≥ 2ab
+-- AM-GM: a² + b² ≥ 2ab
 theorem am_gm_sq (a b : ℝ) : a^2 + b^2 ≥ 2 * a * b := by
   nlinarith [sq_nonneg (a - b)]
 
--- 更一般的 AM-GM（两个正数）
+-- More general AM-GM (two positive numbers)
 theorem am_gm_pos (a b : ℝ) (ha : a > 0) (hb : b > 0) : a + b ≥ 2 * Real.sqrt (a * b) := by
-  sorry -- 需要 Real.sqrt 的相关引理，这里展示结构
+  sorry -- needs Real.sqrt lemmas; structure shown
 
--- Cauchy-Schwarz（有限和版本）
+-- Cauchy-Schwarz (finite-sum version)
 -- (∑ a_i b_i)² ≤ (∑ a_i²) * (∑ b_i²)
--- Mathlib 中已有：inner_mul_le_norm_mul_norm
+-- Available in Mathlib as inner_mul_le_norm_mul_norm
 
--- 三角不等式
+-- Triangle inequality
 theorem triangle_ineq_sq (a b c : ℝ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
     (h : a + b > c) (h2 : b + c > a) (h3 : a + c > b) :
     a^2 + b^2 + c^2 < (a + b + c)^2 / 2 + (a*b + b*c + a*c) := by
   nlinarith [sq_nonneg (a - b), sq_nonneg (b - c), sq_nonneg (a - c)]
 
--- 基本不等式组合
+-- Combining basic inequalities
 theorem ineq_combination (x y z : ℝ) (hx : x ≥ 0) (hy : y ≥ 0) (hz : z ≥ 0)
     (hxyz : x + y + z = 1) : x*y + y*z + x*z ≤ 1/3 := by
   nlinarith [sq_nonneg (x - y), sq_nonneg (y - z), sq_nonneg (x - z)]</pre>
 
-          <h3>7.4 存在性与构造性证明</h3>
-          <p>存在性证明通常需要给出明确的 witness，然后验证它满足条件。有时需要分情况讨论来确定 witness 的具体形式。</p>
+          <h3>7.4 Existence and Constructive Proofs</h3>
+          <p>An existence proof usually means producing an explicit witness and verifying the conditions. Sometimes you have to split into cases to determine the witness.</p>
           <pre class="code-block">
--- 简单存在性：存在一个大于 100 的偶数
+-- Simple existence: there is an even number greater than 100
 theorem exists_even_gt_100 : ∃ n : ℕ, n > 100 ∧ 2 ∣ n := by
   use 102
   norm_num
 
--- 参数化存在性：对任意 n，存在比 n 大的素数
--- （Mathlib 中已有 Nat.exists_infinite_primes）
+-- Parametric existence: for any n, there's a prime > n
+-- (Mathlib already has Nat.exists_infinite_primes)
 theorem exists_prime_gt (n : ℕ) : ∃ p : ℕ, p > n ∧ Nat.Prime p :=
   Nat.exists_infinite_primes (n + 1) |>.imp fun p ⟨hp_ge, hp_prime⟩ =>
     ⟨Nat.lt_of_succ_le hp_ge, hp_prime⟩
 
--- 利用整除构造 witness
+-- Use divisibility to construct a witness
 theorem exists_multiple (n k : ℤ) (hk : k ≠ 0) (h : k ∣ n) :
     ∃ m : ℤ, n = k * m := by
-  exact h  -- ∣ 的定义就是存在这样的 m
+  exact h  -- the definition of ∣ is precisely such an m
 
--- 构造性证明：二次方程有理根的存在条件
--- 若 a, b, c ∈ ℤ 且 b² - 4ac = d² 对某整数 d 成立，则方程有有理根
+-- Constructive proof: rational-root condition for a quadratic
+-- if a, b, c ∈ ℤ and b² - 4ac = d² for some integer d, the equation has a rational root
 theorem rational_root_exists (a b c d : ℤ) (ha : a ≠ 0)
     (h : b^2 - 4*a*c = d^2) :
     ∃ p q : ℤ, q ≠ 0 ∧ a * p^2 + b * p * q + c * q^2 = 0 := by
@@ -981,11 +978,11 @@ theorem rational_root_exists (a b c d : ℤ) (ha : a ≠ 0)
   · intro h2a; exact ha (by linarith [h2a])
   · nlinarith [sq_nonneg d]</pre>
 
-          <h3>7.5 归纳证明</h3>
-          <p>数学归纳法在 Lean 4 中通过 <code>induction</code> 策略实现。关键是正确识别归纳假设（<code>ih</code>）并在归纳步骤中使用它。</p>
+          <h3>7.5 Inductive Proofs</h3>
+          <p>Mathematical induction in Lean 4 uses the <code>induction</code> tactic. The key is identifying the inductive hypothesis (<code>ih</code>) and using it in the inductive step.</p>
           <pre class="code-block">
--- 经典归纳：∑_{k=0}^{n} k = n(n+1)/2
--- Lean 4 中用 2 * sum = n*(n+1) 避免分数
+-- Classic induction: ∑_{k=0}^{n} k = n(n+1)/2
+-- In Lean 4, prove 2 * sum = n*(n+1) to avoid fractions
 theorem gauss_sum (n : ℕ) :
     2 * ∑ k ∈ Finset.range (n + 1), k = n * (n + 1) := by
   induction n with
@@ -995,17 +992,17 @@ theorem gauss_sum (n : ℕ) :
     push_cast
     linarith
 
--- 归纳：整除性质
--- 3 | 4^n - 1 对所有 n : ℕ
+-- Induction on a divisibility property
+-- 3 | 4^n - 1 for all n : ℕ
 theorem three_dvd_pow4_sub1 (n : ℕ) : 3 ∣ 4^n - 1 := by
   induction n with
   | zero => simp
   | succ n ih =>
     have : (4 : ℤ)^(n + 1) - 1 = 4 * (4^n - 1) + 3 := by ring
-    -- 需要先转到 ℤ 以避免 ℕ 减法截断问题
+    -- need to switch to ℤ to avoid ℕ subtraction truncation
     sorry
 
--- ℤ 上的归纳版本
+-- Inductive version on ℤ
 theorem three_dvd_pow4_sub1' (n : ℕ) : (3 : ℤ) ∣ 4^n - 1 := by
   induction n with
   | zero => norm_num
@@ -1014,8 +1011,8 @@ theorem three_dvd_pow4_sub1' (n : ℕ) : (3 : ℤ) ∣ 4^n - 1 := by
     rw [key]
     exact dvd_add (dvd_mul_of_dvd_right ih 4) (dvd_refl 3)
 
--- 强归纳：fibonacci 性质
--- 略去，展示结构
+-- Strong induction: Fibonacci property
+-- structure only
 theorem fib_property (n : ℕ) : True := by
   induction n using Nat.strong_induction_on with
   | _ n ih => trivial</pre>
@@ -1023,68 +1020,68 @@ theorem fib_property (n : ℕ) : True := by
 
           <!-- ===== SECTION 8 ===== -->
           <div class="note-section">
-          <h2>8. 完整例子——从纸面到 Lean</h2>
-          <p>这一节演示将一道具体题目从直觉证明转化为完整 Lean 4 代码的完整过程，包括犯错和修正。</p>
+          <h2>8. Worked Examples — From Paper to Lean</h2>
+          <p>This section walks through translating concrete problems from intuitive proof to complete Lean 4 code, including mistakes and fixes along the way.</p>
 
-          <h3>8.1 例题一：(a+b)² ≡ a² + b² (mod 2)</h3>
-          <p><strong>题目：</strong>对任意整数 a, b，证明 (a+b)² ≡ a² + b² (mod 2)。</p>
+          <h3>8.1 Example One: (a+b)² ≡ a² + b² (mod 2)</h3>
+          <p><strong>Problem:</strong> for any integers a, b, prove (a+b)² ≡ a² + b² (mod 2).</p>
 
-          <p><strong>纸面分析：</strong>(a+b)² = a² + 2ab + b²，所以 (a+b)² - (a² + b²) = 2ab，这是 2 的倍数，所以 (a+b)² 和 a² + b² 模 2 同余。</p>
+          <p><strong>Paper analysis:</strong> (a+b)² = a² + 2ab + b², so (a+b)² − (a² + b²) = 2ab, a multiple of 2, so (a+b)² and a² + b² are congruent mod 2.</p>
 
-          <p><strong>第一步：用 sorry 写出框架。</strong></p>
+          <p><strong>Step 1: sketch with sorry.</strong></p>
           <pre class="code-block">
--- 先建立命题，暂不证明
+-- State the proposition first, prove later
 theorem sq_sum_mod2 (a b : ℤ) : (a + b)^2 % 2 = (a^2 + b^2) % 2 := by
-  sorry  -- 占位，先看命题是否表述正确</pre>
+  sorry  -- placeholder, check the statement is right</pre>
 
-          <p><strong>第二步：考虑证明策略。</strong>关键等式是 (a+b)² - (a² + b²) = 2ab。在 ℤ 上，<code>omega</code> 能处理线性整数算术，但 (a+b)² 展开涉及乘法，需要先用 <code>ring</code> 或 <code>have</code> 化简。</p>
+          <p><strong>Step 2: choose a strategy.</strong> The key identity is (a+b)² − (a² + b²) = 2ab. On ℤ, <code>omega</code> handles linear integer arithmetic, but expanding (a+b)² involves multiplication, so simplify with <code>ring</code> or a <code>have</code> first.</p>
           <pre class="code-block">
--- 第二步：添加关键 have
+-- Step 2: add the key have
 theorem sq_sum_mod2 (a b : ℤ) : (a + b)^2 % 2 = (a^2 + b^2) % 2 := by
   have h : (a + b)^2 - (a^2 + b^2) = 2 * (a * b) := by ring
-  -- 现在 h 告诉我们差是 2 的倍数
-  -- omega 可以处理：如果 x - y = 2 * k，则 x % 2 = y % 2
+  -- h says the difference is a multiple of 2
+  -- omega knows: if x - y = 2 * k, then x % 2 = y % 2
   omega</pre>
 
-          <p>这个证明已经正确！<code>ring</code> 建立代数等式，<code>omega</code> 处理模运算的线性部分。注意 <code>omega</code> 接受上下文中的所有整数等式/不等式，包括 <code>h</code>，所以能推出目标。</p>
+          <p>This proof is correct. <code>ring</code> establishes the algebraic identity and <code>omega</code> handles the modular linear part. <code>omega</code> picks up all integer equalities/inequalities in context, including <code>h</code>, so it can derive the goal.</p>
 
-          <p><strong>清洁版本：</strong></p>
+          <p><strong>Clean version:</strong></p>
           <pre class="code-block">
 import Mathlib
 
--- 最终版本
+-- Final version
 theorem sq_sum_mod2 (a b : ℤ) : (a + b)^2 % 2 = (a^2 + b^2) % 2 := by
   have h : (a + b)^2 - (a^2 + b^2) = 2 * (a * b) := by ring
   omega</pre>
 
-          <h3>8.2 例题二：n² + n 恒为偶数</h3>
-          <p><strong>题目：</strong>对任意整数 n，证明 2 ∣ n² + n。</p>
+          <h3>8.2 Example Two: n² + n is always even</h3>
+          <p><strong>Problem:</strong> for any integer n, prove 2 ∣ n² + n.</p>
 
-          <p><strong>纸面分析：</strong>n² + n = n(n+1)，n 和 n+1 是连续整数，其中必有一个是偶数，故乘积是偶数。</p>
+          <p><strong>Paper analysis:</strong> n² + n = n(n+1); n and n+1 are consecutive integers, one of them is even, so the product is even.</p>
 
-          <p><strong>错误的第一次尝试：</strong></p>
+          <p><strong>Wrong first attempt:</strong></p>
           <pre class="code-block">
--- 错误尝试：直接提供 witness（但 witness 本身不是整数！）
+-- Wrong: directly provide a witness (the witness isn't an integer!)
 theorem n_sq_plus_n_even_wrong (n : ℤ) : 2 ∣ n^2 + n := by
-  use n * (n + 1) / 2  -- 错误！ℤ 的除法不是精确的，这会截断
-  ring  -- 会失败，因为 ring 无法处理整数除法</pre>
+  use n * (n + 1) / 2  -- wrong: ℤ division isn't exact and truncates
+  ring  -- fails because ring can't handle integer division</pre>
 
-          <p><strong>正确方法一：用分情况讨论（n 为偶数或奇数）</strong></p>
+          <p><strong>Correct method one: case split (n even or odd)</strong></p>
           <pre class="code-block">
 theorem n_sq_plus_n_even (n : ℤ) : 2 ∣ n^2 + n := by
   have factored : n^2 + n = n * (n + 1) := by ring
   rw [factored]
-  -- 现在需要证明 2 ∣ n * (n + 1)
+  -- need to show 2 ∣ n * (n + 1)
   rcases Int.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩
-  · -- n 是偶数：n = 2k
+  · -- n is even: n = 2k
     exact ⟨k * (n + 1), by rw [hk]; ring⟩
-  · -- n 是奇数：n = 2k + 1，所以 n + 1 = 2k + 2 = 2(k+1)
+  · -- n is odd: n = 2k + 1, so n + 1 = 2k + 2 = 2(k+1)
     exact ⟨n * (k + 1), by rw [hk]; ring⟩</pre>
 
-          <p><strong>正确方法二：用 omega（更简洁）</strong></p>
+          <p><strong>Correct method two: omega (more concise)</strong></p>
           <pre class="code-block">
--- omega 可以直接处理！因为 n^2 + n = n*(n+1)，而 2 ∣ n*(n+1)
--- 实际上 omega 处理线性整数，但 2 ∣ n^2 + n 经过化简后可以 omega 处理
+-- omega handles it directly: n^2 + n = n*(n+1), and 2 ∣ n*(n+1)
+-- omega is for linear integers, but 2 ∣ n^2 + n simplifies to a form omega can handle
 theorem n_sq_plus_n_even' (n : ℤ) : 2 ∣ n^2 + n := by
   have : n^2 + n = n * (n + 1) := by ring
   rw [this]
@@ -1094,262 +1091,262 @@ theorem n_sq_plus_n_even' (n : ℤ) : 2 ∣ n^2 + n := by
     · exact ⟨n * (k + 1), by linarith [hk]⟩
   exact this</pre>
 
-          <h3>8.3 例题三：完整的归纳证明</h3>
-          <p><strong>题目：</strong>证明对所有自然数 n，有 3 ∣ n³ - n（即 n³ ≡ n (mod 3)）。</p>
+          <h3>8.3 Example Three: Full Inductive Proof</h3>
+          <p><strong>Problem:</strong> for all natural numbers n, prove 3 ∣ n³ − n (i.e., n³ ≡ n (mod 3)).</p>
           <pre class="code-block">
--- 方法一：代数因式分解
--- n³ - n = n(n-1)(n+1) = (n-1)n(n+1)，三个连续整数之积
+-- Method 1: algebraic factoring
+-- n³ - n = n(n-1)(n+1) = (n-1)n(n+1), product of three consecutive integers
 theorem three_dvd_cube_minus (n : ℤ) : 3 ∣ n^3 - n := by
   have factored : n^3 - n = (n - 1) * n * (n + 1) := by ring
   rw [factored]
-  -- 三个连续整数中必有一个是 3 的倍数
-  -- 按 n mod 3 分类
+  -- Among three consecutive integers, one is a multiple of 3
+  -- Split on n mod 3
   have hmod : n % 3 = 0 ∨ n % 3 = 1 ∨ n % 3 = 2 := by omega
   rcases hmod with h0 | h1 | h2
   · -- 3 ∣ n
     have hn : 3 ∣ n := ⟨n / 3, by omega⟩
     exact dvd_mul_of_dvd_right (dvd_mul_of_dvd_right hn _) _
-  · -- 3 ∣ n - 1（即 n ≡ 1 mod 3，所以 n - 1 ≡ 0 mod 3）
+  · -- 3 ∣ n - 1 (n ≡ 1 mod 3, so n - 1 ≡ 0 mod 3)
     have hn1 : 3 ∣ n - 1 := ⟨(n - 1) / 3, by omega⟩
     exact dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hn1 _) _
-  · -- 3 ∣ n + 1（n ≡ 2 ≡ -1 mod 3）
+  · -- 3 ∣ n + 1 (n ≡ 2 ≡ -1 mod 3)
     have hn1 : 3 ∣ n + 1 := ⟨(n + 1) / 3, by omega⟩
     exact dvd_mul_of_dvd_right (dvd_mul_of_dvd_left hn1 _) _
 
--- 方法二：归纳法
+-- Method 2: induction
 theorem three_dvd_cube_minus_induction (n : ℤ) : 3 ∣ n^3 - n := by
   have : n^3 - n = n * (n - 1) * (n + 1) := by ring
   rw [this]
-  omega  -- omega 直接完成！（能处理三个连续数之积被 3 整除）</pre>
+  omega  -- omega closes the goal directly! it handles divisibility by 3 of three consecutive integers</pre>
 
-          <p>注意方法二中 <code>omega</code> 直接完成了关于连续整数乘积被 3 整除的推理，这是 Lean 4 中 <code>omega</code> 强大之处。</p>
+          <p>Method 2 closes the divisibility-by-3 reasoning directly with <code>omega</code>, which is one of the more useful capabilities of <code>omega</code> in Lean 4.</p>
           </div>
 
           <!-- ===== SECTION 9 ===== -->
           <div class="note-section">
-          <h2>9. 常见错误与排错</h2>
+          <h2>9. Common Errors and How to Fix Them</h2>
 
-          <h3>9.1 ℕ 减法截断</h3>
-          <p>这是初学者最常遇到的陷阱。在 Lean 4 中，<code>ℕ</code>（自然数）的减法是截断减法：<code>3 - 5 = 0</code> 而不是 <code>-2</code>。这与数学直觉不符，会导致莫名其妙的证明失败。</p>
+          <h3>9.1 ℕ Truncating Subtraction</h3>
+          <p>This is the trap beginners hit most often. In Lean 4, subtraction on <code>ℕ</code> truncates: <code>3 - 5 = 0</code>, not <code>-2</code>. That's at odds with mathematical intuition and leads to mysterious proof failures.</p>
           <pre class="code-block">
--- 问题示例
-#eval (3 : ℕ) - 5    -- 输出 0，不是 -2！
+-- Example
+#eval (3 : ℕ) - 5    -- outputs 0, not -2
 
--- 以下证明会失败，因为 ℕ 中 a - b 的含义不是我们想要的
--- example (a b : ℕ) (h : a ≥ b) : (a - b) + b = a := by ring  -- ring 失败
+-- The following fails because a - b on ℕ doesn't mean what we think
+-- example (a b : ℕ) (h : a ≥ b) : (a - b) + b = a := by ring  -- ring fails
 
--- 正确做法：在 ℤ 上工作，或使用 Nat.sub_add_cancel
+-- Fix: work over ℤ, or use Nat.sub_add_cancel
 example (a b : ℕ) (h : b ≤ a) : a - b + b = a := Nat.sub_add_cancel h
 
--- 如果需要负数，转换到 ℤ
-example (a b : ℤ) : (a - b) + b = a := by ring  -- 在 ℤ 上 ring 正常工作
+-- For negatives, switch to ℤ
+example (a b : ℤ) : (a - b) + b = a := by ring  -- ring works on ℤ
 
--- 强制转换 ℕ 到 ℤ
+-- Cast ℕ to ℤ
 example (n m : ℕ) (h : n ≤ m) : (n : ℤ) - m ≤ 0 := by
   have : (n : ℤ) ≤ (m : ℤ) := Int.ofNat_le.mpr h
   linarith</pre>
 
-          <h3>9.2 类型不匹配</h3>
-          <p>Lean 4 是强类型系统，<code>ℕ</code>、<code>ℤ</code>、<code>ℚ</code>、<code>ℝ</code> 是不同的类型，混用会报错。错误信息通常是 <code>type mismatch: expected ℝ, got ℕ</code>。</p>
+          <h3>9.2 Type Mismatches</h3>
+          <p>Lean 4 has a strong type system. <code>ℕ</code>, <code>ℤ</code>, <code>ℚ</code>, <code>ℝ</code> are different types and mixing them produces errors. The error message usually says <code>type mismatch: expected ℝ, got ℕ</code>.</p>
           <pre class="code-block">
--- 类型不匹配示例
--- example (n : ℕ) (x : ℝ) : n + x = x + n := by ring  -- 失败！
+-- Type mismatch
+-- example (n : ℕ) (x : ℝ) : n + x = x + n := by ring  -- fails
 
--- 解决方法：显式转换
+-- Fix: explicit cast
 example (n : ℕ) (x : ℝ) : (n : ℝ) + x = x + (n : ℝ) := by ring
 
--- norm_cast 处理转换
+-- norm_cast handles casts
 example (n m : ℕ) (h : n < m) : (n : ℝ) < (m : ℝ) := by exact_mod_cast h
 
--- push_cast 将转换推入表达式内部
+-- push_cast pushes casts into the expression
 example (n m : ℕ) : ((n + m : ℕ) : ℝ) = (n : ℝ) + (m : ℝ) := by push_cast; ring
 
--- 常见模式：在 ℕ 上推导，需要 ℝ 的不等式
+-- Common pattern: derive on ℕ, need an inequality on ℝ
 example (n : ℕ) (h : n > 0) : (n : ℝ) > 0 := by exact Nat.cast_pos.mpr h</pre>
 
-          <h3>9.3 omega 不处理乘法</h3>
-          <p><code>omega</code> 只处理线性整数算术，遇到变量乘法会报错或无法完成。</p>
+          <h3>9.3 omega Doesn't Handle Multiplication</h3>
+          <p><code>omega</code> handles only linear integer arithmetic; variable products produce errors or no progress.</p>
           <pre class="code-block">
--- omega 失败的例子
--- example (n : ℤ) : n^2 ≥ 0 := by omega  -- 失败！n^2 是非线性的
+-- omega fails
+-- example (n : ℤ) : n^2 ≥ 0 := by omega  -- fails: n^2 is nonlinear
 
--- 正确：用 sq_nonneg
+-- Use sq_nonneg instead
 example (n : ℤ) : n^2 ≥ 0 := sq_nonneg n
 
--- 另一个失败例子：
--- example (a b : ℤ) : a * b = b * a := by omega  -- 失败
+-- Another failure:
+-- example (a b : ℤ) : a * b = b * a := by omega  -- fails
 
--- 正确：用 ring（乘法交换律）
+-- Use ring (commutativity of multiplication)
 example (a b : ℤ) : a * b = b * a := by ring
 
--- omega 和 nlinarith 的配合
--- 先用 ring 化简为线性形式，再用 omega
-example (n : ℤ) : n^2 + 2*n + 1 = (n + 1)^2 := by ring  -- ring 直接解决</pre>
+-- Combine omega with nlinarith
+-- Use ring to reduce to linear form, then omega
+example (n : ℤ) : n^2 + 2*n + 1 = (n + 1)^2 := by ring  -- ring closes it directly</pre>
 
-          <h3>9.4 ring 在 ℕ 上失败</h3>
-          <p><code>ring</code> 处理的是环（ring），而 <code>ℕ</code> 不是环（因为没有加法逆元，即没有减法）。含有减法的等式在 <code>ℕ</code> 上 <code>ring</code> 会失败。</p>
+          <h3>9.4 ring Fails on ℕ</h3>
+          <p><code>ring</code> works in a ring, and <code>ℕ</code> isn't a ring (no additive inverses, i.e., no real subtraction). Equalities involving subtraction on <code>ℕ</code> make <code>ring</code> fail.</p>
           <pre class="code-block">
--- ring 在 ℕ 上失败
--- example (a b : ℕ) : (a + b) - b = a := by ring  -- 失败
+-- ring fails on ℕ
+-- example (a b : ℕ) : (a + b) - b = a := by ring  -- fails
 
--- 解决方法一：转到 ℤ
+-- Fix 1: work on ℤ
 example (a b : ℕ) : (a : ℤ) + b - b = a := by ring
 
--- 解决方法二：使用专用引理
+-- Fix 2: dedicated lemma
 example (a b : ℕ) (h : b ≤ a + b) : (a + b) - b = a := Nat.add_sub_cancel
 
--- 解决方法三：omega（能处理 ℕ 上的部分减法情形）
+-- Fix 3: omega (handles some ℕ subtraction cases)
 example (a b : ℕ) (h : b ≤ a) : a - b + b = a := by omega</pre>
 
-          <h3>9.5 引理名称变更</h3>
-          <p>Mathlib4 仍在积极开发中，引理名称偶尔会变更。不要硬记引理名，每次使用 <code>exact?</code> 或 <code>apply?</code> 确认。</p>
+          <h3>9.5 Lemma Renames</h3>
+          <p>Mathlib4 is under active development and lemma names occasionally change. Don't memorize names — use <code>exact?</code> or <code>apply?</code> to confirm each time.</p>
           <pre class="code-block">
--- 不好的做法：硬记可能过时的名字
--- exact Nat.lt_of_sub_eq_succ h  -- 这个名字可能已变更
+-- Bad: hard-coding a possibly-stale name
+-- exact Nat.lt_of_sub_eq_succ h  -- this name may have changed
 
--- 好的做法：用 exact? 搜索
+-- Good: search with exact?
 example (n m : ℕ) (h : n ≤ m) : n < m + 1 := by exact?
--- exact? 会给出当前正确的引理名
+-- exact? returns the current correct lemma name
 
--- 另一个好习惯：对于简单关系，直接用策略而不是引理
-example (n : ℕ) : n < n + 1 := by omega  -- 不依赖具体引理名</pre>
+-- Better habit: for simple relations, use a tactic instead of a named lemma
+example (n : ℕ) : n < n + 1 := by omega  -- doesn't depend on a specific name</pre>
 
-          <h3>9.6 sorry 忘了删</h3>
-          <p>在完成形式化后，必须确保所有 <code>sorry</code> 都已删除。<code>lake build</code> 会对含有 <code>sorry</code> 的文件发出警告（但不是错误），这在形式化验证工作中是不可接受的。</p>
+          <h3>9.6 Forgotten sorry</h3>
+          <p>When the formalization is finished, every <code>sorry</code> has to be removed. <code>lake build</code> emits warnings (not errors) for files containing <code>sorry</code>, which is unacceptable in formal-verification work.</p>
           <pre class="code-block">
--- 查找项目中所有 sorry
--- 在终端中运行：
+-- Find every sorry in the project
+-- In a terminal:
 -- grep -r "sorry" *.lean
--- 或者：lake build 2>&1 | grep "sorry"
+-- or: lake build 2>&1 | grep "sorry"
 
--- Lean 4 中 sorry 的警告信息形如：
+-- The Lean 4 sorry warning looks like:
 -- warning: 'theorem_name' uses sorry</pre>
 
-          <h3>9.7 其他常见错误</h3>
+          <h3>9.7 Other Common Errors</h3>
           <pre class="code-block">
--- 错误：忘记 import Mathlib（或只 import 部分）
--- 解决：在文件顶部加 import Mathlib
+-- Forgot to import Mathlib (or imported only part)
+-- Fix: put `import Mathlib` at the top of the file
 
--- 错误：变量作用域问题
--- variable 声明的变量在 section/namespace 外不可用
+-- Variable scoping
+-- variable declarations don't reach outside the section/namespace
 section MySection
   variable (n : ℕ)
   theorem in_section : n + 0 = n := by omega
 end MySection
--- theorem outside_section : n + 0 = n := by omega  -- 错误！n 未定义
+-- theorem outside_section : n + 0 = n := by omega  -- error: n undefined
 
--- 错误：simp 循环（simp 陷入无限重写循环）
--- 解决：改用 simp only [具体引理] 而不是裸 simp
+-- simp loop (simp keeps rewriting forever)
+-- Fix: switch to simp only [specific lemmas] instead of bare simp
 
--- 错误：目标中含有 cast 导致其他策略失败
+-- Casts in the goal block other tactics
 -- example (n : ℕ) (h : (n : ℝ) = 3) : n = 3 := by exact?
--- 应改用 exact_mod_cast h 或先 norm_cast</pre>
+-- Use exact_mod_cast h or norm_cast first</pre>
           </div>
 
           <!-- ===== SECTION 10 ===== -->
           <div class="note-section">
-          <h2>10. 进阶——自动化战术</h2>
-          <p>以下是更高级的自动化策略，在 Mathlib4 中可用，能处理许多繁琐但规律性强的证明。</p>
+          <h2>10. Advanced — Automation Tactics</h2>
+          <p>More advanced automation tactics in Mathlib4 that handle a lot of tedious but regular proofs.</p>
 
           <h3>10.1 aesop</h3>
-          <p><code>aesop</code>（Automated Extensional Situation/Object Prover）是 Lean 4 的通用自动化策略，通过规则数据库进行向前/向后搜索。适合结构性证明，如集合操作、逻辑推导等。</p>
+          <p><code>aesop</code> (Automated Extensional Situation/Object Prover) is Lean 4's general-purpose automation, doing forward/backward search through a rules database. Suitable for structural proofs — set operations, logical deductions, and so on.</p>
           <pre class="code-block">
--- aesop 处理集合操作
+-- aesop on set operations
 example (s t : Finset ℕ) (h : s ⊆ t) (x : ℕ) (hx : x ∈ s) : x ∈ t := by
-  aesop  -- 或者 exact h hx
+  aesop  -- or: exact h hx
 
--- aesop 处理类型类相关证明
+-- aesop on type-class proofs
 example (α : Type*) (s : Finset α) : s.card ≥ 0 := by aesop</pre>
 
           <h3>10.2 positivity</h3>
-          <p><code>positivity</code> 专门用于证明某个表达式大于零或非负。它能处理乘积、幂、绝对值、平方根等结构的正性/非负性。</p>
+          <p><code>positivity</code> is dedicated to proving that an expression is positive or non-negative. It handles products, powers, absolute values, square roots, and so on.</p>
           <pre class="code-block">
--- 证明正性
+-- Positivity
 example (a b : ℝ) (ha : 0 < a) (hb : 0 < b) : 0 < a * b := by positivity
 
--- 证明非负性
+-- Non-negativity
 example (a : ℝ) : 0 ≤ a ^ 2 := by positivity
 
--- 复合表达式
+-- Compound expressions
 example (n : ℕ) (a : ℝ) (ha : 0 < a) : 0 < a ^ n + 1 := by positivity
 
--- 比 nlinarith 更目标导向
+-- More goal-directed than nlinarith
 example (x y : ℝ) (hx : 0 < x) (hy : 0 ≤ y) : 0 ≤ x^2 * y + x := by positivity</pre>
 
           <h3>10.3 field_simp</h3>
-          <p><code>field_simp</code> 在域（field）上清除分母，将含有除法的目标化简为不含分母的形式，然后可以用 <code>ring</code> 完成。使用前需要证明分母非零。</p>
+          <p><code>field_simp</code> clears denominators in a field, turning a goal with division into one without, after which <code>ring</code> can close it. You need to prove the denominators are non-zero first.</p>
           <pre class="code-block">
--- 清除分母后用 ring
+-- Clear denominators, then ring
 example (a b : ℝ) (ha : a ≠ 0) (hb : b ≠ 0) :
     (a + b) / (a * b) = 1/b + 1/a := by
   field_simp
   ring
 
--- 处理多个分母
+-- Multiple denominators
 example (x y z : ℝ) (hx : x ≠ 0) (hy : y ≠ 0) (hz : z ≠ 0) :
     1/x + 1/y + 1/z = (y*z + x*z + x*y) / (x*y*z) := by
   field_simp
   ring</pre>
 
-          <h3>10.4 norm_cast 与 exact_mod_cast</h3>
-          <p>这一组策略专门处理数字类型之间的强制转换。<code>norm_cast</code> 在目标中规范化 cast；<code>exact_mod_cast</code> 和 <code>apply_mod_cast</code> 在提供/应用证明时忽略 cast 差异。</p>
+          <h3>10.4 norm_cast and exact_mod_cast</h3>
+          <p>This family of tactics handles coercions between numeric types. <code>norm_cast</code> normalizes casts in the goal; <code>exact_mod_cast</code> and <code>apply_mod_cast</code> ignore cast differences when supplying or applying a proof.</p>
           <pre class="code-block">
--- norm_cast 作为策略（关闭含 cast 的目标）
+-- norm_cast as a closing tactic
 example (n m : ℕ) (h : n ≤ m) : (n : ℤ) ≤ (m : ℤ) := by exact_mod_cast h
 
--- norm_cast 规范化 cast
+-- norm_cast normalizes casts
 example (n : ℕ) : (n : ℝ) + 0 = n := by norm_cast
 
--- push_cast 将 cast 向内推
+-- push_cast pushes casts inward
 example (n m : ℕ) : ((n * m : ℕ) : ℝ) = (n : ℝ) * (m : ℝ) := by push_cast; ring
 
--- 综合使用
+-- Combined
 theorem cast_ineq_example (n : ℕ) (h : n > 0) : (n : ℝ) > 0 := by
   exact_mod_cast h</pre>
 
-          <h3>10.5 decide 与 native_decide</h3>
-          <p><code>decide</code> 通过内核运行（kernel evaluation）来验证可判定命题；<code>native_decide</code> 通过 JIT 编译来运行，速度更快，适合大数计算。</p>
+          <h3>10.5 decide and native_decide</h3>
+          <p><code>decide</code> verifies decidable propositions through kernel evaluation; <code>native_decide</code> JIT-compiles the check, faster on big computations.</p>
           <pre class="code-block">
--- decide：适合小范围
+-- decide: small-scale
 example : Nat.Prime 31 := by decide
 example : ¬ (4 : ℕ) ∣ 10 := by decide
 
--- native_decide：适合大数
-example : Nat.Prime 65537 := by native_decide  -- 费马数，decide 会很慢
+-- native_decide: large numbers
+example : Nat.Prime 65537 := by native_decide  -- a Fermat number; decide is slow here
 example : (Finset.range 100).card = 100 := by native_decide
 
--- decide 可以验证有限类型上的全称命题
+-- decide on universally quantified finite types
 example : ∀ b : Bool, b || true = true := by decide
 
--- 有时用 norm_num 比 decide 更快
-example : Nat.Prime 1000003 := by norm_num  -- norm_num 对素数判定有优化</pre>
+-- Sometimes norm_num is faster than decide
+example : Nat.Prime 1000003 := by norm_num  -- norm_num is optimized for primality</pre>
 
           <h3>10.6 simp_arith</h3>
-          <p><code>simp_arith</code> 是 <code>simp</code> 加上算术规则的组合，可以处理一些 <code>simp</code> 单独无法完成但 <code>omega</code> 也太弱的情形。</p>
+          <p><code>simp_arith</code> combines <code>simp</code> with arithmetic rules. Useful when <code>simp</code> alone isn't enough but <code>omega</code> is too weak.</p>
           <pre class="code-block">
--- simp_arith 处理带有算术的化简
+-- simp_arith handles simplification with arithmetic
 example (n : ℕ) (h : n ≥ 1) : n + n ≥ 2 := by simp_arith
 example (n : ℕ) : 0 + n = n := by simp_arith</pre>
 
-          <h3>10.7 综合策略选择指南</h3>
-          <p>面对一个证明目标时，以下决策流程有助于快速选择策略：</p>
+          <h3>10.7 Picking a Tactic</h3>
+          <p>When facing a goal, this decision flow helps pick a tactic quickly:</p>
           <ul class="plain-list">
-            <li><strong>目标是多项式等式？</strong> → 先试 <code>ring</code>，如有分母先 <code>field_simp</code></li>
-            <li><strong>目标是具体数字的命题？</strong> → <code>norm_num</code></li>
-            <li><strong>目标是线性整数/自然数？</strong> → <code>omega</code></li>
-            <li><strong>目标是线性实数不等式？</strong> → <code>linarith</code>，需要非线性则 <code>nlinarith [sq_nonneg ...]</code></li>
-            <li><strong>目标是正性/非负性？</strong> → <code>positivity</code></li>
-            <li><strong>目标含有未知名字的引理？</strong> → <code>exact?</code> 或 <code>apply?</code></li>
-            <li><strong>目标涉及 cast？</strong> → <code>norm_cast</code> 或 <code>exact_mod_cast</code></li>
-            <li><strong>目标是可判定的有限命题？</strong> → <code>decide</code> 或 <code>native_decide</code></li>
-            <li><strong>目标可以用 simp 化简但需要精确控制？</strong> → <code>simp only [...]</code></li>
+            <li><strong>Polynomial equality?</strong> Try <code>ring</code>; clear denominators with <code>field_simp</code> first if needed</li>
+            <li><strong>Specific numerical claim?</strong> <code>norm_num</code></li>
+            <li><strong>Linear ℤ/ℕ?</strong> <code>omega</code></li>
+            <li><strong>Linear ℝ inequality?</strong> <code>linarith</code>; if non-linear, <code>nlinarith [sq_nonneg ...]</code></li>
+            <li><strong>Positivity / non-negativity?</strong> <code>positivity</code></li>
+            <li><strong>Goal involves a lemma you don't know the name of?</strong> <code>exact?</code> or <code>apply?</code></li>
+            <li><strong>Cast in the goal?</strong> <code>norm_cast</code> or <code>exact_mod_cast</code></li>
+            <li><strong>Decidable, finite proposition?</strong> <code>decide</code> or <code>native_decide</code></li>
+            <li><strong>Want simp's effect with precise control?</strong> <code>simp only [...]</code></li>
           </ul>
           <pre class="code-block">
--- 综合例子：证明对所有整数 n，有 (2n+1)² ≡ 1 (mod 8)
+-- Combined example: for any integer n, (2n+1)² ≡ 1 (mod 8)
 theorem odd_sq_mod8 (n : ℤ) : (2*n + 1)^2 % 8 = 1 := by
-  have expand : (2*n + 1)^2 = 4*n^2 + 4*n + 1 := by ring  -- ring 处理展开
+  have expand : (2*n + 1)^2 = 4*n^2 + 4*n + 1 := by ring  -- ring expands
   rw [expand]
-  have factored : 4*n^2 + 4*n = 4 * (n^2 + n) := by ring  -- ring 处理因式
+  have factored : 4*n^2 + 4*n = 4 * (n^2 + n) := by ring  -- ring factors
   rw [factored]
   have two_dvd : 2 ∣ n^2 + n := by
     have : n^2 + n = n * (n + 1) := by ring
@@ -1360,64 +1357,64 @@ theorem odd_sq_mod8 (n : ℤ) : (2*n + 1)^2 % 8 = 1 := by
   obtain ⟨m, hm⟩ := two_dvd
   rw [hm]
   ring_nf
-  omega  -- 最终线性算术</pre>
+  omega  -- final linear arithmetic</pre>
           </div>
 
           <!-- ===== APPENDIX ===== -->
           <div class="note-section">
-          <h2>附录：快速参考</h2>
+          <h2>Appendix: Quick Reference</h2>
 
-          <h3>策略速查表</h3>
+          <h3>Tactic Cheat Sheet</h3>
           <pre class="code-block">
--- 自动化
-ring          -- 多项式等式
-norm_num      -- 具体数值
-omega         -- 线性整数算术
-linarith      -- 线性实数不等式
-nlinarith     -- 非线性不等式（需提供 hint）
-decide        -- 可判定命题
-native_decide -- 大数可判定命题
-positivity    -- 正性/非负性
-field_simp    -- 清除分母
-simp          -- 化简
-aesop         -- 通用自动化
+-- Automation
+ring          -- polynomial equalities
+norm_num      -- specific numerical claims
+omega         -- linear integer arithmetic
+linarith      -- linear real inequalities
+nlinarith     -- non-linear inequalities (needs hints)
+decide        -- decidable propositions
+native_decide -- decidable propositions on large inputs
+positivity    -- positivity / non-negativity
+field_simp    -- clear denominators
+simp          -- simplification
+aesop         -- general-purpose automation
 
--- 逻辑推导
-exact h       -- 精确匹配
-apply h       -- 向后推理
-intro h       -- 引入假设
-assumption    -- 搜索匹配假设
-constructor   -- 分裂合取/iff
-left / right  -- 选择析取分支
-exfalso       -- 归谬
+-- Logic
+exact h       -- exact match
+apply h       -- backward reasoning
+intro h       -- introduce a hypothesis
+assumption    -- find a matching hypothesis
+constructor   -- split a conjunction / iff
+left / right  -- choose a disjunct
+exfalso       -- ex falso
 
--- 否定处理
-push_neg      -- 否定向内推
-contrapose    -- 逆否命题
-by_contra h   -- 反证法
+-- Negation
+push_neg      -- push negation inward
+contrapose    -- contrapositive
+by_contra h   -- proof by contradiction
 
--- 析构
-obtain ⟨...⟩ := h   -- 析构存在/合取
-cases h              -- 按构造子分类
-rcases h with ⟨...⟩ -- 递归析构
-use t                -- 提供 witness
+-- Destructuring
+obtain ⟨...⟩ := h   -- destructure existential / conjunction
+cases h              -- split by constructor
+rcases h with ⟨...⟩ -- recursive destructuring
+use t                -- supply a witness
 
--- 归纳
+-- Induction
 induction n with | zero => ... | succ n ih => ...
 
--- 搜索
-exact?        -- 搜索完成引理
-apply?        -- 搜索可应用引理
-simp?         -- 显示 simp 使用的引理
+-- Search
+exact?        -- find a closing lemma
+apply?        -- find an applicable lemma
+simp?         -- show the lemmas simp used
 
--- Cast 处理
-norm_cast           -- 规范化 cast
-exact_mod_cast h    -- 忽略 cast 差异提供证明
-push_cast           -- 将 cast 向内推</pre>
+-- Cast handling
+norm_cast           -- normalize casts
+exact_mod_cast h    -- supply a proof up to casts
+push_cast           -- push casts inward</pre>
 
-          <h3>常用 Mathlib 引理</h3>
+          <h3>Common Mathlib Lemmas</h3>
           <pre class="code-block">
--- 数论
+-- Number theory
 Nat.add_comm          -- n + m = m + n
 Nat.mul_comm          -- n * m = m * n
 Nat.le_refl           -- n ≤ n
@@ -1426,22 +1423,22 @@ Int.even_or_odd       -- ∀ n : ℤ, Even n ∨ Odd n
 Nat.dvd_add           -- a ∣ b → a ∣ c → a ∣ b + c
 Nat.dvd_mul_right     -- a ∣ a * b
 dvd_trans             -- a ∣ b → b ∣ c → a ∣ c
-Nat.Prime.dvd_mul     -- p 素数，p ∣ a*b → p ∣ a ∨ p ∣ b
+Nat.Prime.dvd_mul     -- prime p, p ∣ a*b → p ∣ a ∨ p ∣ b
 Nat.exists_infinite_primes -- ∀ n, ∃ p > n, p.Prime
 
--- 代数
+-- Algebra
 sq_nonneg             -- 0 ≤ x^2
 abs_nonneg            -- 0 ≤ |x|
 abs_of_pos            -- x > 0 → |x| = x
-mul_comm              -- a * b = b * a（通用）
-mul_assoc             -- a * (b * c) = a * b * c（通用）
+mul_comm              -- a * b = b * a (general)
+mul_assoc             -- a * (b * c) = a * b * c (general)
 
--- 有限集合
+-- Finite sets
 Finset.sum_add_distrib -- ∑ (f + g) = ∑ f + ∑ g
 Finset.sum_range_succ  -- ∑ range (n+1) = ∑ range n + f n
 Finset.card_range      -- (Finset.range n).card = n
 
--- 实分析
+-- Real analysis
 Real.sqrt_sq           -- x ≥ 0 → √(x²) = x
 Real.sq_sqrt           -- x ≥ 0 → (√x)² = x
 Real.log_mul           -- x > 0 → y > 0 → log(xy) = log x + log y</pre>

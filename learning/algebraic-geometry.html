@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>正特征代数几何笔记 — Lve Meng</title>
+  <title>Notes on Algebraic Geometry in Positive Characteristic — Lve Meng</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -70,188 +70,188 @@
     <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
       <div class="page__inner-wrap">
         <header>
-          <h1 class="page__title" itemprop="headline">正特征代数几何笔记</h1>
+          <h1 class="page__title" itemprop="headline">Notes on Algebraic Geometry in Positive Characteristic</h1>
         </header>
         <section class="page__content" itemprop="text">
 
           <p><a href="/learning/" class="back-link">← Learning</a></p>
-          <p>本笔记整理自研究 quasi-elliptic surface 上的 Bogomolov 型不等式过程中积累的背景知识与证明技术，相关结果见 <a href="/publications/bogomolov.html">论文页</a>。面向有代数几何基础（熟悉概形、上同调）的读者。</p>
+          <p>Compiled from background and proof techniques accumulated while studying the Bogomolov-type inequality on quasi-elliptic surfaces; the result is on the <a href="/publications/bogomolov.html">publication page</a>. Aimed at readers with a working knowledge of algebraic geometry (schemes, cohomology).</p>
 
-          <h2>引言：正特征是一个试验场</h2>
+          <h2>Introduction: Positive Characteristic as a Testing Ground</h2>
 
-          <p>代数几何中有一类基本问题：经典定理在正特征域上是否仍然成立？有时答案是肯定的，但证明需要完全不同的方法。有时答案是否定的，而反例本身就揭示了特征 0 情形中被隐藏的几何结构。</p>
+          <p>A recurring question in algebraic geometry is whether classical theorems still hold over fields of positive characteristic. Sometimes the answer is yes, but the proof has to take a different route. Sometimes the answer is no, and the counterexample reveals geometric structure that was hidden in the characteristic-0 case.</p>
 
-          <p>Bogomolov 不等式属于第一类。它在特征 0 中有优雅的证明，但将其推广到正特征需要理解 Frobenius 态射与向量丛稳定性的相互作用。当曲面具有 quasi-elliptic 纤维结构时，这个相互作用变得格外微妙——因为 quasi-elliptic fibration 本身是一种仅在特征 2 和 3 中存在的现象。</p>
+          <p>The Bogomolov inequality is in the first category. It has a clean proof in characteristic 0, but extending it to positive characteristic requires understanding how Frobenius interacts with vector-bundle stability. When the surface carries a quasi-elliptic fibration, that interaction becomes more delicate — quasi-elliptic fibrations exist only in characteristics 2 and 3.</p>
 
-          <p>这份笔记从向量丛的基础讲起，逐步建立理解这一问题所需的所有工具：斜率稳定性、Bogomolov 不等式、Frobenius 态射、quasi-elliptic 纤维化，以及经典证明失效的具体位置。</p>
+          <p>These notes start from vector-bundle basics and build up the tools needed to engage with this problem: slope stability, the Bogomolov inequality, the Frobenius morphism, quasi-elliptic fibrations, and the points where the classical proof breaks down.</p>
 
-          <h2>预备知识一：向量丛与稳定性</h2>
+          <h2>Preliminary I: Vector Bundles and Stability</h2>
 
-          <h3>向量丛的基本不变量</h3>
+          <h3>Basic Invariants of a Vector Bundle</h3>
 
-          <p>设 <em>S</em> 是代数闭域 <em>k</em> 上的光滑射影曲面，<em>E</em> 是 <em>S</em> 上的秩为 <em>r</em> 的向量丛。<em>E</em> 的主要数值不变量是 Chern 类：</p>
+          <p>Let <em>S</em> be a smooth projective surface over an algebraically closed field <em>k</em>, and let <em>E</em> be a rank-<em>r</em> vector bundle on <em>S</em>. Its main numerical invariants are the Chern classes:</p>
           <ul class="plain-list">
-            <li><em>c</em><sub>1</sub>(<em>E</em>) ∈ Pic(<em>S</em>) — 第一 Chern 类，对应行列式线丛 det(<em>E</em>) = ∧<sup><em>r</em></sup><em>E</em></li>
-            <li><em>c</em><sub>2</sub>(<em>E</em>) ∈ H<sup>4</sup>(<em>S</em>, ℤ) ≅ ℤ — 第二 Chern 类</li>
-            <li>判别式 Δ(<em>E</em>) = 2<em>r</em> · <em>c</em><sub>2</sub>(<em>E</em>) − (<em>r</em>−1) · <em>c</em><sub>1</sub>(<em>E</em>)<sup>2</sup></li>
+            <li><em>c</em><sub>1</sub>(<em>E</em>) ∈ Pic(<em>S</em>) — the first Chern class, corresponding to the determinant line bundle det(<em>E</em>) = ∧<sup><em>r</em></sup><em>E</em></li>
+            <li><em>c</em><sub>2</sub>(<em>E</em>) ∈ H<sup>4</sup>(<em>S</em>, ℤ) ≅ ℤ — the second Chern class</li>
+            <li>discriminant Δ(<em>E</em>) = 2<em>r</em> · <em>c</em><sub>2</sub>(<em>E</em>) − (<em>r</em>−1) · <em>c</em><sub>1</sub>(<em>E</em>)<sup>2</sup></li>
           </ul>
-          <p>对于 End(<em>E</em>)，有 <em>c</em><sub>2</sub>(End(<em>E</em>)) = 2<em>r</em> · <em>c</em><sub>2</sub>(<em>E</em>) − (<em>r</em>−1) · <em>c</em><sub>1</sub>(<em>E</em>)<sup>2</sup> = Δ(<em>E</em>)，因此判别式等于内自同态丛的第二 Chern 类。</p>
+          <p>For End(<em>E</em>), one has <em>c</em><sub>2</sub>(End(<em>E</em>)) = 2<em>r</em> · <em>c</em><sub>2</sub>(<em>E</em>) − (<em>r</em>−1) · <em>c</em><sub>1</sub>(<em>E</em>)<sup>2</sup> = Δ(<em>E</em>), so the discriminant equals the second Chern class of the endomorphism bundle.</p>
 
-          <h3>斜率稳定性（Mumford-Takemoto）</h3>
+          <h3>Slope Stability (Mumford–Takemoto)</h3>
 
-          <p>固定 <em>S</em> 上的一个丰沛因子 <em>H</em>（极化）。向量丛 <em>E</em> 的（关于 <em>H</em> 的）斜率定义为</p>
+          <p>Fix an ample divisor <em>H</em> on <em>S</em> (a polarization). The slope of <em>E</em> with respect to <em>H</em> is</p>
           <p style="margin-left:1.5em;"><em>μ</em>(<em>E</em>) = (<em>c</em><sub>1</sub>(<em>E</em>) · <em>H</em>) / rank(<em>E</em>)</p>
-          <p>其中 <em>c</em><sub>1</sub>(<em>E</em>) · <em>H</em> 是交叉数。</p>
+          <p>where <em>c</em><sub>1</sub>(<em>E</em>) · <em>H</em> is the intersection number.</p>
 
-          <p><strong>定义（斜率稳定性）</strong>：向量丛 <em>E</em> 称为 <em>H</em>-半稳定的，若对 <em>E</em> 的所有秩小于 <em>r</em> 的子层 <em>F</em> ⊂ <em>E</em>，有 <em>μ</em>(<em>F</em>) ≤ <em>μ</em>(<em>E</em>)。若不等式严格，则称 <em>E</em> 是稳定的。</p>
+          <p><strong>Definition (slope stability)</strong>: a vector bundle <em>E</em> is <em>H</em>-semistable if for every subsheaf <em>F</em> ⊂ <em>E</em> of rank less than <em>r</em>, <em>μ</em>(<em>F</em>) ≤ <em>μ</em>(<em>E</em>). If the inequality is strict, <em>E</em> is stable.</p>
 
-          <p>半稳定性关于张量积和对偶表现良好：若 <em>E</em> 和 <em>F</em> 均为半稳定，则 <em>E</em> ⊗ <em>F</em> 亦半稳定。每个向量丛有唯一的 Harder-Narasimhan 滤链，其逐步商为半稳定丛。</p>
+          <p>Semistability behaves well under tensor products and duals: if <em>E</em> and <em>F</em> are both semistable, so is <em>E</em> ⊗ <em>F</em>. Every vector bundle has a unique Harder–Narasimhan filtration whose successive quotients are semistable.</p>
 
-          <h3>Riemann-Roch 公式</h3>
+          <h3>Riemann–Roch</h3>
 
-          <p>光滑射影曲面上的 Hirzebruch-Riemann-Roch：</p>
+          <p>The Hirzebruch–Riemann–Roch formula on a smooth projective surface:</p>
           <p style="margin-left:1.5em;">χ(<em>S</em>, <em>E</em>) = rank(<em>E</em>) · χ(<em>O</em><sub><em>S</em></sub>) + (<em>c</em><sub>1</sub>(<em>E</em>) · (<em>c</em><sub>1</sub>(<em>E</em>) − <em>K</em><sub><em>S</em></sub>)) / 2 − <em>c</em><sub>2</sub>(<em>E</em>)</p>
-          <p>其中 <em>K</em><sub><em>S</em></sub> 是典范除子，χ 是 Euler 特征数 h<sup>0</sup> − h<sup>1</sup> + h<sup>2</sup>。将此公式应用于 <em>E</em> = End(<em>F</em>)，即得判别式 Δ(<em>F</em>) 出现的自然场景。</p>
+          <p>where <em>K</em><sub><em>S</em></sub> is the canonical divisor and χ is the Euler characteristic h<sup>0</sup> − h<sup>1</sup> + h<sup>2</sup>. Applying this to <em>E</em> = End(<em>F</em>) gives the natural setting in which the discriminant Δ(<em>F</em>) appears.</p>
 
-          <h2>Bogomolov 不等式：特征 0 的经典情形</h2>
+          <h2>Bogomolov's Inequality: the Classical Characteristic-0 Case</h2>
 
-          <h3>定理陈述</h3>
+          <h3>Statement of the Theorem</h3>
 
-          <p><strong>定理（Bogomolov，1978）</strong>：设 <em>k</em> 是特征 0 的代数闭域，<em>S</em> 是 <em>k</em> 上的光滑射影曲面，<em>H</em> 是丰沛因子。若 <em>E</em> 是 <em>H</em>-半稳定向量丛，则</p>
+          <p><strong>Theorem (Bogomolov, 1978)</strong>: let <em>k</em> be an algebraically closed field of characteristic 0, <em>S</em> a smooth projective surface over <em>k</em>, and <em>H</em> an ample divisor. If <em>E</em> is an <em>H</em>-semistable vector bundle, then</p>
           <p style="margin-left:1.5em;">Δ(<em>E</em>) = 2<em>r</em> · <em>c</em><sub>2</sub>(<em>E</em>) − (<em>r</em>−1) · <em>c</em><sub>1</sub>(<em>E</em>)<sup>2</sup> ≥ 0</p>
 
-          <p>等号成立当且仅当 <em>E</em> 是某个线丛的直和（在 étale 覆叠后）。</p>
+          <p>Equality holds if and only if <em>E</em> is a direct sum of line bundles (after an étale cover).</p>
 
-          <h3>特征 0 证明的核心思路</h3>
+          <h3>The Idea of the Proof in Characteristic 0</h3>
 
-          <p>主要有两种方法：微分几何方法（Kobayashi-Hitchin 对应）和代数方法（Mehta-Ramanathan 限制定理）。</p>
+          <p>Two main approaches: a differential-geometric one (Kobayashi–Hitchin correspondence) and an algebraic one (the Mehta–Ramanathan restriction theorem).</p>
 
-          <p><strong>代数方法的关键步骤：</strong></p>
+          <p><strong>Algebraic approach, key steps:</strong></p>
           <ol class="plain-list">
-            <li><strong>限制定理（Mehta-Ramanathan）</strong>：若 <em>E</em> 是 <em>H</em>-半稳定的，则 <em>E</em> 在一般的 <em>H</em>-超平面截面曲线 <em>C</em> ⊂ <em>S</em> 上的限制 <em>E</em>|<sub><em>C</em></sub> 仍是半稳定的。</li>
-            <li><strong>向量丛的正定性</strong>：对曲线上的半稳定丛，利用 Riemann-Roch 和上同调消没，可以证明 End(<em>E</em>|<sub><em>C</em></sub>) 在代数意义上是"正"的。</li>
-            <li><strong>提升到曲面</strong>：将曲线上的结论通过 Hodge 指标定理提升，得到 Δ(<em>E</em>) ≥ 0。</li>
+            <li><strong>Restriction theorem (Mehta–Ramanathan)</strong>: if <em>E</em> is <em>H</em>-semistable, then for a general <em>H</em>-hyperplane section curve <em>C</em> ⊂ <em>S</em>, the restriction <em>E</em>|<sub><em>C</em></sub> is also semistable.</li>
+            <li><strong>Positivity of the bundle</strong>: for a semistable bundle on a curve, Riemann–Roch and cohomology vanishing show that End(<em>E</em>|<sub><em>C</em></sub>) is "positive" in the algebraic sense.</li>
+            <li><strong>Lift back to the surface</strong>: lift the curve-level conclusion using the Hodge index theorem to get Δ(<em>E</em>) ≥ 0.</li>
           </ol>
 
-          <p>在特征 0 中，步骤 1 中的限制定理有较强形式：对充分一般的截面，保持稳定性。这依赖于特征 0 情形下 Frobenius 不存在所带来的"可分性"。</p>
+          <p>In characteristic 0, the restriction theorem in step 1 has a strong form: stability is preserved on a general section. This relies on the "separability" present in characteristic 0, where Frobenius doesn't intervene.</p>
 
-          <h2>Frobenius 态射</h2>
+          <h2>The Frobenius Morphism</h2>
 
-          <h3>定义与基本性质</h3>
+          <h3>Definition and Basic Properties</h3>
 
-          <p>设 <em>k</em> 是特征 <em>p</em> > 0 的域，<em>X</em> 是 <em>k</em> 上的概形。<em>X</em> 的绝对 Frobenius 态射 <em>F</em><sub>abs</sub>: <em>X</em> → <em>X</em> 定义为：在拓扑空间上是恒等映射，在结构层上是 <em>f</em> ↦ <em>f</em><sup><em>p</em></sup>。</p>
+          <p>Let <em>k</em> be a field of characteristic <em>p</em> &gt; 0 and <em>X</em> a scheme over <em>k</em>. The absolute Frobenius <em>F</em><sub>abs</sub>: <em>X</em> → <em>X</em> is the identity on the underlying topological space and the map <em>f</em> ↦ <em>f</em><sup><em>p</em></sup> on the structure sheaf.</p>
 
-          <p>由于 <em>f</em> ↦ <em>f</em><sup><em>p</em></sup> 不是 <em>k</em>-代数同态（除非 <em>k</em> 是完全域），更自然的是考虑相对 Frobenius。设 <em>X</em><sup>(<em>p</em>)</sup> 是 <em>X</em> 通过 Frobenius <em>F</em><sub><em>k</em></sub>: <em>k</em> → <em>k</em>（<em>a</em> ↦ <em>a</em><sup><em>p</em></sup>）的基变换。相对 Frobenius <em>F</em> = <em>F</em><sub><em>X</em>/<em>k</em></sub>: <em>X</em> → <em>X</em><sup>(<em>p</em>)</sup> 是 <em>k</em>-态射。</p>
+          <p>Since <em>f</em> ↦ <em>f</em><sup><em>p</em></sup> is not a <em>k</em>-algebra homomorphism (unless <em>k</em> is perfect), it's more natural to use the relative Frobenius. Let <em>X</em><sup>(<em>p</em>)</sup> be the base change of <em>X</em> by the Frobenius <em>F</em><sub><em>k</em></sub>: <em>k</em> → <em>k</em> (<em>a</em> ↦ <em>a</em><sup><em>p</em></sup>). The relative Frobenius <em>F</em> = <em>F</em><sub><em>X</em>/<em>k</em></sub>: <em>X</em> → <em>X</em><sup>(<em>p</em>)</sup> is a <em>k</em>-morphism.</p>
 
-          <p><strong>关键性质：</strong></p>
+          <p><strong>Key properties:</strong></p>
           <ul class="plain-list">
-            <li>对线丛 <em>L</em>：<em>F</em><sup>*</sup><em>L</em> = <em>L</em><sup>⊗<em>p</em></sup>，即 <em>c</em><sub>1</sub>(<em>F</em><sup>*</sup><em>L</em>) = <em>p</em> · <em>c</em><sub>1</sub>(<em>L</em>)</li>
-            <li>对向量丛 <em>E</em>：rank(<em>F</em><sup>*</sup><em>E</em>) = rank(<em>E</em>)，且 <em>c</em><sub>1</sub>(<em>F</em><sup>*</sup><em>E</em>) = <em>p</em> · <em>c</em><sub>1</sub>(<em>E</em>)</li>
-            <li>Frobenius 拉回一般不保持稳定性：即使 <em>E</em> 半稳定，<em>F</em><sup>*</sup><em>E</em> 也可能不稳定</li>
+            <li>For a line bundle <em>L</em>: <em>F</em><sup>*</sup><em>L</em> = <em>L</em><sup>⊗<em>p</em></sup>, i.e., <em>c</em><sub>1</sub>(<em>F</em><sup>*</sup><em>L</em>) = <em>p</em> · <em>c</em><sub>1</sub>(<em>L</em>)</li>
+            <li>For a vector bundle <em>E</em>: rank(<em>F</em><sup>*</sup><em>E</em>) = rank(<em>E</em>), and <em>c</em><sub>1</sub>(<em>F</em><sup>*</sup><em>E</em>) = <em>p</em> · <em>c</em><sub>1</sub>(<em>E</em>)</li>
+            <li>Frobenius pullback does not in general preserve stability: even if <em>E</em> is semistable, <em>F</em><sup>*</sup><em>E</em> can fail to be</li>
           </ul>
 
-          <h3>Frobenius 稳定性（强稳定性）</h3>
+          <h3>Frobenius Stability (Strong Stability)</h3>
 
-          <p>在正特征中，这导致一个重要的稳定性分层：</p>
+          <p>This leads to a stability stratification specific to positive characteristic:</p>
           <ul class="plain-list">
-            <li><strong>半稳定（semistable）</strong>：标准的 Mumford-Takemoto 定义</li>
-            <li><strong>Frobenius 半稳定（F-semistable / strongly semistable）</strong>：<em>E</em> 称为强半稳定，若 (<em>F</em><sup><em>n</em></sup>)<sup>*</sup><em>E</em> 对所有 <em>n</em> ≥ 1 均半稳定</li>
+            <li><strong>Semistable</strong>: the standard Mumford–Takemoto definition</li>
+            <li><strong>Frobenius semistable (F-semistable, strongly semistable)</strong>: <em>E</em> is strongly semistable if (<em>F</em><sup><em>n</em></sup>)<sup>*</sup><em>E</em> is semistable for every <em>n</em> ≥ 1</li>
           </ul>
-          <p>强半稳定是更强的条件。强半稳定的向量丛对 Bogomolov 不等式满足一个更清晰的版本：若 <em>E</em> 是强半稳定的，则 Δ(<em>E</em>) ≥ 0（这在任意特征下均成立）。</p>
-          <p>对于一般的半稳定丛 <em>E</em>（非强），其 Frobenius 拉回序列 (<em>F</em><sup><em>n</em></sup>)<sup>*</sup><em>E</em> 的 Harder-Narasimhan 滤链最终稳定，对应的"Frobenius 不稳定性"可以用 <em>p</em>-curvature 或 Higgs 场来描述。这是 Langer、Mehta-Pauly 等人工作的主题。</p>
+          <p>Strong semistability is the stronger condition. Strongly semistable bundles satisfy a clean version of the Bogomolov inequality: if <em>E</em> is strongly semistable, then Δ(<em>E</em>) ≥ 0 (in any characteristic).</p>
+          <p>For a generic semistable but not strongly semistable bundle <em>E</em>, the Harder–Narasimhan filtration of (<em>F</em><sup><em>n</em></sup>)<sup>*</sup><em>E</em> eventually stabilizes, and the resulting "Frobenius instability" can be described via <em>p</em>-curvature or Higgs fields. This is the subject of work by Langer, Mehta–Pauly, and others.</p>
 
           <h2>Quasi-Elliptic Fibrations</h2>
 
-          <h3>椭圆纤维化与 quasi-elliptic 纤维化</h3>
+          <h3>Elliptic and Quasi-Elliptic Fibrations</h3>
 
-          <p>设 <em>f</em>: <em>S</em> → <em>C</em> 是光滑射影曲面到光滑射影曲线的态射，且一般纤维光滑连通。若一般纤维是亏格 1 的光滑曲线（即椭圆曲线），则称 <em>f</em> 是椭圆纤维化（elliptic fibration）。</p>
+          <p>Let <em>f</em>: <em>S</em> → <em>C</em> be a morphism from a smooth projective surface to a smooth projective curve with smooth, connected generic fiber. If the generic fiber is a smooth genus-1 curve (an elliptic curve), <em>f</em> is an elliptic fibration.</p>
 
-          <p>Quasi-elliptic fibration 则不同：一般纤维是具有一个尖点（cusp）奇点的有理曲线，其算术亏格为 1 但几何亏格为 0。具体地，一般纤维同构于仿射曲线 <em>y</em><sup>2</sup> = <em>x</em><sup>3</sup>（特征 2 情形）或 <em>y</em><sup>2</sup> = <em>x</em><sup>3</sup>（某些特征 3 情形），加上"无穷远点"。</p>
+          <p>A quasi-elliptic fibration is different: the generic fiber is a rational curve with a single cusp, with arithmetic genus 1 but geometric genus 0. Specifically, the generic fiber is isomorphic to the affine curve <em>y</em><sup>2</sup> = <em>x</em><sup>3</sup> (in characteristic 2) or <em>y</em><sup>2</sup> = <em>x</em><sup>3</sup> (in some characteristic-3 cases), plus a "point at infinity."</p>
 
-          <h3>为什么仅在特征 2 和 3 中存在</h3>
+          <h3>Why They Exist Only in Characteristics 2 and 3</h3>
 
-          <p>在特征 0 或特征 ≥ 5 中，不存在 quasi-elliptic fibration。原因与可分性有关：</p>
-          <p>尖点有理曲线的正规化映射 ℙ<sup>1</sup> → （尖点曲线）在特征 ≠ 2, 3 中是可分态射，因此通过一般纤维总可以找到"内嵌的光滑曲线"（截面），矛盾于纤维的几何亏格。</p>
-          <p>在特征 2 中，映射 <em>t</em> ↦ (<em>t</em><sup>2</sup>, <em>t</em><sup>3</sup>) 是不可分的（度数 2 的纯不可分映射），使得尖点曲线成为合理的"亏格 1 对象"。类似地，特征 3 中也有对应构造。这种不可分性正是 Frobenius 的影响。</p>
+          <p>In characteristic 0 or characteristic ≥ 5, quasi-elliptic fibrations don't exist. The reason is separability:</p>
+          <p>The normalization map ℙ<sup>1</sup> → (cuspidal curve) is separable in characteristic ≠ 2, 3, so a section through a general fiber would force an "embedded smooth curve," contradicting the geometric genus of the fiber.</p>
+          <p>In characteristic 2, the map <em>t</em> ↦ (<em>t</em><sup>2</sup>, <em>t</em><sup>3</sup>) is inseparable (a purely inseparable map of degree 2), which is what allows the cuspidal curve to behave as a "genus-1 object." Characteristic 3 has an analogous construction. The inseparability is exactly the influence of Frobenius.</p>
 
-          <h3>Quasi-elliptic 曲面的几何性质</h3>
+          <h3>Geometric Properties of Quasi-Elliptic Surfaces</h3>
 
-          <p>具有 quasi-elliptic 纤维化的曲面（quasi-elliptic surface）具有以下特征性质：</p>
+          <p>Surfaces carrying a quasi-elliptic fibration (quasi-elliptic surfaces) have these properties:</p>
           <ul class="plain-list">
-            <li><strong>Kodaira 维数</strong>：κ(<em>S</em>) = 1（恰好是"准椭圆"情形）</li>
-            <li><strong>典范丛公式</strong>：与椭圆情形类似，但需要处理不可分纤维化的贡献项</li>
-            <li><strong>奇异纤维</strong>：具有特殊的奇异类型，Kodaira 分类在此情形部分适用、部分需要修正</li>
-            <li><strong>Frobenius 行为</strong>：由于纤维结构是不可分的，Frobenius 态射沿纤维方向的作用与椭圆情形根本不同</li>
+            <li><strong>Kodaira dimension</strong>: κ(<em>S</em>) = 1 (the "quasi-elliptic" case)</li>
+            <li><strong>Canonical bundle formula</strong>: similar to the elliptic case, but with extra terms accounting for the inseparable fibration</li>
+            <li><strong>Singular fibers</strong>: special singular types; Kodaira's classification partly applies, partly needs adjustment</li>
+            <li><strong>Frobenius behavior</strong>: because the fiber structure is inseparable, Frobenius along the fiber direction acts very differently from the elliptic case</li>
           </ul>
-          <p>Quasi-elliptic surface 是正特征代数几何中少数几个"本质上不同于特征 0"的现象之一，它们的存在来自于特征 2 和 3 中可分与不可分之间的特殊性质。</p>
+          <p>Quasi-elliptic surfaces are one of the few phenomena in positive-characteristic algebraic geometry that are genuinely different from characteristic 0 — they exist precisely because of the special interplay between separability and inseparability in characteristics 2 and 3.</p>
 
-          <h2>为什么经典 Bogomolov 证明在此失效</h2>
+          <h2>Why the Classical Bogomolov Proof Fails Here</h2>
 
-          <h3>问题的具体位置</h3>
+          <h3>Where the Argument Breaks</h3>
 
-          <p>将特征 0 的 Bogomolov 证明推广到正特征，通常依赖以下思路：</p>
+          <p>Extending the characteristic-0 Bogomolov proof to positive characteristic typically goes:</p>
           <ol class="plain-list">
-            <li>若 <em>E</em> 是强半稳定的，直接得到 Δ(<em>E</em>) ≥ 0</li>
-            <li>若 <em>E</em> 不是强半稳定的，找到一个 <em>n</em> 使得 (<em>F</em><sup><em>n</em></sup>)<sup>*</sup><em>E</em> 的 Harder-Narasimhan 滤链给出 destabilizing subsheaf，再用 Bogomolov-Gieseker 不等式的曲线版本得到约束。</li>
+            <li>If <em>E</em> is strongly semistable, get Δ(<em>E</em>) ≥ 0 directly</li>
+            <li>If <em>E</em> is not strongly semistable, find an <em>n</em> such that the Harder–Narasimhan filtration of (<em>F</em><sup><em>n</em></sup>)<sup>*</sup><em>E</em> gives a destabilizing subsheaf, then use the curve version of the Bogomolov–Gieseker inequality to get a bound.</li>
           </ol>
 
-          <p>这个策略在一般曲面上（对特征 <em>p</em> 充分大）可以执行。然而在 quasi-elliptic 曲面上，步骤 2 遇到了根本性障碍：</p>
+          <p>This goes through on a typical surface (for sufficiently large <em>p</em>). On a quasi-elliptic surface, step 2 hits real obstacles:</p>
 
-          <p><strong>障碍 1：纤维上 Frobenius 的不可分性</strong>。Quasi-elliptic fibration <em>f</em>: <em>S</em> → <em>C</em> 的一般纤维 <em>X</em><sub><em>η</em></sub> 是一个尖点有理曲线，其正规化 ν: ℙ<sup>1</sup> → <em>X</em><sub><em>η</em></sub> 是度数 <em>p</em> 的纯不可分映射。因此，从 ℙ<sup>1</sup> 上的向量丛推送下来的向量丛，在限制到纤维后其 Frobenius 拉回会产生额外的 destabilization，而这种 destabilization 的幅度不容易被控制。</p>
+          <p><strong>Obstacle 1: inseparability of Frobenius along the fiber</strong>. For a quasi-elliptic fibration <em>f</em>: <em>S</em> → <em>C</em>, the generic fiber <em>X</em><sub><em>η</em></sub> is a cuspidal rational curve, and its normalization ν: ℙ<sup>1</sup> → <em>X</em><sub><em>η</em></sub> is purely inseparable of degree <em>p</em>. So a vector bundle pushed down from ℙ<sup>1</sup>, when restricted to the fiber, gets extra destabilization under Frobenius pullback whose magnitude is hard to control.</p>
 
-          <p><strong>障碍 2：截面的缺失</strong>。在标准的椭圆纤维化中，截面 σ: <em>C</em> → <em>S</em> 提供了丰富的几何结构（Mordell-Weil 群等）。Quasi-elliptic 纤维化一般没有截面（或仅有有限个），这使得许多利用截面进行论证的技术失效。</p>
+          <p><strong>Obstacle 2: missing sections</strong>. In a standard elliptic fibration, a section σ: <em>C</em> → <em>S</em> provides geometric structure (Mordell–Weil group, etc.). Quasi-elliptic fibrations generally have no section (or only finitely many), which disables techniques that rely on sections.</p>
 
-          <p><strong>障碍 3：曲率与 <em>p</em>-curvature 的关系</strong>。正特征中，向量丛的稳定性与其 <em>p</em>-curvature（一种关于 Frobenius 平坦结构的不变量）密切相关。Quasi-elliptic 情形中，<em>p</em>-curvature 沿纤维方向的行为由不可分纤维化所决定，而不是由丛本身的内在结构决定。这打破了通常的"稳定 ⟺ 有界 <em>p</em>-curvature"的直觉。</p>
+          <p><strong>Obstacle 3: curvature and <em>p</em>-curvature</strong>. In positive characteristic, vector-bundle stability is closely tied to <em>p</em>-curvature (an invariant of the Frobenius flat structure). In the quasi-elliptic case, the behavior of <em>p</em>-curvature along the fiber is determined by the inseparable fibration rather than by the bundle's intrinsic structure. This breaks the usual intuition that "stable ⟺ bounded <em>p</em>-curvature."</p>
 
-          <h3>一个具体的失效例子</h3>
+          <h3>A Concrete Failure Mode</h3>
 
-          <p>设 <em>S</em> 是特征 2 上的 quasi-elliptic K3 曲面，<em>f</em>: <em>S</em> → ℙ<sup>1</sup> 是 quasi-elliptic 纤维化。考虑与纤维结构相关的秩 2 向量丛 <em>E</em> = <em>f</em><sup>*</sup>(<em>V</em>) ⊗ <em>L</em>，其中 <em>V</em> 是 ℙ<sup>1</sup> 上的秩 2 丛，<em>L</em> 是适当选取的线丛。</p>
-          <p><em>E</em> 可以是半稳定的，但 <em>F</em><sup>*</sup><em>E</em> 会因为 Frobenius 沿不可分纤维方向的作用而变得不稳定。此时标准的"迭代 Frobenius 拉回"论证无法给出均匀的界，而需要利用 quasi-elliptic 结构做精细分析。</p>
+          <p>Let <em>S</em> be a quasi-elliptic K3 surface in characteristic 2, with quasi-elliptic fibration <em>f</em>: <em>S</em> → ℙ<sup>1</sup>. Consider the rank-2 vector bundle associated to the fiber structure, <em>E</em> = <em>f</em><sup>*</sup>(<em>V</em>) ⊗ <em>L</em>, where <em>V</em> is a rank-2 bundle on ℙ<sup>1</sup> and <em>L</em> is a suitably chosen line bundle.</p>
+          <p><em>E</em> can be semistable, but <em>F</em><sup>*</sup><em>E</em> becomes unstable because of how Frobenius acts along the inseparable fiber direction. The standard "iterate Frobenius pullback" argument can't give a uniform bound here, and a finer analysis using the quasi-elliptic structure is needed.</p>
 
-          <h2>主要结果与证明思路</h2>
+          <h2>Main Result and Proof Strategy</h2>
 
-          <h3>主要定理</h3>
+          <h3>Main Theorem</h3>
 
-          <p><strong>定理</strong>（见 <a href="/publications/bogomolov.html">论文</a>）：设 <em>k</em> 是特征 2 或 3 的代数闭域，<em>S</em> 是 <em>k</em> 上的 quasi-elliptic surface，<em>H</em> 是丰沛因子。若 <em>E</em> 是 <em>H</em>-半稳定向量丛，则</p>
+          <p><strong>Theorem</strong> (see <a href="/publications/bogomolov.html">paper</a>): let <em>k</em> be an algebraically closed field of characteristic 2 or 3, <em>S</em> a quasi-elliptic surface over <em>k</em>, and <em>H</em> an ample divisor. If <em>E</em> is an <em>H</em>-semistable vector bundle, then</p>
           <p style="margin-left:1.5em;">Δ(<em>E</em>) ≥ 0</p>
 
-          <p>即 Bogomolov 型不等式在 quasi-elliptic 曲面上仍然成立。</p>
+          <p>i.e., the Bogomolov-type inequality holds on quasi-elliptic surfaces.</p>
 
-          <h3>证明的基本思路</h3>
+          <h3>Proof Strategy</h3>
 
-          <p>证明利用 quasi-elliptic 纤维化 <em>f</em>: <em>S</em> → <em>C</em> 的结构，分两步进行：</p>
+          <p>The proof uses the structure of the quasi-elliptic fibration <em>f</em>: <em>S</em> → <em>C</em>, in two steps:</p>
 
-          <p><strong>步骤一：沿纤维方向的分析</strong>。将 <em>E</em> 限制到 quasi-elliptic 纤维 <em>X</em><sub><em>t</em></sub>，利用尖点有理曲线上向量丛的精细分类（以及正规化 ν: ℙ<sup>1</sup> → <em>X</em><sub><em>t</em></sub> 的不可分性），分析 <em>E</em>|<sub><em>X</em><sub><em>t</em></sub></sub> 在 Frobenius 下的行为。关键在于，虽然单个纤维上的 Frobenius 作用是不可控的，但"在 <em>C</em> 上的族"所满足的半连续性给出了足够的约束。</p>
+          <p><strong>Step 1: analysis along the fibers</strong>. Restrict <em>E</em> to a quasi-elliptic fiber <em>X</em><sub><em>t</em></sub>, then use the fine classification of vector bundles on a cuspidal rational curve (together with the inseparability of the normalization ν: ℙ<sup>1</sup> → <em>X</em><sub><em>t</em></sub>) to analyze the behavior of <em>E</em>|<sub><em>X</em><sub><em>t</em></sub></sub> under Frobenius. The Frobenius action on a single fiber is uncontrolled, but the semicontinuity of "the family over <em>C</em>" gives enough constraint.</p>
 
-          <p><strong>步骤二：利用纤维化结构做全局论证</strong>。将步骤一得到的纤维信息，通过 Leray 谱序列和 Grothendieck-Riemann-Roch（相对版本）提升到全局的 Chern 类等式。关键不等式来自于对 <em>f</em><sub>*</sub>(End(<em>E</em>)) 的分析——quasi-elliptic 结构使得这个推出丛在曲线 <em>C</em> 上具有特殊的滤链，从而给出 Δ(<em>E</em>) 的非负下界。</p>
+          <p><strong>Step 2: global argument from the fibration structure</strong>. The fiber-level information from step 1 lifts via the Leray spectral sequence and the relative Grothendieck–Riemann–Roch to a global Chern-class identity. The key inequality comes from analyzing <em>f</em><sub>*</sub>(End(<em>E</em>)) — the quasi-elliptic structure forces this pushforward bundle on <em>C</em> to carry a special filtration, which supplies the non-negative lower bound on Δ(<em>E</em>).</p>
 
-          <p>证明中最精细的部分是处理 <strong>野纤维</strong>（wild fibers）的贡献。在 quasi-elliptic 情形中，奇异纤维的 Euler 特征数计算包含了来自不可分纤维化的"野"贡献（与正特征中的不可分度相关），需要仔细分离这些贡献并证明它们不破坏 Δ ≥ 0。</p>
+          <p>The most delicate part is handling the contribution from <strong>wild fibers</strong>. In the quasi-elliptic case, the Euler-characteristic computation for singular fibers picks up a "wild" term from the inseparable fibration (related to the inseparable degree in positive characteristic), and these contributions have to be separated out and shown not to break Δ ≥ 0.</p>
 
-          <h2>相关背景与拓展</h2>
+          <h2>Background and Extensions</h2>
 
-          <h3>Bogomolov-Gieseker 不等式与模空间</h3>
+          <h3>Bogomolov–Gieseker Inequality and Moduli Spaces</h3>
 
-          <p>Bogomolov 不等式的一个直接推论是向量丛模空间的有界性：秩 <em>r</em>、固定 <em>c</em><sub>1</sub> 的 <em>H</em>-半稳定向量丛，其 <em>c</em><sub>2</sub> 满足 <em>c</em><sub>2</sub> ≥ ((r−1)/(2r)) · <em>c</em><sub>1</sub><sup>2</sup>（有下界）。这保证了对应的模空间 <em>M</em><sub><em>S</em></sub>(<em>r</em>, <em>c</em><sub>1</sub>, <em>c</em><sub>2</sub>) 在 <em>c</em><sub>2</sub> 固定时是有限型的，从而可以讨论其 Donaldson-Uhlenbeck-Yau 型结构。</p>
+          <p>A direct consequence of the Bogomolov inequality is the boundedness of the moduli space of vector bundles: rank-<em>r</em>, <em>H</em>-semistable bundles with fixed <em>c</em><sub>1</sub> have <em>c</em><sub>2</sub> bounded below by ((r−1)/(2r)) · <em>c</em><sub>1</sub><sup>2</sup>. This guarantees that the moduli space <em>M</em><sub><em>S</em></sub>(<em>r</em>, <em>c</em><sub>1</sub>, <em>c</em><sub>2</sub>) is of finite type for fixed <em>c</em><sub>2</sub>, opening the door to Donaldson–Uhlenbeck–Yau type structure.</p>
 
-          <p>将这一结果推广到 quasi-elliptic 曲面，为正特征向量丛模空间的研究提供了基础。</p>
+          <p>Extending this to quasi-elliptic surfaces lays groundwork for studying vector-bundle moduli spaces in positive characteristic.</p>
 
-          <h3>Simpson 对应在正特征中的问题</h3>
+          <h3>Simpson Correspondence in Positive Characteristic</h3>
 
-          <p>在特征 0 中，Kobayashi-Hitchin 对应建立了稳定向量丛（代数几何）与 Hermitian-Einstein 联络（微分几何）之间的等价。正特征中，这个对应由 Ogus-Vologodsky（特征 <em>p</em> 的 Riemann-Hilbert 对应）和 Chen-Zhu 等人的工作替代。在 quasi-elliptic 曲面上，由于不可分纤维化，这种对应的建立更为复杂，是一个开放问题。</p>
+          <p>In characteristic 0, the Kobayashi–Hitchin correspondence sets up an equivalence between stable vector bundles (algebraic geometry) and Hermitian–Einstein connections (differential geometry). In positive characteristic this is replaced by work of Ogus–Vologodsky (the characteristic-<em>p</em> Riemann–Hilbert correspondence), Chen–Zhu, and others. On quasi-elliptic surfaces, the inseparable fibration makes the correspondence harder to construct — this is an open problem.</p>
 
-          <h3>与 Artin 超奇点的关系</h3>
+          <h3>Connection with Artin Supersingular Surfaces</h3>
 
-          <p>Quasi-elliptic K3 曲面（特征 2 和 3 中的特殊情形）与 Artin 超奇点（supersingular）K3 曲面密切相关。Shioda-Inose 构造在特征 0 中将 K3 曲面与椭圆曲线对联系起来；在特征 2 中，quasi-elliptic 结构替代了椭圆曲线对，反映了 Frobenius 对 Picard 群结构的影响。这是一个活跃的研究方向。</p>
+          <p>Quasi-elliptic K3 surfaces (the special cases in characteristic 2 and 3) are closely related to Artin supersingular K3 surfaces. The Shioda–Inose construction in characteristic 0 connects K3 surfaces to pairs of elliptic curves; in characteristic 2, the quasi-elliptic structure plays the role of the elliptic-curve pair, reflecting how Frobenius shapes the Picard-group structure. This is an active research direction.</p>
 
-          <h2>参考文献与进一步阅读</h2>
+          <h2>References and Further Reading</h2>
 
           <ul class="plain-list">
             <li>Bogomolov, F. A. <em>Holomorphic tensors and vector bundles on projective varieties</em>. Izv. Akad. Nauk SSSR, 1978.</li>
             <li>Mehta, V. B. &amp; Ramanathan, A. <em>Semistable sheaves on projective varieties and their restriction to curves</em>. Math. Ann., 1982.</li>
             <li>Langer, A. <em>Semistable sheaves in positive characteristic</em>. Ann. of Math., 2004.</li>
-            <li>Szpiro, L. (ed.) <em>Séminaire sur les pinceaux de courbes de genre au moins deux</em>. Astérisque, 1981. (Quasi-elliptic fibrations 的经典参考)</li>
+            <li>Szpiro, L. (ed.) <em>Séminaire sur les pinceaux de courbes de genre au moins deux</em>. Astérisque, 1981. (Classic reference for quasi-elliptic fibrations.)</li>
             <li>Bombieri, E. &amp; Mumford, D. <em>Enriques' classification of surfaces in char. p</em>, II. In: <em>Complex Analysis and Algebraic Geometry</em>, 1977.</li>
-            <li>蒙略. <em>Bogomolov Type Inequality on Quasi-Elliptic Surfaces</em>. Journal of Mathematics, 2025. [<a href="/publications/bogomolov.html">详情</a>]</li>
+            <li>Lve Meng. <em>Bogomolov Type Inequality on Quasi-Elliptic Surfaces</em>. Journal of Mathematics, 2025. [<a href="/publications/bogomolov.html">details</a>]</li>
           </ul>
 
         </section>
